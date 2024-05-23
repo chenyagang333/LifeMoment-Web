@@ -134,10 +134,25 @@
       />
     </div>
     <!-- 用户登录注册弹窗 -->
-    <LoginDialog
+    <!-- <el-dialog
+      class="login-dialog"
       v-model="visibleLogin"
-      :userAccount="userAccount as string"
-    ></LoginDialog>
+      align-center
+      center
+      width="850"
+    >
+    </el-dialog> -->
+    <a-modal
+      width="850px"
+      :footer="false"
+      hide-title
+      v-model:visible="visibleLogin"
+    >
+      <LoginDialog
+        :userAccount="userAccount as string"
+        @CloseDialog="() => (visibleLogin = false)"
+      ></LoginDialog>
+    </a-modal>
   </div>
 </template>
 

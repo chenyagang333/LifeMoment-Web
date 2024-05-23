@@ -26,19 +26,10 @@
 
 <script setup lang="ts">
 import { ref, computed, nextTick } from "vue";
-import cardHeader from "./card-header.vue";
-import cardOption from "./more-option.vue";
-import cardMain from "./card-main.vue";
-import cardFooter from "./card-footer.vue";
-import myComment from "./card-extend/my-comment.vue";
-import cardRight from "./card-extend/card-right/card-right.vue";
 import { ShowType } from "@/types/Layout1/youshow/youshow";
-import hugsPopoverWrap from "@/components/hugs-popover-wrap/hugs-popover-wrap.vue";
 import { ElMessage } from "element-plus";
-import commentOption from "@/components/comment-option/category1.vue";
-import commentOption2 from "@/components/comment-option/category2.vue";
 
-import JinnCard from "@/components/jinn-card/JinnCard.vue";
+import JinnCard from "@/components/jinn-components/jinn-card/JinnCard.vue";
 import { get } from "@/api/AHttp/api";
 
 const emit = defineEmits<{

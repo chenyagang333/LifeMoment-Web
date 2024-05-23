@@ -30,7 +30,7 @@ import { ElMessage, UploadUserFile } from "element-plus";
 import { del, get, post } from "@/api/AHttp/api";
 import myMessage from "@/components/message/my-message.vue";
 import { GetAddressAsync, GetAddressByYouShowAsync } from "@/api/Commen";
-import GetNowData from "@/utils/newDate";
+import GetNowData from "@/utils/Time/NowData";
 import { afterExecutionAsync } from "@/utils/utils";
 import AppCard from "@/components/App/AppCard/AppCard.vue";
 import { useUserStore } from "@/stores/user/user";

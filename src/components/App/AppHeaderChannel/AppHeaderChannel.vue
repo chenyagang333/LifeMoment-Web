@@ -12,16 +12,35 @@
       <a class="channel-link">游戏</a>
     </div>
     <div class="right radius-overflow">
-        <div class="sign-in">
-            <span class="now-time"></span>
-            <span class="text">签到</span>
-        </div>
-        <div class="publish"></div>
+      <div class="sign-in">
+        <span class="now-time">{{ MonthDate }}</span>
+        <el-text class="text" tag="ins" @click="SignInVisible = true"
+          >签到</el-text
+        >
+      </div>
+      <div class="publish"></div>
     </div>
+    <!-- 签到弹窗------------------------------------------------------------------- -->
+    <a-modal
+      width="396px"
+      :footer="false"
+      hide-title
+      v-model:visible="SignInVisible"
+    >
+      <AppSignIn></AppSignIn>
+    </a-modal>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from "vue";
+import AppSignIn from "@/components/App/AppSignIn/AppSignIn.vue";
+
+const date = new Date();
+const MonthDate = `${date.getMonth() + 1}-${date.getDate()}`;
+
+const SignInVisible = ref<boolean>(false);
+</script>
 
 <style scoped lang="scss">
 .AppHeaderChannel {
@@ -66,15 +85,25 @@
     }
   }
   .right {
-    .sign-in,.publish{
-        height: 100%;
+    display: flex;
+    justify-content: space-between;
+    .sign-in,
+    .publish {
+      height: 100%;
     }
-    .sign-in{
-        background-color: #e3e3e3;
-        width: 30%;
+    .sign-in {
+      background-color: #e3e3e3;
+      width: 26%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      .text {
+        cursor: pointer;
+      }
     }
-    .publish{
-        width: 70%;
+    .publish {
+      width: 74%;
     }
   }
 }
