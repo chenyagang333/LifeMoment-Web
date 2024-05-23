@@ -1,0 +1,37 @@
+.create-show {
+  height: 750px;
+  > .main {
+    display: flex;
+    justify-content: space-between;
+    width: 1100px;
+    margin: 0 auto;
+    margin-top: 20px;
+    > .center {
+      .el-card {
+        .header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          >span{
+            font-size: 16px;
+            color: hotpink;
+          }
+          .el-button{
+            cursor: pointer;
+          }
+        }
+        .card-conn {
+          width: 800px;
+          .el-upload{
+            margin-top: 20px;
+          }
+        }
+        .footers{
+          &:hover{
+            color: rgb(108, 108, 108);
+          }
+        }
+      }
+    }
+  }
+}

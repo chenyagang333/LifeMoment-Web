@@ -1,0 +1,43 @@
+$emotion-column: 9;
+$emotion-width: 29px;
+$emotion-padding: 2px;
+$container-padding: 5px;
+$container-wiath: calc(
+  $emotion-width * $emotion-column + $emotion-padding * $emotion-column +
+    $container-padding * 2
+);
+$el-scrollbar-wiath: calc($container-wiath + 13px);
+
+.bi {
+  cursor: pointer;
+  font-size: 20px;
+  transition: color 0.2s;
+  &:hover {
+    color: rgb(255, 160, 28);
+  }
+}
+.el-popover {
+  .el-scrollbar {
+    width: $el-scrollbar-wiath;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    .emotion {
+      padding: $container-padding;
+      display: grid;
+      width: $container-wiath;
+      grid-template-columns: repeat($emotion-column, auto);
+      grid-gap: $emotion-padding;
+      > img {
+        width: $emotion-width;
+        height: $emotion-width;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #e8e8e8;
+          transition: all 0.2s;
+          transform: translateY(-$emotion-padding);
+        }
+      }
+    }
+  }
+}

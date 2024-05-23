@@ -1,0 +1,48 @@
+// 引入清除默认样式
+@import "./reset.scss";
+@import "./common.scss";
+
+// 滚动条外观设置
+// ::-webkit-scrollbar {
+//     width: 11px;
+//     // padding: 0 3px;
+//     // display: none;
+//     // scrollbar-width: none; /* Firefox */
+//     // -ms-overflow-style: none; /* IE 10+ */
+// }
+// ::-webkit-scrollbar-track {
+//     background: rgba(195, 195, 195,0.5);
+// }
+// ::-webkit-scrollbar-thumb {
+//     background: $base-orange;
+//     // margin: 2.5px;
+//     border-radius: 10px;
+//     // width: 5px;
+//     // margin: 0 2px;
+// }
+
+// input:-webkit-autofill,
+// input:-webkit-autofill:hover,
+// input:-webkit-autofill:focus,
+// input:-webkit-autofill:active {
+//   -webkit-animation: autofill-fix 1s infinite;
+//   -webkit-text-fill-color: #b35656;
+// }
+
+// @-webkit-keyframes autofill-fix {
+//   from {
+//     background-color: rgb(179, 86, 86,0)
+//   }
+//   to {
+//     background-color: rgb(179, 86, 86,0);
+//   }
+// }
+
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-transition-delay: 9999999999999999999999999999999999999999999999999999999999999999s;
+  -webkit-transition: color 9999999999999999999999999999999999999999999999999999999999999999s ease-out, background-color 9999999999999999999999999999999999999999999999999999999999999999s ease-out;
+}

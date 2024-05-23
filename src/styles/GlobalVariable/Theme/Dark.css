@@ -1,0 +1,6 @@
+/* 暗色主题 */
+html[data-theme="dark"] {
+    --text-color: #fff;
+    --bg1: black;
+    --bg2: #333;
+  }

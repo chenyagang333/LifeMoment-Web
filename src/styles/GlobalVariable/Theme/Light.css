@@ -1,0 +1,6 @@
+/* 默认亮色主题 */
+:root {
+    --jinn-text-color1: white;
+    --jinn-bg1: skyblue;
+    --jinn-bg2: yellow;
+  }

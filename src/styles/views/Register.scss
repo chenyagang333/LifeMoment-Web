@@ -1,0 +1,51 @@
+.register {
+  background-image: url("@/assets/home-top-0.jpg");
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+}
+.el-form {
+  position: fixed;
+  top: calc(50% - 40px);
+  left: calc(50% - 60px);
+  transform: translate(-50%, -50%);
+  .el-form-item {
+    .title {
+      font-size: 40px;
+      //  text-shadow: #FC0 1px 0 1px;
+      font-weight: 500;
+      color: hotpink;
+    }
+    .title-last {
+      // text-shadow: skyblue 1px 0 1px;
+      font-size: 20px;
+      color: yellow;
+    }
+    .el-button,
+    .el-input {
+      // height: 37px;
+    }
+
+    .el-input {
+      width: 320px;
+      --el-input-bg-color: rgba(255, 255, 255, 0.7);
+      --el-fill-color-light: rgba(255, 255, 255, 0.85);
+      .el-input-group__append {
+        padding: 0 10px;
+      }
+      .el-input__wrapper {
+        .el-input__inner {
+          background: rgba(255, 255, 255, 0);
+        }
+
+        
+
+      }
+    }
+    .el-button {
+      width: 100%;
+    }
+  }
+}
+
+
