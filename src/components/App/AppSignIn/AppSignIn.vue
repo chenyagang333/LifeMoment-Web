@@ -4,7 +4,12 @@
     :img1="img"
     :img2="img"
     text="珍惜当下，多一点热爱！"
+    :SignInNum="2564898"
+    style="width: 100%"
   >
+    <template #friend>
+      <JinnSignInFriend :data="friendData" :num="33"></JinnSignInFriend>
+    </template>
   </JinnSignIn>
 </template>
 
@@ -13,12 +18,20 @@ import { ref } from "vue";
 import { useUserStore } from "@/stores/user/user";
 import img from "@/assets/home-top-0.jpg";
 import JinnSignIn from "@/components/jinn-components/jinn-sign-in/JinnSignIn.vue";
+import JinnSignInFriend from "@/components/jinn-components/jinn-sign-in/JinnSignInFriend.vue";
 
 const userStore = useUserStore(); // 拿到管理用户信息的仓库
 
-const signFriend = ref<boolean>(false);
+const friendData = [
+  {
+    img: "http://1.92.79.63:3030/YouShow/Images/2024/3/29/0e0047bc4893be6342b8352729cb2b1bce325853c6bccca207306399e9c4d1de/6bd777d82ca76ce5fd08c8c2cb23e3a.jpg",
+    href: "none",
+  },
+  {
+    img: "http://1.92.79.63:3030/YouShow/Images/2024/3/29/0e0047bc4893be6342b8352729cb2b1bce325853c6bccca207306399e9c4d1de/6bd777d82ca76ce5fd08c8c2cb23e3a.jpg",
+    href: "none",
+  },
+];
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

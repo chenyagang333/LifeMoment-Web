@@ -6,49 +6,70 @@
     <span class="title">
       <i class="bi bi-calendar2-check-fill"> 签到</i>
     </span>
-    <div class="sign-front radius-overflow">
-      <img class="beautiful-img" :src="img1" />
-      <el-button @click="rollingOverBase = true">签到</el-button>
-    </div>
-    <div class="sign-back radius-overflow">
-      <img class="beautiful-img" :src="img2" />
-      <div class="tip">{{ title }}</div>
-      <div class="Date">
-        <div class="date">{{ date }}</div>
-        <div class="year_month">{{ year_month }}</div>
-      </div>
-      <div class="sub-title">
-        <span> </span>
-        <p class="text">{{ text }}</p>
-      </div>
-    </div>
-    <div class="sign-friend" v-if="signFriend">好友</div>
+    <JinnRolling :rollingOver="rollingOver" style="width: 100%; height: 460px">
+      <template #front>
+        <img class="beautiful-img" :src="img1" />
+        <div class="front-top">
+          <div class="Date">
+            <div class="date">{{ date }}</div>
+            <div class="year_month">{{ month }}月 {{ week }}</div>
+          </div>
+        </div>
+        <div class="front-bottom">
+          <el-button @click="rollingOverBase = true">立即打卡</el-button>
+          <span class="SignInNum">已有 {{ SignInNumBase }} 人打卡</span>
+        </div>
+      </template>
+      <template #back>
+        <img class="beautiful-img" :src="img2" />
+        <div class="back-top">
+          <div class="tip">{{ title }}</div>
+          <div class="Date">
+            <div class="date">{{ date }}</div>
+            <div class="year_month">{{ year_month }}</div>
+          </div>
+        </div>
+        <div class="sub-title">
+          <span> </span>
+          <p class="text">{{ text }}</p>
+        </div>
+      </template>
+    </JinnRolling>
+    <slot name="friend" v-if="$slots.friend"></slot>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { GetDate, GetFullYear, GetMonth } from "@/utils/Time/NowData";
+import { GetDate, GetFullYear, GetMonth, GetWeek } from "@/utils/Time/NowData";
+import JinnRolling from "@/components/jinn-components/animation/jinn-rolling/JinnRolling.vue";
 
-defineProps<{
+const props = defineProps<{
   title: string;
   img1: string;
   img2: string;
   text: string;
   rollingOver?: boolean;
+  SignInNum: number;
 }>();
 
-const date = GetDate();
-const year_month = GetFullYear() + "." + GetMonth();
+const newDate = new Date();
+const date = GetDate(newDate);
+const year_month = GetFullYear(newDate) + "." + GetMonth(newDate);
 
-const signFriend = ref<boolean>(false);
 const rollingOverBase = ref<boolean>(false);
+
+const SignInNumBase = props.SignInNum.toString().replace(
+  /\B(?=(\d{3})+(?!\d))/g,
+  ","
+);
+
+const month = newDate.getMonth() + 1;
+const week = GetWeek(newDate);
 </script>
 
 <style scoped lang="scss">
 .JinnSignIn {
-  width: 356px;
-  height: 550px;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -60,50 +81,77 @@ const rollingOverBase = ref<boolean>(false);
     position: relative;
     margin-bottom: 10px;
   }
-  .sign-back,
-  .sign-front {
-    width: 356px;
-    height: 460px;
-    perspective: 600px;
-    backface-visibility: hidden;
-    transition: transform 0.5s ease-in-out;
+  .beautiful-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  // 正面和反面除背景图外所有的内容设置定位
+  .back-top,
+  .front-top,
+  .front-bottom,
+  .sub-title {
     position: absolute;
-    top: 30px;
-    left: 0;
-    .beautiful-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
   }
-  .sign-front {
-    border: #8f3939;
-    transform: rotateY(0);
-    .el-button{
-        position: absolute;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-  }
-  .sign-back {
-    transform: rotateY(180deg);
-
-    .tip,
-    .Date,
-    .sub-title {
-      position: absolute;
+  .front-top {
+    top: 0;
+    padding: 10px;
+    width: 100%;
+    .Date {
+      //   width: 70px;
+      //   height: 90px;
       color: #fff;
+      display: flex;
+      flex-direction: column;
+      padding: 30px 0 0 10px;
+      .date {
+        font-size: 70px;
+        font-weight: 550;
+        height: 70px;
+        line-height: 70px;
+      }
+      .year_month {
+        font-size: 15px;
+        font-weight: 500;
+      }
     }
+  }
+  .front-bottom {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    bottom: 0;
+    width: 100%;
+    padding: 0 20px;
+    .el-button {
+      height: 40px;
+      font-size: 16px;
+      width: 100%;
+    }
+    .SignInNum {
+      font-size: 14px;
+      color: #ffffff;
+      height: 60px;
+      display: flex;
+      align-items: center;
+    }
+  }
+  .back-top,
+  .sub-title {
+    color: #fff;
+  }
+  .back-top {
+    padding: 10px;
+    width: 100%;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
     .tip {
       font-size: 16px;
-      top: 10px;
-      left: 10px;
-      width: 266px;
+      width: calc(100% - 90px);
     }
     .Date {
-      top: 10px;
-      right: 10px;
       width: 70px;
       height: 90px;
       border: 1.5px solid #fff;
@@ -120,34 +168,21 @@ const rollingOverBase = ref<boolean>(false);
         font-size: 40px;
       }
     }
-    .sub-title {
-      bottom: 0;
-      left: 0;
-      padding: 15px 10px;
-      background-color: rgb(0, 0, 0, 0.3);
-      color: #fff;
-      margin-top: 26px;
-      width: 100%;
-      text-align: left;
-      font-size: 16px;
-      .text {
-        text-indent: 2em;
-        margin-bottom: 0;
-      }
+  }
+  .sub-title {
+    bottom: 0;
+    left: 0;
+    padding: 15px 10px;
+    background-color: rgb(0, 0, 0, 0.3);
+    color: #fff;
+    margin-top: 26px;
+    width: 100%;
+    text-align: left;
+    font-size: 16px;
+    .text {
+      text-indent: 2em;
+      margin-bottom: 0;
     }
-  }
-  .bottom {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-}
-.rollingOver {
-  .sign-front {
-    transform: rotateY(-180deg);
-  }
-  .sign-back {
-    transform: rotateY(0);
   }
 }
 </style>

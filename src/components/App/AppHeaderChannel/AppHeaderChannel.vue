@@ -22,7 +22,7 @@
     </div>
     <!-- 签到弹窗------------------------------------------------------------------- -->
     <a-modal
-      width="396px"
+      width="366px"
       :footer="false"
       hide-title
       v-model:visible="SignInVisible"
