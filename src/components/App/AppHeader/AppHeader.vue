@@ -102,11 +102,9 @@ const visibleAboutWeb = ref(false);
   );
 }
 .AppHeaderDown {
-  border-bottom: 1px solid var(--el-border-color-light);
-  background: white;
+  border-bottom: 1px solid var(--jinn-border-color1);
   backdrop-filter: saturate(180%) blur(20px);
-
-    background-color: rgba(245, 245, 245, 0.7);
+  background-color: var(--jinn-bg1)
 
 }
 .arco-modal {

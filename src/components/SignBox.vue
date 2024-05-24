@@ -21,7 +21,7 @@ defineProps<{
   $sign-color: rgb(255, 191, 71);
   font-size: 30px;
   line-height: $content-height;
-  color: rgb(255, 255, 255);
+  color: var(--jinn-text-color1);
   cursor: pointer;
   transition: color 0.3s, background-color 1s ease-out;
   padding: 0 15px;

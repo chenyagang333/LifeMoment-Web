@@ -128,20 +128,12 @@
     <div class="theme">
       <el-switch
         v-model="themeSwitch"
-        @change="changeTheme"
+        @change="updateTheme"
         :active-action-icon="Moon"
         :inactive-action-icon="Sunny"
       />
     </div>
     <!-- 用户登录注册弹窗 -->
-    <!-- <el-dialog
-      class="login-dialog"
-      v-model="visibleLogin"
-      align-center
-      center
-      width="850"
-    >
-    </el-dialog> -->
     <a-modal
       width="850px"
       :footer="false"
@@ -161,8 +153,9 @@ import { ref, onUnmounted, onMounted } from "vue";
 import { Moon, Sunny } from "@element-plus/icons-vue";
 import hugsPopoverWrap from "@/components/hugs-popover-wrap/hugs-popover-wrap.vue";
 import { useRoute, useRouter } from "vue-router";
-import { useUserStore } from "@/stores/user/user";
 import { storeToRefs } from "pinia";
+import { useUserStore } from "@/stores/user/user";
+import { useAppStore } from "@/stores/app/app";
 import { removeToken } from "@/utils/token.ts";
 import { ElMessage } from "element-plus";
 import LoginDialog from "@/views/LoginDialog.vue";
@@ -173,13 +166,15 @@ defineProps<{
 }>();
 
 const UserStore = useUserStore(); // 拿到管理用户信息的仓库
+const {changeTheme} = useAppStore(); // app
 const { userData } = storeToRefs(UserStore); // 响应式的结构变量
 
 const { theme } = useTheme();
 const themeMap: any = { dark: true, light: false };
-const changeTheme = (val: boolean | string | number) => {
-  if (val) theme.value = "dark";
-  else theme.value = "light";
+const updateTheme = (val: boolean | string | number) => {
+  const value = val ? 'dark' : 'light';
+  theme.value = value;
+  changeTheme(value)
 };
 const key: string | null = localStorage.getItem(LOCAL_THEME_KEY);
 const themeSwitch = ref<boolean>(key ? themeMap[key] : false);
@@ -256,9 +251,9 @@ const userRegister = () => {};
   }
   .card {
     // 统一样式
-    border: 1px solid var(--el-border-color-light);
+    border: 1px solid var(--jinn-border-color1);
     border-radius: 4px;
-    background-color: rgb(255, 255, 255);
+    background-color: var(--jinn-color1);
   }
   // 未登录选项
   .login {
@@ -273,7 +268,7 @@ const userRegister = () => {};
       width: 366px;
       padding: 15px 26px;
       user-select: none;
-      color: black;
+      color: var(--jinn-color2);
       .lable {
         font-size: 15px;
       }
@@ -288,7 +283,7 @@ const userRegister = () => {};
           display: flex;
           align-items: center;
           > .bi {
-            color: pink;
+            color: var(--jinn-color3);
             font-size: 20px;
           }
         }
@@ -297,7 +292,7 @@ const userRegister = () => {};
         width: 100%;
         height: 40px;
         line-height: 40px;
-        background-color: pink;
+        background-color: var(--jinn-color3);
         border-radius: 7px;
         margin: 10px 0;
         cursor: pointer;
@@ -305,7 +300,7 @@ const userRegister = () => {};
         color: #ffffff;
         transition: background-color 0.3s;
         &:hover {
-          background-color: rgb(255, 206, 213);
+          background-color: var(--jinn-color4);
         }
       }
       .bottom {
@@ -313,7 +308,7 @@ const userRegister = () => {};
         text-align: center;
         height: 30px;
         > span {
-          color: rgb(73, 136, 255);
+          color: var(--jinn-text-color1);
           cursor: pointer;
         }
       }
@@ -324,14 +319,14 @@ const userRegister = () => {};
     .card-user {
       width: 400px;
       padding: 30px;
-      background-color: #ffffff;
+      background-color: var(--jinn-color1);
       // background: radial-gradient(circle, #fff, #ffa237);
       // background: linear-gradient(135deg, #fff, #ffe5c8);
       .header {
         display: flex;
         align-items: center;
         .name {
-          color: #919191;
+          color: var(--jinn-color2);
           font-size: 20px;
           width: 230px;
           margin-left: 30px;
@@ -341,7 +336,7 @@ const userRegister = () => {};
           cursor: pointer;
           transition: all 0.2s;
           &:hover {
-            color: rgb(0, 0, 0);
+            color: var(--jinn-color2);
             text-decoration: underline;
           }
         }
@@ -367,18 +362,18 @@ const userRegister = () => {};
     .no-user {
       width: 366px;
       padding: 15px 26px;
-      color: black;
+      color: --jinn-color2;
       user-select: none;
       font-size: 15px;
       .lab {
-        color: rgb(100, 100, 100);
+        color: var(--jinn-color2);
         text-align: center;
       }
       .btn {
         width: 100%;
         height: 40px;
         line-height: 40px;
-        background-color: pink;
+        background-color: var(--jinn-color3);
         border-radius: 7px;
         margin: 10px 0;
         cursor: pointer;
@@ -386,7 +381,7 @@ const userRegister = () => {};
         color: #ffffff;
         transition: background-color 0.3s;
         &:hover {
-          background-color: rgb(255, 206, 213);
+          background-color: var(--jinn-color4);
         }
       }
     }
@@ -397,12 +392,13 @@ const userRegister = () => {};
       .option {
         padding: 0 15px;
         height: 35px;
+        line-height: 35px;
         font-size: 15px;
-        color: #919191;
+        color: var(--jinn-color2);
         cursor: pointer;
         transition: all 0.2s;
         &:hover {
-          background-color: #e1e1e1;
+          background-color: var(--jinn-bg2);
         }
       }
     }
@@ -410,7 +406,7 @@ const userRegister = () => {};
   .language {
     .card {
       .option {
-        color: rgb(100, 100, 100);
+        color: var(--jinn-color2);
         text-align: center;
         height: 35px;
         line-height: 35px;
@@ -422,7 +418,7 @@ const userRegister = () => {};
           height: 100%;
           cursor: pointer;
           &:hover {
-            color: pink;
+            color: var(--jinn-color3);
           }
         }
       }
@@ -442,8 +438,11 @@ const userRegister = () => {};
   }
 }
 .RightEntryDown {
+  > div {
+    color: var(--jinn-color2);
+  }
   .login-text {
-    border: 1.5px solid rgb(0, 0, 0);
+    border: 1.5px solid var(--jinn-color2);
   }
 }
 .el-switch {

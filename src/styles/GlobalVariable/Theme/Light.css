@@ -1,6 +1,18 @@
 /* 默认亮色主题 */
 :root {
-    --jinn-text-color1: white;
-    --jinn-bg1: skyblue;
-    --jinn-bg2: yellow;
-  }
+  /* 基本颜色 */
+  --jinn-color1: white;
+  --jinn-color2: rgb(0, 0, 0);
+  --jinn-color3: pink;
+  --jinn-color4: rgb(255, 206, 213);
+  --jinn-color5: #919191;
+  /* 文字颜色 */
+  --jinn-text-color1: rgb(93, 131, 255);
+  /* --jinn-text-color2: ; */
+  /* 背景颜色 */
+  --jinn-bg1: rgba(245, 245, 245, 0.7);
+  --jinn-bg2: #e1e1e1;
+  --jinn-bg3: rgb(241 242 243);
+  /* 边框线颜色 */
+  --jinn-border-color1: #e4e7ed;
+}

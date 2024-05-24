@@ -44,7 +44,7 @@ const toggleNav = (i: number) => {
     font-size: 18px;
     line-height: 35px;
     position: relative;
-    $nav-color:rgb(93, 131, 255);
+    $nav-color: var(--jinn-text-color1);
     &::after {
       transition: width 0.1s;
       position: absolute;
@@ -56,10 +56,6 @@ const toggleNav = (i: number) => {
       background-color: $nav-color;
     }
     &:hover {
-      // color: rgb(0, 0, 0);
-      // color: rgb(71, 114, 255);
-      // color: rgb(167, 80, 254);
-      // color: #fff; /* 设置文字颜色 */
       color: $nav-color;
     }
     &:hover::after {
@@ -67,8 +63,6 @@ const toggleNav = (i: number) => {
     }
     .select-nav {
       color: $nav-color;
-      // color: rgb(114, 147, 255);
-      // color: rgb(255, 255, 255);
     }
   }
 }
@@ -79,7 +73,7 @@ const toggleNav = (i: number) => {
 }
 .headerDown {
   .nav {
-    color: black;
+    color: var(--jinn-color2);
   }
 }
 </style>
