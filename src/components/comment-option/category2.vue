@@ -25,7 +25,7 @@ const optionClass = ref<any>({})
 
 const optionsbi = {
     chat: 'bi-chat-dots',
-    share: 'bi-share'
+    share: 'bi-box-arrow-up-right'
 } as any
 const options = {
     chat: 'chat-color',
@@ -38,7 +38,6 @@ if (keyExists) {
 } else {
     throw Error("输入的属性type值有误")
 }
-
 </script>
 
 <style lang="scss" scoped>

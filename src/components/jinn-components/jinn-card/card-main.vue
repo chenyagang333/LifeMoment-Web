@@ -15,8 +15,8 @@
         <template v-else>
             <div class="multiple-file" :class="fileNumTypeClass">
                 <div class="files radius-overflow" v-for="(i, index) in files" :key="index">
-                    <el-image v-if="i.type === FileType.image" :src="FileIP + i.firstURL" fit="cover" />
-                    <el-image v-if="i.type === FileType.video" :src="FileIP + i.secondURL" fit="cover" />
+                    <img v-if="i.type === FileType.image" :src="FileIP + i.firstURL" fit="cover" />
+                    <img v-if="i.type === FileType.video" :src="FileIP + i.secondURL" fit="cover" />
                 </div>
             </div>
         </template>
@@ -99,25 +99,16 @@ const fileNumTypeClass = computed(() => (props.files?.length === 2 || props.file
         width: $multiple-file-width;
         grid-gap: 5px;
         .files {
-            position: relative;
-            &::after {
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                content: "";
-                cursor: -webkit-zoom-in;
-                cursor: zoom-in;
-            }
-            &:hover {
-                &::after {
-                    background-color: rgb(0, 0, 0, 0.2);
-                }
-            }
-            >.el-image {
+                        cursor: -webkit-zoom-in;
+                        cursor: zoom-in;
+        &:hover {
+            filter: brightness(90%);
+            /* 悬停时降低图片亮度，实现遮罩效果 */
+        }
+            >img {
                 width: 100%;
                 height: 100%;
+                object-fit: cover;
             }
         }
     }
@@ -134,9 +125,7 @@ const fileNumTypeClass = computed(() => (props.files?.length === 2 || props.file
 }
     .num-type-two {
         grid-template-columns: repeat(3, 1fr);
-        $fileWH: calc(($multiple-file-width - $gridGap * 2) / 3)
-            ;
-
+        $fileWH: calc(($multiple-file-width - $gridGap * 2) / 3);
         .files {
             width: $fileWH;
             height: $fileWH;

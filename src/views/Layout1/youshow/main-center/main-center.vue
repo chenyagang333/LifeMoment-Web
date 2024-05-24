@@ -1,18 +1,103 @@
 <template>
-  <div class="main-center" v-infinite-scroll="pagingQueryAsync" infinite-scroll-distance="500"
-    :infinite-scroll-disabled="pagingQueryDisabled">
-    <my-message style="position: fixed" v-model="SuccessInPublication" text="发表成功"></my-message>
+  <div
+    class="main-center"
+    v-infinite-scroll="pagingQueryAsync"
+    infinite-scroll-distance="500"
+    :infinite-scroll-disabled="pagingQueryDisabled"
+  >
+    <a-modal
+      v-model:visible="visibleCardDetail"
+      :footer="false"
+      hide-title
+      width="1280px"
+    >
+      <div class="detail-core">
+        <div class="detail-core-main">
+          <AppCard
+            style="width: 100%"
+            :files="detailData?.files"
+            :id="detailData?.id"
+            :userAvatarURL="detailData?.userAvatarURL"
+            :userId="detailData?.userId"
+            :userName="detailData?.userName"
+            :createTime="detailData?.createTime"
+            :publishAddress="detailData?.publishAddress"
+            :content="detailData?.content"
+            :likeUsers="detailData?.likeUsers"
+            :viewCount="detailData?.viewCount"
+            :likeCount="detailData?.likeCount"
+            :starCount="detailData?.starCount"
+            :shareCount="detailData?.shareCount"
+            :likeActive="detailData?.likeActive"
+            :starActive="detailData?.starActive"
+            v-model:comment-count="detailData.commentCount"
+          ></AppCard>
+        </div>
+        <div class="detail-core-comment">
+          {{ detailData }}
+        </div>
+      </div>
+    </a-modal>
+    <my-message
+      style="position: fixed"
+      v-model="SuccessInPublication"
+      text="发表成功"
+    ></my-message>
     <!-- 发表说说 -->
     <template v-if="userData">
-      <publish-show background-color="white" style="margin-bottom: 10px" @publish-handle="publishHandle"></publish-show>
+      <publish-show
+        background-color="white"
+        style="margin-bottom: 10px"
+        @publish-handle="publishHandle"
+      ></publish-show>
     </template>
     <!-- 新增说说展示 -->
     <div class="new-publish-show">
-      <AppCard v-for="(i, index) in newShows" :key="index" :cardData="i" isNewPublish></AppCard>
+      <AppCard
+        v-for="(i, index) in newShows"
+        :key="index"
+        :files="i.files"
+        :id="i.id"
+        :userAvatarURL="i.userAvatarURL"
+        :userId="i.userId"
+        :userName="i.userName"
+        :createTime="i.createTime"
+        :publishAddress="i.publishAddress"
+        :content="i.content"
+        :likeUsers="i.likeUsers"
+        :viewCount="i.viewCount"
+        :likeCount="i.likeCount"
+        :starCount="i.starCount"
+        :shareCount="i.shareCount"
+        :likeActive="i.likeActive"
+        :starActive="i.starActive"
+        v-model:comment-count="i.commentCount"
+        isNewPublish
+      ></AppCard>
     </div>
     <!-- 说说展示 -->
     <div class="publish-show">
-      <AppCard v-for="(i, index) in shows" :key="index" :cardData="i"></AppCard>
+      <AppCard
+        v-for="(i, index) in shows"
+        :key="index"
+        :files="i.files"
+        :id="i.id"
+        :userAvatarURL="i.userAvatarURL"
+        :userId="i.userId"
+        :userName="i.userName"
+        :createTime="i.createTime"
+        :publishAddress="i.publishAddress"
+        :content="i.content"
+        :likeUsers="i.likeUsers"
+        :viewCount="i.viewCount"
+        :likeCount="i.likeCount"
+        :starCount="i.starCount"
+        :shareCount="i.shareCount"
+        :likeActive="i.likeActive"
+        :starActive="i.starActive"
+        v-model:comment-count="i.commentCount"
+        @commentHandler="() => openCardDetailDialog(i)"
+      ></AppCard>
     </div>
     <!-- 加载动画 -->
     <div class="youshow-no-more" v-if="pagingQueryDisabled">
@@ -36,8 +121,10 @@ import AppCard from "@/components/App/AppCard/AppCard.vue";
 import { useUserStore } from "@/stores/user/user";
 import { storeToRefs } from "pinia";
 import { FileType, getFileType } from "@/utils/FileUtils/FileType";
-import { getVideoPreview } from '@/utils/FileUtils/VideoFile';
-import { MyFileInfo } from '@/types/Layout1/youshow/youshow';
+import { MyFileInfo } from "@/types/Layout1/youshow/youshow";
+import cardHeader from "@/components/jinn-components/jinn-card/card-header.vue";
+import { main } from "../../../../mock/youshow";
+
 const UserStore = useUserStore();
 const { userData } = storeToRefs(UserStore);
 
@@ -87,12 +174,12 @@ const publishHandle = async (content: string, imageFileList: any[]) => {
   const data: ShowType = await getPublishShowData(content);
   console.log("imageFileList :>> ", imageFileList);
   if (imageFileList.length > 0) {
-    const uploaderRes = await postShowFile(imageFileList)
+    const uploaderRes = await postShowFile(imageFileList);
     if (uploaderRes.code == 200) {
-      await postShow(data, uploaderRes.data)
+      await postShow(data, uploaderRes.data);
     }
   } else {
-    postShow(data)
+    postShow(data);
   }
 };
 // 上传图片或视频
@@ -137,13 +224,12 @@ const getPublishShowData = async (content: string) => {
     userId: userData.value?.userId!,
     userName: userData.value?.userName!,
     createTime: GetNowData(),
-    publishAddress: resAddress,
+    publishAddress: resAddress ?? "未知",
     content: content,
     commentCount: 0,
     files: [],
   };
 };
-
 
 //#endregion
 
@@ -167,6 +253,30 @@ const pagingQueryAsync = afterExecutionAsync(async () => {
 
 //#endregion
 
+const visibleCardDetail = ref<boolean>(false); // 查看评论弹窗控制
+const detailData = ref<any>({
+  likeUsers: null,
+  viewCount: 0,
+  starCount: 0,
+  shareCount: 0,
+  commentCount: 0,
+  likeActive: false,
+  starActive: false,
+  files: [],
+  userId: 8,
+  userName: "大撒大撒",
+  userAvatarURL: "",
+  publishAddress: "北京市",
+  content: '哈哈，<img src="/src/assets/emotions/13.gif">',
+  likeCount: 1,
+  createTime: "2024-05-24 14:34:07",
+  id: 270,
+});
+const openCardDetailDialog = (data: any) => {
+  detailData.value = data;
+  visibleCardDetail.value = true;
+};
+
 onMounted(() => {
   pagingQueryAsync();
 });
@@ -175,6 +285,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 .main-center {
   width: 100%;
+
   // .new-publish-show,publish-show{
   .new-publish-show {
     display: flex;
@@ -194,6 +305,41 @@ onMounted(() => {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+}
+.arco-modal {
+  .detail-core {
+    display: flex;
+    justify-content: space-between;
+    height: calc(100vh - 151px);
+    min-height: 650px;
+    width: 100%;
+    .detail-core-main {
+      width: calc(50% - 10px);
+      height: 100%;
+      overflow-y: auto;
+      // 滚动条外观设置
+      &::-webkit-scrollbar {
+        width: 4px;
+      }
+      &::-webkit-scrollbar-track {
+        background: var(--jinn-border-color1);
+      }
+      &::-webkit-scrollbar-thumb {
+        background: $base-orange;
+        // margin: 2.5px;
+        border-radius: 10px;
+        // width: 5px;
+        // margin: 0 2px;
+      }
+    }
+    .detail-core-comment {
+      height: 100%;
+      width: calc(50% - 10px);
+      overflow: hidden;
+      border: 1px solid var(--jinn-border-color1);
+      border-radius: var(--el-border-radius-base);
+    }
   }
 }
 </style>

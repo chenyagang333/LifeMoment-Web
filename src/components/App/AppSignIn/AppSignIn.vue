@@ -1,8 +1,8 @@
 <template>
   <JinnSignIn
     :title="`@${userStore?.userData?.userName}，签到成功!`"
-    :img1="img"
-    :img2="img"
+    :img1="img1"
+    :img2="img2"
     text="珍惜当下，多一点热爱！"
     :SignInNum="2564898"
     style="width: 100%"
@@ -16,7 +16,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useUserStore } from "@/stores/user/user";
-import img from "@/assets/home-top-0.jpg";
+import img1 from "@/assets/home-top-0.jpg";
+import img2 from "@/assets/home/OIP-C.jpg";
 import JinnSignIn from "@/components/jinn-components/jinn-sign-in/JinnSignIn.vue";
 import JinnSignInFriend from "@/components/jinn-components/jinn-sign-in/JinnSignInFriend.vue";
 

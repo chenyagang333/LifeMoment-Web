@@ -4,25 +4,14 @@
       <!-- 更多 -------------------------------------------------------->
       <slot></slot>
       <!-- 顶部 -------------------------------------------------------->
-      <el-header>
-        <div class="headerImg">
-          <hugs-popover-wrap distance="5">
-            <el-avatar :size="50" :src="userAvatarURL"></el-avatar>
-            <template #popover>
-              <div class="user-card radius-overflow-border">
-                <div class="user-card-header"></div>
-              </div>
-            </template>
-          </hugs-popover-wrap>
-        </div>
-        <div class="userName">{{ userName }}</div>
-        <div class="anputInfo">
-          <span class="showTime">{{
-            createTime?.substring(0, createTime.length - 3)
-          }}</span>
-          <span class="showIP"> 发布于 {{ publishAddress }}</span>
-        </div>
-      </el-header>
+      <!-- 顶部 -->
+      <card-header
+        :userAvatar="userAvatarURL"
+        :userId="userId"
+        :userName="userName"
+        :publishTime="createTime"
+        :publishAddress="publishAddress"
+      ></card-header>
       <!-- show内容 -------------------------------------------------------->
       <card-main :content="content" :files="files"> </card-main>
       <!-- 点赞，评论等 -------------------------------------------------------->
@@ -34,25 +23,28 @@
           </div>
           <div class="options">
             <comment-option
-              :count="starCount"
-              :isActive="starActive"
-              type="star"
-              @change-status="(active:boolean,func:any) => $emit('changeStarState',active,func)"
-            ></comment-option>
-            <comment-option2
-              type="chat"
-              :count="commentCount"
-              @click="$emit('comment-handler')"
-            ></comment-option2>
-            <comment-option
               :count="likeCount"
               bottom="4px"
               :isActive="likeActive"
               type="heart"
               @change-status="(active:boolean,func:any) => $emit('changeLikeState',active,func)"
             ></comment-option>
-            <!-- <comment-option2 type="share" :count="0"
-                        @click-handle="() => console.log('分享 :>> ', '444')"></comment-option2> -->
+            <comment-option2
+              type="chat"
+              :count="commentCount as number"
+              @click="$emit('comment-handler')"
+            ></comment-option2>
+            <comment-option
+              :count="starCount"
+              :isActive="starActive"
+              type="star"
+              @change-status="(active:boolean,func:any) => $emit('changeStarState',active,func)"
+            ></comment-option>
+            <comment-option2
+              type="share"
+              :count="0"
+              @click-handle="() => console.log('分享 :>> ', '444')"
+            ></comment-option2>
           </div>
         </div>
         <!-- 点赞的用户 -->
@@ -85,25 +77,25 @@ const emit = defineEmits<{
   (e: "comment-handler"): void;
   (e: "changeStarState", active: boolean, func: any): void;
 }>();
-const props = defineProps<{
-  content:string;
-  files:any;
-  id:number;
-  userAvatarURL:string;
-  userName:string; //
-  publishAddress:string; //
-  userId:number;
-  likeUsers?:string[];
-  starCount:number;
-  commentCount:number;
-  createTime:string;
-  likeCount:number;
-  shareCount:number;
-  likeActive:boolean;
-  starActive:boolean;
-  viewCount:number;
-}>();
 
+const commentCount = defineModel('commentCount');
+const props = defineProps<{
+  content: string;
+  files?: any;
+  id: number;
+  userAvatarURL: string;
+  userName: string; //
+  publishAddress: string; //
+  userId: number;
+  likeUsers?: string[];
+  starCount: number;
+  createTime: string;
+  likeCount: number;
+  shareCount: number;
+  likeActive: boolean;
+  starActive: boolean;
+  viewCount: number;
+}>();
 
 //#region 抽屉模块
 
@@ -213,7 +205,7 @@ const haveFile = computed(() => files && files.length > 0);
         display: flex;
         align-items: center;
         justify-content: space-between;
-        min-width: 190px;
+        min-width: 280px;
       }
     }
     .likeUsers {
