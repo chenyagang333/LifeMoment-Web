@@ -1,21 +1,23 @@
 <template>
   <div class="option" :class="optionClass" @click="changeCount">
     <i class="bi" :class="optionbiClass" :style="iconStype"></i>
-    <span class="count" :style="countStype">{{ countComputed }}</span>
+    <span class="count" :style="countStype">{{ count }}</span>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { ref } from "vue";
+import { ref ,nextTick} from "vue";
 
 const emit = defineEmits<{
-  (e: "change-status", isActive: boolean, func: any): void;
+  (e: "change-status", active: boolean, func: any): void;
 }>();
+
+const count = defineModel<number>("count", { default: 0 });
+const active = defineModel<boolean>("active", { default: false });
 
 const props = defineProps<{
   count?: number;
-  isActive: boolean;
   type: string; // 按钮类型
   size?: number; // 按钮大小
   bottom?: string; // 图标向下偏移量
@@ -29,7 +31,9 @@ const countStype = computed(() => {
   return { fontSize: props.size ? props.size - 2 + "px" : "" };
 });
 const optionClass = ref<any>(); // 绑定icon的图形颜色样式
-const optionbiClass = ref<any>(); // 绑定icon的图形颜色样式
+const optionbiClass = computed(() => {
+  return active.value ? activeOptions[props.type] : optionsbi[props.type];
+}); // 绑定icon的图形颜色样式
 const options = {
   heart: "color-heart",
   star: "color-star",
@@ -44,36 +48,25 @@ const activeOptions = {
 } as any;
 const keyExists = optionsbi.hasOwnProperty(props.type);
 if (keyExists) {
-  if (props.isActive) {
-    // 如果是激活状态，则icon初始样式为激活的样式
-    optionbiClass.value = activeOptions[props.type];
-  } else {
-    optionbiClass.value = optionsbi[props.type];
-  }
   optionClass.value = options[props.type];
 } else {
   throw Error("输入的属性type值有误");
 }
-const countComputed = computed(() => {
-  return (
-    (props.count ?? 0) +
-    (activeRef.value ? (props.isActive ? 0 : 1) : props.isActive ? -1 : 0)
-  );
-});
-const activeRef = ref(props.isActive);
+
 const changeCount = async () => {
   //
-  emit("change-status", !activeRef.value, toggleCount);
   toggleCount();
+  await nextTick();
+  emit("change-status", active.value, toggleCount);
 };
 const toggleCount = () => {
   // 切换选中状态
-  if (activeRef.value) {
-    activeRef.value = false;
-    optionbiClass.value = optionsbi[props.type];
+  if (active.value) {
+    active.value = false;
+    count.value -= 1;
   } else {
-    activeRef.value = true;
-    optionbiClass.value = activeOptions[props.type];
+    active.value = true;
+    count.value += 1;
   }
 };
 </script>

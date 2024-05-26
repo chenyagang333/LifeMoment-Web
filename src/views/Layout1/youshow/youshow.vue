@@ -78,8 +78,6 @@ const leftTab = ref("hots");
   }
 
   > .center {
-    width: 650px;
-    // width: 38.5%;
     margin: 0 10px;
   }
   > .right {
@@ -87,6 +85,38 @@ const leftTab = ref("hots");
       height: 600px;
       width: 300px;
       background-color: var(--el-border-color-light);
+    }
+  }
+  // 媒介查询
+  @include respond-to("phone") {
+    > .center {
+      width: 100%;
+    }
+    > .left,> .right {
+      display: none;
+    }
+  }
+  @include respond-to("pad") {
+    > .center {
+      width: 100%;
+    }
+    > .left,> .right {
+      display: none;
+    }
+  }
+  @include respond-to("notebook") {
+    > .center {
+      width: 650px;
+    }
+  }
+  @include respond-to("desktop") {
+    > .center {
+      width: 650px;
+    }
+  }
+  @include respond-to("tv") {
+    > .center {
+      width: 650px;
     }
   }
 }

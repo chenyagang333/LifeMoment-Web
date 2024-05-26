@@ -77,6 +77,7 @@ const visibleAboutWeb = ref(false);
   height: 64px;
   z-index: 2;
   width: 100%;
+  overflow: hidden;
   .content {
     width: 100%;
     height: 100%;

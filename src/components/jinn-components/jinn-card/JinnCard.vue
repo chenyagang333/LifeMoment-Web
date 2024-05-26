@@ -1,6 +1,6 @@
 <template>
   <template v-if="showDisplay">
-    <div class="show" :class="ShowClass" ref="showRef">
+    <div class="JinnCard" :class="ShowClass" ref="showRef">
       <!-- 更多 -------------------------------------------------------->
       <slot></slot>
       <!-- 顶部 -------------------------------------------------------->
@@ -22,33 +22,35 @@
             <i class="bi bi-eye" v-if="viewCount > 0"> 浏览{{ viewCount }}次</i>
           </div>
           <div class="options">
+            <comment-option2
+              type="share"
+              v-model:count="shareCount"
+              @click-handle="() => console.log('分享 :>> ', '444')"
+            ></comment-option2>
             <comment-option
-              :count="likeCount"
+              :isActive="starActive"
+              type="star"
+              @change-status="(active:boolean,func:any) => $emit('changeStarState',active,func)"
+              v-model:count="starCount"
+              v-model:active="starActive"
+            ></comment-option>
+            <comment-option2
+              type="chat"
+              @click="$emit('comment-handler')"
+              v-model:count="commentCount"
+            ></comment-option2>
+            <comment-option
               bottom="4px"
               :isActive="likeActive"
               type="heart"
               @change-status="(active:boolean,func:any) => $emit('changeLikeState',active,func)"
+              v-model:count="likeCount"
+              v-model:active="likeActive"
             ></comment-option>
-            <comment-option2
-              type="chat"
-              :count="commentCount as number"
-              @click="$emit('comment-handler')"
-            ></comment-option2>
-            <comment-option
-              :count="starCount"
-              :isActive="starActive"
-              type="star"
-              @change-status="(active:boolean,func:any) => $emit('changeStarState',active,func)"
-            ></comment-option>
-            <comment-option2
-              type="share"
-              :count="0"
-              @click-handle="() => console.log('分享 :>> ', '444')"
-            ></comment-option2>
           </div>
         </div>
         <!-- 点赞的用户 -->
-        <div class="likeUsers" v-if="likeCount > 0">
+        <div class="likeUsers" v-if="likeCount && likeCount > 0">
           {{ likeUsers?.join("、") }}共{{ likeCount }}人喜欢
         </div>
       </div>
@@ -78,7 +80,13 @@ const emit = defineEmits<{
   (e: "changeStarState", active: boolean, func: any): void;
 }>();
 
-const commentCount = defineModel('commentCount');
+const likeActive = defineModel<boolean>("likeActive", { default: false });
+const starActive = defineModel<boolean>("starActive", { default: false });
+const likeCount = defineModel<number>("likeCount", { default: 0 });
+const commentCount = defineModel<number>("commentCount", { default: 0 });
+const starCount = defineModel<number>("starCount", { default: 0 });
+const shareCount = defineModel<number>("shareCount", { default: 0 });
+
 const props = defineProps<{
   content: string;
   files?: any;
@@ -88,10 +96,7 @@ const props = defineProps<{
   publishAddress: string; //
   userId: number;
   likeUsers?: string[];
-  starCount: number;
   createTime: string;
-  likeCount: number;
-  shareCount: number;
   likeActive: boolean;
   starActive: boolean;
   viewCount: number;
@@ -131,16 +136,33 @@ const haveFile = computed(() => files && files.length > 0);
   font-size: 15px;
 }
 
-.show {
+
+.JinnCard {
   background-color: rgb(255, 255, 255);
   // max-width: 700px;
-  width: 100%;
+  min-width: 335px;
   margin: 0 auto;
   margin-bottom: 10px;
   border: 1px solid var(--el-border-color-light);
   border-radius: 4px;
   position: relative;
   transition: height 0.3s, border 0.04s, margin-bottom 0.3s;
+  overflow: hidden;
+  @include respond-to("phone") {
+    width: 100%;
+  }
+  @include respond-to("pad") {
+    width: 100%;
+  }
+  @include respond-to("notebook") {
+    width: 650px;
+  }
+  @include respond-to("desktop") {
+    width: 650px;
+  }
+  @include respond-to("tv") {
+    width: 650px;
+  }
 
   // 头部
   .el-header {
@@ -214,27 +236,5 @@ const haveFile = computed(() => files && files.length > 0);
       line-height: 1.2;
     }
   }
-}
-
-.show-display,
-.show > .card-right {
-  height: calc(100vh - 80px);
-  min-height: 650px;
-  max-height: 855px;
-}
-
-.show-display {
-  border-radius: 4px 0 0 4px;
-}
-
-.card-right-enter-active,
-.card-right-leave-active {
-  transition: all 0.2s ease;
-}
-
-.card-right-enter-from,
-.card-right-leave-to {
-  width: 0;
-  opacity: 0;
 }
 </style>

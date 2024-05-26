@@ -9,7 +9,6 @@
 import { ref } from 'vue';
 
 const props = defineProps<{
-    count?: number
     type: string
     size?: number
     text?: string
@@ -18,6 +17,8 @@ const emit = defineEmits<{
     // (e: "clickHandle"): void;
 }>();
 
+
+const count = defineModel<number>('count');
 
 const optionbiClass = ref<any>({})
 const optionClass = ref<any>({})

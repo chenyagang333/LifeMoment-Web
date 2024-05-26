@@ -16,8 +16,17 @@
       </template>
     </a>
     <Transition name="hugs-popover">
-      <div class="popover" v-if="display">
-        <div class="popover-wrap" :class="popoverClass" :style="popoverStype">
+      <div
+        class="popover"
+        v-if="display"
+        v-show="visible"
+        :style="popoverStyle"
+      >
+        <div
+          class="popover-wrap"
+          :class="popoverWrapClass"
+          :style="popoverWrapStyle"
+        >
           <slot name="popover"></slot>
         </div>
       </div>
@@ -36,30 +45,41 @@ const props = defineProps<{
   animation?: string; //
 }>();
 
-const display = ref(false);
+const display = ref(false); // v-if
+const visible = ref(false); // v-show
 const handleDisplay = (_display: boolean) => {
   // const handleDisplay = (_display: boolean, showType?: string) => {
   // if (props.showType !== showType) return
   //   if (_display) {
-  display.value = _display;
+  if (!display.value) {
+    display.value = true;
+  }
+  visible.value = _display;
   //   }
 };
 // 出现位置
-const popoverClass = ref("");
-popoverClass.value = props.position ?? "bc";
+const popoverWrapClass = ref(""); // 内层popover
+popoverWrapClass.value = props.position ?? "bc"; // 内层popover
+const popoverStyleSelect: any = {
+  t: { bottom: "100%" },
+  r: { left: "100%" },
+  b: { top: "100%" },
+  l: { right: "100%" },
+};
+const popoverStyle = popoverStyleSelect[popoverWrapClass.value[0]]; // 外层popover
 // 动画
 const animationClass = ref("");
 animationClass.value = props.animation ?? "";
 // 触发方式
 
-const popoverStype = {} as any;
-popoverStype.paddingTop = props.distance ? props.distance + "px" : "";
+const popoverWrapStyle = {} as any; // 内层popover
+popoverWrapStyle.paddingTop = props.distance ? props.distance + "px" : ""; // 内层popover
 </script>
 
 <style lang="scss" scoped>
 .hugs-popover-enter-active,
 .hugs-popover-leave-active {
-  transition: all 0.1s ease-out 0.05s;
+  transition: all 0.26s ease-in-out;
 }
 
 .hugs-popover-enter-from,
@@ -73,12 +93,11 @@ popoverStype.paddingTop = props.distance ? props.distance + "px" : "";
   display: flex;
   align-items: center;
   cursor: pointer;
-  z-index: 0;
   .default-entry {
     display: flex;
     flex-direction: column;
     align-items: center;
-    z-index: 2;
+    z-index: 1;
     .animation {
       align-items: center;
       display: flex;
@@ -94,18 +113,14 @@ popoverStype.paddingTop = props.distance ? props.distance + "px" : "";
 
   .popover {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 1;
     cursor: pointer;
+    z-index: 3;
+    width: 100%;
 
     .popover-wrap {
       cursor: default;
       position: absolute;
     }
-
     .bc,
     .br {
       top: 100%;

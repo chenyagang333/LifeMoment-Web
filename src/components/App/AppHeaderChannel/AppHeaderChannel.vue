@@ -48,16 +48,18 @@ const SignInVisible = ref<boolean>(false);
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  overflow: hidden;
   .left,
   .right {
-    width: 300px;
+    width: 30%;
     background-color: #fff;
     height: 70px;
   }
   .left {
   }
   .center {
-    width: 650px;
+    width: 40%;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 10px;

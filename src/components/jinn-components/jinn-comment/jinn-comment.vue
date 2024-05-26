@@ -1,5 +1,8 @@
 <template>
-  <div class="my-comment">
+  <div class="JinnComment">
+    <div class="show-data">
+      <slot name="show-data"></slot>
+    </div>
     <div class="drawer-comment-main">
       <!-- 发布完成提示消息 -->
       <my-message v-model="ShowPublishResultMessage" text="已发布"></my-message>
@@ -20,7 +23,6 @@
           :infinite-scroll-immediate="false"
           :infinite-scroll-disabled="commentLoadEnd"
           :class="isReply ? 'comment-content-reply' : ''"
-       
         >
           <!-- ----------------------------新增评论 评论区----------------------------- -->
           <div class="new-comment">
@@ -76,7 +78,7 @@
     <comment-add
       style="
         position: absolute;
-        bottom: 15px;
+        bottom: 0;
         width: calc(100% - 32px);
         min-width: 310px;
       "
@@ -101,7 +103,7 @@ import { CommentReplyType } from "@/types/Layout1/youshow/show-card";
 import { get, del, post } from "@/api/AHttp/api";
 import { ElMessage, ClickOutside as vClickOutside } from "element-plus";
 import { afterExecutionAsync } from "@/utils/utils";
-import GetNowData from "@/utils/newDate";
+import GetNowData from "@/utils/Time/NowDate";
 import { GetAddressByYouShowAsync } from "@/api/Commen";
 import { ApiResult } from "@/api/AHttp/api";
 
@@ -243,13 +245,6 @@ const pushHandle = async (html: string) => {
         : ".commentAddReply";
       const replyTemplate =
         commentContentRef.value.querySelectorAll(className)[commentIndex];
-      console.log("replyTemplate :>> ", replyTemplate.offsetTop);
-      console.log("replyTemplate :>> ", replyTemplate.offsetHeight);
-      console.log(
-        "replyTemplate :>> ",
-        (1 / 2) * commentContentRef.value.offsetHeight
-      );
-      console.log("replyTemplate4 :>> ", commentContentRef.value.clientHeight);
       const setTop =
         replyTemplate.offsetTop +
         replyTemplate.offsetHeight -
@@ -316,8 +311,9 @@ const deleteComment = (isDelComment: boolean, replyCount?: number) => {
 </script>
 
 <style lang="scss" scoped>
-.my-comment{
+.JinnComment {
   height: 100%;
+  position: relative;
   .drawer-comment-main {
     height: 100%;
     width: 100%;
@@ -329,7 +325,7 @@ const deleteComment = (isDelComment: boolean, replyCount?: number) => {
       font-size: 15px;
       overflow: hidden;
     }
-    .arco-spin{
+    .arco-spin {
       height: calc(100% - 30px);
       .comment-content {
         position: relative;
@@ -349,7 +345,7 @@ const deleteComment = (isDelComment: boolean, replyCount?: number) => {
           background: $base-orange;
           border-radius: 10px;
         }
-    
+
         .new-comment {
           display: flex;
           flex-direction: column-reverse;
@@ -370,17 +366,16 @@ const deleteComment = (isDelComment: boolean, replyCount?: number) => {
           height: 40px;
         }
       }
-      .comment-content{
+      .comment-content {
         height: calc(100% - 102px);
       }
-      .comment-content-reply{
+      .comment-content-reply {
         height: calc(100% - 132px);
       }
     }
     // :style="{
     //         height: `calc(100vh - 116px - ${isReply ? '143px' : '113px'} )`,
     //       }"
-    
   }
 }
 </style>

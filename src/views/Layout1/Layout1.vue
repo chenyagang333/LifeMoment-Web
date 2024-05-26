@@ -65,24 +65,38 @@ onMounted(() => {
 .layout1 {
   background-color: var(--jinn-bg3);
   // background-color: #edeff6;
-  max-width: 2560px;
-  min-width: 1100px;
-  width: 100%;
-  // min-height: 100vh;
-  // min-height: 1000px;
   margin: 0 auto;
-  // margin-left: 50%;
-  // transform: translateX(-50%);
+  width: 100%;
+
+  // 媒介查询
+  @include respond-to("phone") {
+    width: 100%;
+  }
+  @include respond-to("pad") {
+    width: 100%;
+  }
+  @include respond-to("notebook") {
+    min-width: 1100px;
+    max-width: 2560px;
+  }
+  @include respond-to("desktop") {
+    min-width: 1100px;
+    max-width: 2560px;
+  }
+  @include respond-to("tv") {
+    min-width: 1100px;
+    max-width: 2560px;
+  }
+
+
   > .header,
   .layout1-footer {
     width: 100%;
-    max-width: 2560px;
     position: fixed;
     z-index: 1000;
   }
 
   .HeaderBc {
-    min-width: 1100px;
     height: 155px;
     width: 100%;
     background-color: #ffffff;

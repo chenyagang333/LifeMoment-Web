@@ -41,8 +41,8 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { GetDate, GetFullYear, GetMonth, GetWeek } from "@/utils/Time/NowData";
-import JinnRolling from "@/components/jinn-components/animation/jinn-rolling/JinnRolling.vue";
+import { GetDate, GetFullYear, GetMonth, GetWeek } from "@/utils/Time/NowDate";
+import JinnRolling from "@/components/jinn-animation/jinn-rolling/JinnRolling.vue";
 
 const props = defineProps<{
   title: string;

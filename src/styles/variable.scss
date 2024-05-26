@@ -10,18 +10,53 @@ $base-menu-background: rgb(221, 238, 255);
 // 左侧菜单栏收缩后的宽度
 $base-menu-min-width: 64px;
 // 顶部导航的高度
-$base-tabbar-height:55px;
+$base-tabbar-height: 55px;
 
 // 左侧菜单Logo高度的设置
 $base-menu-logo-height: 55px;
 // 左侧菜单logo文字的大小
-$base-logo-title-fontSize:20px;
+$base-logo-title-fontSize: 20px;
 
-$base-orange:rgb(255, 191, 71);
+$base-orange: rgb(255, 191, 71);
 
-$base-gray-border:#e4e7ed;
+$base-gray-border: #e4e7ed;
 
-$base-gray:#f1f2f3;
+$base-gray: #f1f2f3;
 
-$text-gray:#a3a3a3;
+$text-gray: #a3a3a3;
 
+// 断点列表
+$breakOptions: (
+  "phone": (
+    320px,
+    480px,
+  ),
+  "pad": (
+    481px,
+    768px,
+  ),
+  "notebook": (
+    769px,
+    1024px,
+  ),
+  "desktop": (
+    1025px,
+    1200px,
+  ),
+  "tv": 1201px,
+);
+// 混合
+@mixin respond-to($breakName) {
+  $breakPoint: map-get($breakOptions, $breakName);
+  @if type-of($breakPoint) == "list" {
+    $min: nth($breakPoint, 1);
+    $max: nth($breakPoint, 2);
+    @media (min-width: $min) and (max-width: $max) {
+      @content;
+    }
+  } @else {
+    @media (min-width: $breakPoint) {
+      @content;
+    }
+  }
+}

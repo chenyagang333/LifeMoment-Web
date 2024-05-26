@@ -1,28 +1,26 @@
 <template>
-  <div>
-    <JinnCard
-      @changeLikeState="(active, func) => changeState(active, 0, func)"
-      @changeStarState="(active, func) => changeState(active, 1, func)"
-      @commentHandler="() => $emit('comment-handler')"
-      :files="files"
-      :id="id"
-      :userAvatarURL="userAvatarURL"
-      :userId="userId"
-      :userName="userName"
-      :createTime="createTime"
-      :publishAddress="publishAddress"
-      :content="content"
-      :likeUsers="likeUsers"
-      :viewCount="viewCount"
-      :likeCount="likeCount"
-      :starCount="starCount"
-      :shareCount="shareCount"
-      :likeActive="likeActive"
-      :starActive="starActive"
-      v-model:comment-count="commentCount"
-    >
-    </JinnCard>
-  </div>
+  <JinnCard
+    @changeLikeState="(active:boolean,func:any) => changeState(active,0, func)"
+    @changeStarState="(active:boolean,func:any) => changeState(active,1, func)"
+    @commentHandler="() => $emit('comment-handler')"
+    :files="files"
+    :id="id"
+    :userAvatarURL="userAvatarURL"
+    :userId="userId"
+    :userName="userName"
+    :createTime="createTime"
+    :publishAddress="publishAddress"
+    :content="content"
+    :likeUsers="likeUsers"
+    :viewCount="viewCount"
+    v-model:likeActive="likeActive"
+    v-model:starActive="starActive"
+    v-model:likeCount="likeCount"
+    v-model:starCount="starCount"
+    v-model:shareCount="shareCount"
+    v-model:commentCount="commentCount"
+  >
+  </JinnCard>
 </template>
 
 <script setup lang="ts">
@@ -34,11 +32,16 @@ import JinnCard from "@/components/jinn-components/jinn-card/JinnCard.vue";
 import { get } from "@/api/AHttp/api";
 
 const emit = defineEmits<{
-  (e: "changeLikeState", active: boolean, func: any): void;
-  (e: "changeStarState", active: boolean, func: any): void;
   (e: "comment-handler"): void;
 }>();
-const commentCount = defineModel('commentCount');
+
+const likeActive = defineModel<boolean>("likeActive", { default: false });
+const starActive = defineModel<boolean>("starActive", { default: false });
+const likeCount = defineModel<number>("likeCount", { default: 0 });
+const commentCount = defineModel<number>("commentCount", { default: 0 });
+const starCount = defineModel<number>("starCount", { default: 0 });
+const shareCount = defineModel<number>("shareCount", { default: 0 });
+
 const props = defineProps<{
   isNewPublish?: boolean;
 
@@ -50,15 +53,11 @@ const props = defineProps<{
   publishAddress: string; //
   userId: number;
   likeUsers?: string[];
-  starCount: number;
   createTime: string;
-  likeCount: number;
-  shareCount: number;
   likeActive: boolean;
   starActive: boolean;
   viewCount: number;
 }>();
-
 
 // typei 0代表点赞，1代表收藏
 const changeState = async (active: boolean, typei: number, fun: any) => {

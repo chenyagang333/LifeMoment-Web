@@ -9,7 +9,8 @@
       v-model:visible="visibleCardDetail"
       :footer="false"
       hide-title
-      width="1280px"
+      @before-close="beforeCloseCardDetail"
+      width="75%"
     >
       <div class="detail-core">
         <div class="detail-core-main">
@@ -25,16 +26,20 @@
             :content="detailData?.content"
             :likeUsers="detailData?.likeUsers"
             :viewCount="detailData?.viewCount"
-            :likeCount="detailData?.likeCount"
-            :starCount="detailData?.starCount"
-            :shareCount="detailData?.shareCount"
-            :likeActive="detailData?.likeActive"
-            :starActive="detailData?.starActive"
-            v-model:comment-count="detailData.commentCount"
+            v-model:likeActive="detailData.likeActive"
+            v-model:starActive="detailData.starActive"
+            v-model:like-count="detailData.likeCount"
+            v-model:starCount="detailData.starCount"
+            v-model:shareCount="detailData.shareCount"
+            v-model:commentCount="detailData.commentCount"
           ></AppCard>
         </div>
         <div class="detail-core-comment">
-          {{ detailData }}
+          <AppTabs
+            :showId="detailData?.id"
+            v-model:commentCount="detailData.commentCount"
+            v-if="visibleCardDetail"
+          ></AppTabs>
         </div>
       </div>
     </a-modal>
@@ -66,12 +71,13 @@
         :content="i.content"
         :likeUsers="i.likeUsers"
         :viewCount="i.viewCount"
-        :likeCount="i.likeCount"
-        :starCount="i.starCount"
-        :shareCount="i.shareCount"
-        :likeActive="i.likeActive"
-        :starActive="i.starActive"
-        v-model:comment-count="i.commentCount"
+        v-model:likeActive="i.likeActive"
+        v-model:starActive="i.starActive"
+        v-model:likeCount="i.likeCount"
+        v-model:starCount="i.starCount"
+        v-model:shareCount="i.shareCount"
+        v-model:commentCount="i.commentCount"
+        @commentHandler="() => openCardDetailDialog(i, index)"
         isNewPublish
       ></AppCard>
     </div>
@@ -90,13 +96,13 @@
         :content="i.content"
         :likeUsers="i.likeUsers"
         :viewCount="i.viewCount"
-        :likeCount="i.likeCount"
-        :starCount="i.starCount"
-        :shareCount="i.shareCount"
-        :likeActive="i.likeActive"
-        :starActive="i.starActive"
-        v-model:comment-count="i.commentCount"
-        @commentHandler="() => openCardDetailDialog(i)"
+        v-model:likeActive="i.likeActive"
+        v-model:starActive="i.starActive"
+        v-model:likeCount="i.likeCount"
+        v-model:starCount="i.starCount"
+        v-model:shareCount="i.shareCount"
+        v-model:commentCount="i.commentCount"
+        @commentHandler="() => openCardDetailDialog(i, index)"
       ></AppCard>
     </div>
     <!-- 加载动画 -->
@@ -111,19 +117,17 @@
 import { onMounted, ref } from "vue";
 import PublishShow from "@/components/comment-add/PublishShow.vue";
 import { ShowType } from "@/types/Layout1/youshow/youshow";
-import { ElMessage, UploadUserFile } from "element-plus";
 import { del, get, post } from "@/api/AHttp/api";
 import myMessage from "@/components/message/my-message.vue";
 import { GetAddressAsync, GetAddressByYouShowAsync } from "@/api/Commen";
-import GetNowData from "@/utils/Time/NowData";
+import GetNowData from "@/utils/Time/NowDate";
 import { afterExecutionAsync } from "@/utils/utils";
 import AppCard from "@/components/App/AppCard/AppCard.vue";
+import AppTabs from "@/components/App/AppTabs/AppTabs.vue";
 import { useUserStore } from "@/stores/user/user";
 import { storeToRefs } from "pinia";
 import { FileType, getFileType } from "@/utils/FileUtils/FileType";
 import { MyFileInfo } from "@/types/Layout1/youshow/youshow";
-import cardHeader from "@/components/jinn-components/jinn-card/card-header.vue";
-import { main } from "../../../../mock/youshow";
 
 const UserStore = useUserStore();
 const { userData } = storeToRefs(UserStore);
@@ -272,10 +276,11 @@ const detailData = ref<any>({
   createTime: "2024-05-24 14:34:07",
   id: 270,
 });
-const openCardDetailDialog = (data: any) => {
+const openCardDetailDialog = (data: any, index: number) => {
   detailData.value = data;
   visibleCardDetail.value = true;
 };
+const beforeCloseCardDetail = () => {};
 
 onMounted(() => {
   pagingQueryAsync();
@@ -285,6 +290,8 @@ onMounted(() => {
 <style lang="scss" scoped>
 .main-center {
   width: 100%;
+
+
 
   // .new-publish-show,publish-show{
   .new-publish-show {
@@ -310,12 +317,17 @@ onMounted(() => {
 .arco-modal {
   .detail-core {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    flex-wrap: wrap;
     height: calc(100vh - 151px);
     min-height: 650px;
     width: 100%;
+    min-width: 345px;
+    overflow-y: auto;
     .detail-core-main {
       width: calc(50% - 10px);
+      min-width: 335px;
+      margin-right: 20px;
       height: 100%;
       overflow-y: auto;
       // 滚动条外观设置
@@ -336,10 +348,14 @@ onMounted(() => {
     .detail-core-comment {
       height: 100%;
       width: calc(50% - 10px);
+      min-width: 335px;
       overflow: hidden;
       border: 1px solid var(--jinn-border-color1);
       border-radius: var(--el-border-radius-base);
     }
   }
+}
+.arco-modal {
+  max-width: 1280px;
 }
 </style>
