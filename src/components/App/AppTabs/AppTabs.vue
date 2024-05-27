@@ -14,10 +14,13 @@
       </q-tab-panel>
       <!-- ----------------------------评论区----------------------------- -->
       <q-tab-panel name="comment">
-        <JinnComment
+        <!-- <JinnComment
           :showId="showId"
-          v-model:commentCount="commentCount"
-        ></JinnComment>
+        ></JinnComment> -->
+        <AppComment
+          :showId="showId"
+          v-model:comment-count="commentCount"
+        ></AppComment>
       </q-tab-panel>
     </q-tab-panels>
   </div>
@@ -26,6 +29,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import JinnComment from "@/components/jinn-components/jinn-comment/jinn-comment.vue";
+import AppComment from "@/components/App/AppComment/AppComment.vue";
 
 const props = defineProps<{
   showId: number;

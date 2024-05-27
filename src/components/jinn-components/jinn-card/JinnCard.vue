@@ -11,6 +11,7 @@
         :userName="userName"
         :publishTime="createTime"
         :publishAddress="publishAddress"
+        :avatarCardPosition="avatarCardPosition"
       ></card-header>
       <!-- show内容 -------------------------------------------------------->
       <card-main :content="content" :files="files"> </card-main>
@@ -100,6 +101,9 @@ const props = defineProps<{
   likeActive: boolean;
   starActive: boolean;
   viewCount: number;
+
+
+  avatarCardPosition?:string;
 }>();
 
 //#region 抽屉模块
@@ -147,7 +151,6 @@ const haveFile = computed(() => files && files.length > 0);
   border-radius: 4px;
   position: relative;
   transition: height 0.3s, border 0.04s, margin-bottom 0.3s;
-  overflow: hidden;
   @include respond-to("phone") {
     width: 100%;
   }

@@ -5,12 +5,13 @@
     infinite-scroll-distance="500"
     :infinite-scroll-disabled="pagingQueryDisabled"
   >
+    <!-- 评论信息弹窗 -->
     <a-modal
       v-model:visible="visibleCardDetail"
       :footer="false"
       hide-title
       @before-close="beforeCloseCardDetail"
-      width="75%"
+      width="auto"
     >
       <div class="detail-core">
         <div class="detail-core-main">
@@ -32,6 +33,7 @@
             v-model:starCount="detailData.starCount"
             v-model:shareCount="detailData.shareCount"
             v-model:commentCount="detailData.commentCount"
+            avatarCardPosition="bl"
           ></AppCard>
         </div>
         <div class="detail-core-comment">
@@ -291,8 +293,6 @@ onMounted(() => {
 .main-center {
   width: 100%;
 
-
-
   // .new-publish-show,publish-show{
   .new-publish-show {
     display: flex;
@@ -315,13 +315,14 @@ onMounted(() => {
   }
 }
 .arco-modal {
+  max-width: 1280px;
   .detail-core {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     height: calc(100vh - 151px);
     min-height: 650px;
-    width: 100%;
+    width: 1100px;
     min-width: 345px;
     overflow-y: auto;
     .detail-core-main {
@@ -354,8 +355,5 @@ onMounted(() => {
       border-radius: var(--el-border-radius-base);
     }
   }
-}
-.arco-modal {
-  max-width: 1280px;
 }
 </style>

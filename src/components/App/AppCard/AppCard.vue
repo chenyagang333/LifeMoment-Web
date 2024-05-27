@@ -19,6 +19,8 @@
     v-model:starCount="starCount"
     v-model:shareCount="shareCount"
     v-model:commentCount="commentCount"
+
+    :avatarCardPosition="avatarCardPosition"
   >
   </JinnCard>
 </template>
@@ -57,6 +59,8 @@ const props = defineProps<{
   likeActive: boolean;
   starActive: boolean;
   viewCount: number;
+
+  avatarCardPosition?:string;
 }>();
 
 // typei 0代表点赞，1代表收藏

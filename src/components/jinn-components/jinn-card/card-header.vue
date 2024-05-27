@@ -1,7 +1,7 @@
 <template>
   <el-header>
     <div class="headerImg">
-      <hugs-popover-wrap distance="5">
+      <hugs-popover-wrap distance="5" :position="avatarCardPosition ?? 'bc'">
         <el-avatar :size="50" :src="userAvatar"></el-avatar>
         <template #popover>
           <div class="user-card radius-overflow-border">
@@ -27,6 +27,7 @@ const props = defineProps<{
   userName?: string;
   publishTime?: string;
   publishAddress?: string;
+  avatarCardPosition?:string;
 }>();
 </script>
 

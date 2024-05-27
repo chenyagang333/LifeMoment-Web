@@ -64,29 +64,23 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import commentItem from "./comment-item.vue";
+import { CommentReplyType } from "@/types/Layout1/youshow/show-card";
 import { get } from "@/api/AHttp/api";
-import type { CommentItem } from "../comment-type.ts";
 
 const props = defineProps<{
   commentId: number;
-  // newAddReplyList?: CommentItem[]; // 新增回复
+  // newAddReplyList?: CommentReplyType[]; // 新增回复
 }>();
 
 // 添加或回复或删除回复时对变量进行操作
 const replyCount = defineModel<number>("replyCount", { required: true });
 
-const replyList = ref<CommentItem[]>([]);
+const replyList = ref<CommentReplyType[]>([]);
 
 const emit = defineEmits<{
   // 点击回复按钮回调
   (e: "reply-handle", userName: string): void;
   (e: "delete-comment"): void;
-  (
-    e: "loadReply",
-    pageSize: number,
-    pageIndex: number,
-    func: (data: CommentItem[]) => void
-  ): void;
 }>();
 
 const replyOpened = ref(false); // 初始状态没有展开回复
@@ -102,7 +96,7 @@ const openReplys = async () => {
 const addNumber = ref(0);
 const delNumber = ref(0);
 // 新增回复
-const pushReply = (reply: CommentItem) => {
+const pushReply = (reply: CommentReplyType) => {
   reply.isNewAdd = true;
   replyList.value.push(reply);
   replyCount.value++;
@@ -137,24 +131,21 @@ let loadReplyPageIndex = 1;
 // 加载评论的回复
 const loadReplys = async () => {
   replyLoading.value = true; // 正在加载评论
-  // const params = {
-  //   pageIndex: loadReplyPageIndex,
-  //   pageSize: 10,
-  //   commentId: props.commentId,
-  // };
-  // const res = await get("Reply/PagingQueryByCommentId", params);
-  // if (res.code == 200) {
-  emit("loadReply", 10, loadReplyPageIndex, (data: CommentItem[]) => {
-    if (data && data.length > 0) {
-      const replyIds = replyList.value.map((x) => x.id);
-      const filterData = data.filter((x: any) => !replyIds.includes(x.id));
-      replyList.value.push(...filterData);
-      loadReplyPageIndex++;
-      addNumber.value += filterData.length; // 更新添加数据数
-    }
-    // }
-    replyLoading.value = false; // 评论加载完成
-  });
+  const params = {
+    pageIndex: loadReplyPageIndex,
+    pageSize: 10,
+    commentId: props.commentId,
+  };
+  const res = await get("Reply/PagingQueryByCommentId", params);
+  if (res.code == 200) {
+    const replyIds = replyList.value
+      .map((x) => x.id);
+    const filterData = res.data.filter((x: any) => !replyIds.includes(x.id));
+    replyList.value.push(...filterData);
+    loadReplyPageIndex++;
+    addNumber.value += filterData.length; // 更新添加数据数
+  }
+  replyLoading.value = false; // 评论加载完成
 };
 </script>
 

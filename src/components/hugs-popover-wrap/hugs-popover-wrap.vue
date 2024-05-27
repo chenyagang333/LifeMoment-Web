@@ -121,11 +121,15 @@ popoverWrapStyle.paddingTop = props.distance ? props.distance + "px" : ""; // å†
       cursor: default;
       position: absolute;
     }
+    .bl,
     .bc,
     .br {
       top: 100%;
     }
 
+    .bc {
+      left: 0%;
+    }
     .bc {
       left: 50%;
       transform: translateX(-50%);
