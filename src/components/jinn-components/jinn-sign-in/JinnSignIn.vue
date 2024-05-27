@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="JinnSignIn"
-    :class="rollingOver || rollingOverBase ? 'rollingOver' : ''"
-  >
+  <div class="JinnSignIn">
     <span class="title">
       <i class="bi bi-calendar2-check-fill"> 签到</i>
     </span>
@@ -16,7 +13,7 @@
           </div>
         </div>
         <div class="front-bottom">
-          <el-button @click="rollingOverBase = true">立即打卡</el-button>
+          <el-button @click="SignIn">立即打卡</el-button>
           <span class="SignInNum">已有 {{ SignInNumBase }} 人打卡</span>
         </div>
       </template>
@@ -49,15 +46,26 @@ const props = defineProps<{
   img1: string;
   img2: string;
   text: string;
-  rollingOver?: boolean;
   SignInNum: number;
 }>();
+
+const rollingOver = defineModel("rollingOver", {
+  required: true,
+  default: false,
+});
+
+const emit = defineEmits<{
+  (e: "SignIn"): void;
+}>();
+
+const SignIn = () => {
+  rollingOver.value = true
+  emit('SignIn')
+}
 
 const newDate = new Date();
 const date = GetDate(newDate);
 const year_month = GetFullYear(newDate) + "." + GetMonth(newDate);
-
-const rollingOverBase = ref<boolean>(false);
 
 const SignInNumBase = props.SignInNum.toString().replace(
   /\B(?=(\d{3})+(?!\d))/g,

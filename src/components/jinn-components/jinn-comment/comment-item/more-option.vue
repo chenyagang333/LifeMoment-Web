@@ -4,7 +4,7 @@
       <span class="span-btn">···</span>
     </div>
     <template #content>
-      <a-doption v-if="userId == userData?.userId" @click="deleteAsync"
+      <a-doption v-if="userId == userData?.userId" @click="$emit('delete-comment')"
         >删除</a-doption
       >
       <a-doption v-else>举报</a-doption>
@@ -13,7 +13,6 @@
 </template>
 
 <script setup lang="ts">
-import { del } from "@/api/AHttp/api";
 import { useUserStore } from "@/stores/user/user";
 import { storeToRefs } from "pinia";
 
@@ -30,17 +29,7 @@ const emit = defineEmits<{
   (e: "delete-comment"): void;
 }>();
 
-const deleteAsync = async () => {
-  let res;
-  if (props.isReply) {
-    res = await del("Reply/DeleteById", { id: props.id });
-  } else {
-    res = await del("Comment/DeleteById", { id: props.id });
-  }
-  if (res.code == 200) {
-    emit("delete-comment");
-  }
-};
+
 </script>
 
 <style lang="scss" scoped>

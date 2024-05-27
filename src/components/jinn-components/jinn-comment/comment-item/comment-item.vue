@@ -25,7 +25,8 @@
               @click="$emit('reply-handle')"
             ></comment-option2>
             <comment-option
-              :count="likeCount"
+              v-model:count="_likeCount"
+              v-model:active="_likeActive"
               bottom="3px"
               :isActive="likeActive!"
               @change-status="(isActive:boolean, func: any) =>changeStatus(isActive,func)"
@@ -50,12 +51,12 @@ import itemAvator from "./item-avator.vue";
 import itemTop from "./item-top.vue";
 import itemMain from "./item-main.vue";
 import itemFooter from "./item-footer.vue";
-import { CommentReplyType } from "@/types/Layout1/youshow/show-card";
 import { get } from "@/api/AHttp/api";
+import { CommentItem } from "../comment-type";
 
 const props = defineProps<{
   isReply?: boolean;
-  commentData: CommentReplyType;
+  commentData: CommentItem;
 }>();
 
 const {
@@ -74,10 +75,13 @@ const {
   // loadedReplyCount,
 } = props.commentData;
 
+const _likeCount = ref<number>(likeCount)
+const _likeActive = ref<boolean>(likeActive)
 const emit = defineEmits<{
   // 点击回复按钮回调
   (e: "reply-handle"): void;
   (e: "delete-comment"): void;
+  (e: "changeStatus",isActive: boolean, func: Function): void;
 }>();
 
 const display = ref(true);
@@ -89,15 +93,8 @@ const deleteComment = () => {
 //#region 改变爱心状态
 
 const changeStatus = async (isActive: boolean, func: Function) => {
-  const updateType = isActive ? 1 : 0;
-  const url = props.isReply
-    ? "Reply/UpdateLikeReply"
-    : "Comment/UpdateLikeComment";
-  const res = await get(url, { id, updateType });
-  if (res.code == 200) {
-  } else {
-    func();
-  }
+  emit('changeStatus',isActive,func);
+
 };
 
 //#endregion

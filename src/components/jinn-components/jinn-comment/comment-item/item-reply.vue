@@ -20,7 +20,8 @@
           :key="index"
           :comment-data="i"
           @reply-handle="$emit('reply-handle', i.userName)"
-          @delete-comment="deleteComment"
+          @delete-comment="deleteComment(i.id)"
+          @changeStatus="(isActive:boolean,func:Function) => $emit('changeStatus',i.id,isActive,func )"
           isReply
         ></comment-item>
       </div>
@@ -80,7 +81,8 @@ const replyList = ref<CommentItem[]>([]);
 const emit = defineEmits<{
   // 点击回复按钮回调
   (e: "reply-handle", userName: string): void;
-  (e: "delete-comment"): void;
+  (e: "delete-comment",id:number): void;
+  (e: "changeStatus", id:number,isActive: boolean, func: Function): void;
   (
     e: "loadReply",
     pageSize: number,
@@ -110,13 +112,13 @@ const pushReply = (reply: CommentItem) => {
 };
 defineExpose({ openReplys, pushReply });
 
-const deleteComment = () => {
+const deleteComment = (id:number) => {
   delNumber.value++;
   replyCount.value--;
   if (addNumber.value == delNumber.value) {
     replyList.value = [];
   }
-  emit("delete-comment");
+  emit("delete-comment",id);
 };
 
 const computedReplyOpened = computed(() =>

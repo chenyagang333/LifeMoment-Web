@@ -24,4 +24,5 @@ export interface CommentItem {
     // newAddReplyList?: Array<CommentReplyType>;
 }
 
+export type CallBack = (data: CommentItem[]) => void
 

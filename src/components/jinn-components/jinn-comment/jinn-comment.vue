@@ -15,7 +15,6 @@
         infinite-scroll-distance="60"
         :infinite-scroll-immediate="false"
         :infinite-scroll-disabled="commentLoadEnd"
-        :class="isReply ? 'comment-content-reply' : ''"
       >
         <!-- ----------------------------新增评论 评论区----------------------------- -->
         <div class="new-comment">
@@ -27,6 +26,7 @@
             @delete-comment="
               $emit('del', c.id, CommentType.Comment, c.replyCount!)
             "
+            @changeStatus="(isActive:boolean,func:Function) => $emit('changeStatus',c.id,isActive,CommentType.Comment ,func )"
           >
             <div class="newCommentAddReply">
               <!-- 新增评论回复区 -->
@@ -35,13 +35,14 @@
                 :comment-id="c.id"
                 v-model:replyCount="c.replyCount!"
                 @reply-handle="(userName:string) => replyHandle(index, true, true,userName)"
-                @delete-comment="$emit('del', c.id, CommentType.Reply, 0)"
-                @loadReply="(pageSize:number,pageIndex:number,func: (data: CommentItem[]) => void) => $emit('loadReply',c.id ,pageSize,pageIndex,func)"
+                @delete-comment="(id:number) => $emit('del', id, CommentType.Reply, 1)"
+                @loadReply="(pageSize:number,pageIndex:number,func: CallBack) => $emit('loadReply',c.id ,pageSize,pageIndex,func)"
+                @changeStatus="(id:number,isActive:boolean,func:Function) => $emit('changeStatus',id,isActive,CommentType.Reply ,func )"
               ></item-reply>
             </div>
           </comment-item>
         </div>
-        <!-- ----------------------------评论区----------------------------- -->
+        <!-- ----------------------------评论区------------------------ ----- -->
         <comment-item
           v-for="(c, index) in comments"
           :key="index"
@@ -50,6 +51,8 @@
           @delete-comment="
             $emit('del', c.id, CommentType.Comment, c.replyCount!)
           "
+          @changeStatus="(isActive:boolean,func:Function) => 
+          $emit('changeStatus',c.id,isActive,CommentType.Comment ,func )"
         >
           <!-- 新增评论回复区 -->
           <div class="commentAddReply">
@@ -57,9 +60,10 @@
               ref="commentReplyRefs"
               :comment-id="c.id"
               v-model:replyCount="c.replyCount!"
-              @reply-handle="(userName:string) => replyHandle(index, false, true,userName)"
-              @delete-comment="$emit('del', c.id, CommentType.Reply, 0)"
-              @loadReply="(pageSize:number,pageIndex:number,func:(data: CommentItem[]) => void) => $emit('loadReply',c.id ,pageSize,pageIndex,func)"
+              @reply-handle="(userName: string) => replyHandle(index, false, true, userName)"
+              @delete-comment="(id:number) => $emit('del', id, CommentType.Reply, 1)"
+              @loadReply="(pageSize: number, pageIndex: number, func: CallBack) => $emit('loadReply', c.id, pageSize, pageIndex, func)"
+              @changeStatus="(id:number,isActive:boolean,func:Function) => $emit('changeStatus',id,isActive,CommentType.Reply ,func )"
             ></item-reply>
           </div>
         </comment-item>
@@ -89,7 +93,8 @@ import { afterExecutionAsync } from "@/utils/utils";
 import GetNowData from "@/utils/Time/NowDate";
 import { GetAddressByYouShowAsync } from "@/api/Commen";
 import { ApiResult } from "@/api/AHttp/api";
-import type { CommentType, CommentItem } from "./comment-type.ts";
+import type { CommentItem, CallBack } from "./comment-type.ts";
+import { CommentType } from "./comment-type.ts";
 import { FuncResult } from "@/components/jinn-types/ResultGenerics/ResultGenerics";
 
 const UserStore = useUserStore(); // 拿到管理用户信息的仓库
@@ -117,6 +122,13 @@ const emit = defineEmits<{
     pageIndex: number,
     func: (data: CommentItem[]) => void
   ): void;
+  (
+    e: "changeStatus",
+    id: number,
+    isActive: boolean,
+    commentType: CommentType,
+    func: Function
+  ): void;
 }>();
 
 //#region 评论数据初始化
@@ -138,7 +150,6 @@ const pagingQueryComment = afterExecutionAsync(async () => {
   const pageSize = 10;
   // 触发其定义事件，调用外部查询方法，查询成功，调用匿名函数，查询的数据作为参数
   emit("loadComment", pageSize, commentPageIndex, (data: CommentItem[]) => {
-    console.log("123456 :>> ", data);
     if (data?.length > 0) {
       commentPageIndex++;
       const commentIds = comments.value.map((x) => x.id);
@@ -258,7 +269,7 @@ const getCommentTemplate = () => {
 
 //#region 点击评论或回复的 回复消息图标
 
-const isReply = ref(false);
+const isReply = defineModel("isReply", { required: true, default: false });
 const _toUserName = ref("");
 const replyHandle = async (
   index: number,
@@ -332,12 +343,6 @@ defineExpose({ pushHandle });
         justify-content: center;
         height: 40px;
       }
-    }
-    .comment-content {
-      height: calc(100% - 102px);
-    }
-    .comment-content-reply {
-      height: calc(100% - 132px);
     }
   }
 }

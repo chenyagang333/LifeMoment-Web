@@ -17,7 +17,6 @@ const count = defineModel<number>("count", { default: 0 });
 const active = defineModel<boolean>("active", { default: false });
 
 const props = defineProps<{
-  count?: number;
   type: string; // 按钮类型
   size?: number; // 按钮大小
   bottom?: string; // 图标向下偏移量

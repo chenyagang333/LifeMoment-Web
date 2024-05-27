@@ -29,7 +29,6 @@
               @click-handle="() => console.log('分享 :>> ', '444')"
             ></comment-option2>
             <comment-option
-              :isActive="starActive"
               type="star"
               @change-status="(active:boolean,func:any) => $emit('changeStarState',active,func)"
               v-model:count="starCount"
@@ -42,7 +41,6 @@
             ></comment-option2>
             <comment-option
               bottom="4px"
-              :isActive="likeActive"
               type="heart"
               @change-status="(active:boolean,func:any) => $emit('changeLikeState',active,func)"
               v-model:count="likeCount"

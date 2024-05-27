@@ -4,12 +4,15 @@
     <my-message v-model="ShowPublishResultMessage" text="已发布"></my-message>
     <div class="comment-num">全部评论({{ commentCount }})</div>
     <JinnComment
+      :style="{ height: `calc(100% - ${isReply ? '154px' : '124px'})` }"
       ref="JinnCommentRef"
       :showId="showId"
-      @del="(id: number, CommentType: CommentType, delCount: number) => del(id,CommentType,delCount)"
+      v-model:is-reply="isReply"
+      @del="(id: number, CommentType: CommentType, delCount: number) => delComment(id,CommentType,delCount)"
       @replyHandle="(userName: string) => replyHandle(userName)"
-      @loadComment="(pageSize: number, pageIndex: number,func: (data: CommentItem[]) => void) => loadComment(pageSize,pageIndex,func)"
-      @loadReply="(commentId:number,pageSize: number, pageIndex: number,func: (data: CommentItem[]) => void) => loadReply(commentId,pageSize,pageIndex,func)"
+      @loadComment="(pageSize: number, pageIndex: number,func: CallBack) => loadComment(pageSize,pageIndex,func)"
+      @loadReply="(commentId:number,pageSize: number, pageIndex: number,func: CallBack) => loadReply(commentId,pageSize,pageIndex,func)"
+      @changeStatus="(id:number,isActive:boolean,commentType:CommentType,func:Function) => changeStatus(id,isActive,commentType ,func )"
     >
     </JinnComment>
     <!-- 发表评论 -->
@@ -44,10 +47,11 @@ import GetNowData from "@/utils/Time/NowDate";
 import { GetAddressByYouShowAsync } from "@/api/Commen";
 import { ApiResult } from "@/api/AHttp/api";
 import JinnComment from "@/components/jinn-components/jinn-comment/jinn-comment.vue";
-import {
+import type {
+  CallBack,
   CommentItem,
-  CommentType,
 } from "@/components/jinn-components/jinn-comment/comment-type.ts";
+import { CommentType } from "@/components/jinn-components/jinn-comment/comment-type.ts";
 import { FuncResult } from "../../jinn-types/ResultGenerics/ResultGenerics";
 
 const JinnCommentRef = ref<InstanceType<typeof JinnComment> | null>(null);
@@ -126,7 +130,47 @@ const loadReply = async (
   return null;
 };
 
-const del = (id: number, CommentType: CommentType, delCount: number) => {};
+const delComment = async (
+  id: number,
+  commentType: CommentType,
+  delCount: number
+) => {
+  let res;
+  if (commentType === CommentType.Comment) {
+    res = await del("Comment/DeleteById", { id });
+  } else if (commentType === CommentType.Reply) {
+    res = await del("Reply/DeleteById", { id });
+  }
+  if (res.code === 200) {
+    ElMessage.success("删除成功");
+    commentCount.value -= delCount;
+  } else {
+    ElMessage.error("删除失败");
+  }
+};
+
+const changeStatus = async (
+  id:number,
+  isActive: boolean,
+  commentType: CommentType,
+  func: Function
+) => {
+  const updateType = isActive ? 1 : 0;
+  const url = commentType === CommentType.Comment
+    ? "Comment/UpdateLikeComment"
+    : "Reply/UpdateLikeReply";
+    console.log('object :>> ', url,updateType,id);
+  const res = await get(url, { id, updateType });
+  if (res.code == 200) {
+  } else {
+    func();
+  }
+};
 </script>
 
-<style scoped></style>
+<style scoped>
+.AppComment {
+  position: relative;
+  height: 100%;
+}
+</style>
