@@ -7,7 +7,7 @@
           :color="headerUp ? 'white' : 'rgb(203 233 234)'"
           @click="visibleAboutWeb = true"
         >
-          MyChat</SignBox
+          MyStrength</SignBox
         >
         <Navigate :headerUp="headerUp"></Navigate>
       </div>

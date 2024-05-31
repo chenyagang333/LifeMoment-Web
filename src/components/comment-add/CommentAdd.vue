@@ -30,8 +30,8 @@
       <div class="left" @mousedown="mousedownEmotion">
         <emotion
           placement="top-end"
-          @enter-emotion="(e: number) => 
-        customInput.enterEmotion(`/src/assets/emotions/${e}.gif`)"
+          @enter-emotion="(src: string) => 
+        customInput.enterEmotion(src)"
         ></emotion>
       </div>
       <div class="right">

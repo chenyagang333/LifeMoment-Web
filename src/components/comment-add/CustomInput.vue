@@ -2,7 +2,7 @@
   <div
     class="comment-input"
     :placeholder="placeholder"
-    :style="{minHeight:minHeight}"
+    :style="{ minHeight: minHeight }"
     contenteditable
     ref="commentBoxRef"
     @blur="blurCommentBox"
@@ -11,12 +11,13 @@
 </template>
 
 <script setup lang="ts">
+import { replaceImgString } from "@/utils/FileUtils/EmotionFile.ts";
 import { ref } from "vue";
 import { onMounted } from "vue";
 
 defineProps<{
-  placeholder:string
-  minHeight?:string
+  placeholder: string;
+  minHeight?: string;
 }>();
 
 const commentBoxRef = ref(null) as any; // 定义 ref.
@@ -80,7 +81,6 @@ const enterEmotion = (imgURL: string) => {
 
 //#endregion
 
-
 //#region 组件对外暴露事件
 
 // 父组件 激活窗口，刷新窗口的状态
@@ -89,15 +89,22 @@ const focusTextArea = () => {
   emit("custom-focus");
 };
 const getInnerHTML = () => {
-  return commentBoxRef.value.innerHTML;
+  const html = commentBoxRef.value.innerHTML;
+  return replaceImgString(html);
 };
 const setInnerHTML = (html: string) => {
   commentBoxRef.value.innerHTML = html;
 };
 const clearInnerHTML = () => {
-  commentBoxRef.value.innerHTML = '';
+  commentBoxRef.value.innerHTML = "";
 };
-defineExpose({ enterEmotion, focusTextArea, getInnerHTML,setInnerHTML,clearInnerHTML });
+defineExpose({
+  enterEmotion,
+  focusTextArea,
+  getInnerHTML,
+  setInnerHTML,
+  clearInnerHTML,
+});
 
 //#endregion
 onMounted(() => {});
@@ -116,7 +123,7 @@ onMounted(() => {});
   border: none;
   font-size: 15px;
   transition: border 0.3s;
-  color:#333;
+  color: #333;
   font-weight: 500;
   &:empty::before {
     content: attr(placeholder);

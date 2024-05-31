@@ -20,6 +20,7 @@ export interface ShowType{
 }
 export interface MyFileInfo{
     type:FileType,
+    sort:number,
     firstURL:string,
     secondURL:string
 }

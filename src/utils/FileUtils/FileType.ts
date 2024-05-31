@@ -1,9 +1,9 @@
-// 文件类型
+// 文件类型 // 与后端WebAPI保持一致
 
 export enum FileType{
-    Unknown,
-    image,
-    video,
+    Unknown = 0,
+    image = 1,
+    video = 2,
 }
 
 export const imageType = new Set(['image/jpeg', 'image/png', 'image/gif', 'image/bmp', 'image/webp']);

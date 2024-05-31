@@ -5,6 +5,7 @@
     infinite-scroll-distance="500"
     :infinite-scroll-disabled="pagingQueryDisabled"
   >
+    <AppHeaderChannel></AppHeaderChannel>
     <!-- 评论信息弹窗 -->
     <a-modal
       v-model:visible="visibleCardDetail"
@@ -15,7 +16,7 @@
     >
       <div class="detail-core">
         <div class="detail-core-main">
-          <AppCard
+          <!-- <AppCard
             style="width: 100%"
             :files="detailData?.files"
             :id="detailData?.id"
@@ -34,7 +35,8 @@
             v-model:shareCount="detailData.shareCount"
             v-model:commentCount="detailData.commentCount"
             avatarCardPosition="bl"
-          ></AppCard>
+          ></AppCard> -->
+          <JinnImage></JinnImage>
         </div>
         <div class="detail-core-comment">
           <AppTabs
@@ -119,13 +121,15 @@
 import { onMounted, ref } from "vue";
 import PublishShow from "@/components/comment-add/PublishShow.vue";
 import { ShowType } from "@/types/Layout1/youshow/youshow";
-import { del, get, post } from "@/api/AHttp/api";
+import { ApiResult, del, get, post } from "@/api/AHttp/api";
 import myMessage from "@/components/message/my-message.vue";
 import { GetAddressAsync, GetAddressByYouShowAsync } from "@/api/Commen";
 import GetNowData from "@/utils/Time/NowDate";
 import { afterExecutionAsync } from "@/utils/utils";
 import AppCard from "@/components/App/AppCard/AppCard.vue";
 import AppTabs from "@/components/App/AppTabs/AppTabs.vue";
+import AppHeaderChannel from "@/components/App/AppHeaderChannel/AppHeaderChannel.vue";
+import JinnImage from "@/components/jinn-components/jinn-image/JinnImage.vue";
 import { useUserStore } from "@/stores/user/user";
 import { storeToRefs } from "pinia";
 import { FileType, getFileType } from "@/utils/FileUtils/FileType";
@@ -176,40 +180,65 @@ const dataa = [
 const shows = ref<ShowType[]>([]);
 const newShows = ref<ShowType[]>([]);
 const SuccessInPublication = ref<boolean>(false);
-const publishHandle = async (content: string, imageFileList: any[]) => {
+const publishHandle = async (
+  content: string,
+  imageFileList: any[],
+  submit: () => Promise<void>
+) => {
   const data: ShowType = await getPublishShowData(content);
   console.log("imageFileList :>> ", imageFileList);
   if (imageFileList.length > 0) {
-    const uploaderRes = await postShowFile(imageFileList);
-    if (uploaderRes.code == 200) {
-      await postShow(data, uploaderRes.data);
-    }
+    const list = await postShowFile(imageFileList);
+    await postShow(data, list);
   } else {
-    postShow(data);
+    await postShow(data);
   }
+  submit(); // 文件上传完成后删除本地临时文件
 };
-// 上传图片或视频
-const postShowFile = async (imageFileList: any[]) => {
+const postShowFile = async (imageFileList: any[]): Promise<MyFileInfo[]> => {
+  let promises: Promise<any>[] = [];
+  let list: MyFileInfo[] = [];
+  imageFileList.forEach((file) => promises.push(uploadFile(file)));
+  return Promise.all(promises)
+    .then((responses) => {
+      // 处理每个异步请求的返回值
+      responses.forEach((response: ApiResult<MyFileInfo>, index) => {
+        if (response.code === 200) {
+          response.data.sort = index;
+          list.push(response.data);
+        }
+      });
+      return list;
+    })
+    .catch((error) => {
+      // 处理错误
+      return list;
+    });
+};
+// 上传单个图片或视频
+const uploadFile = (file: any): Promise<any> => {
   const formData = new FormData();
-  formData.append(`ServiceType`, "0");
-  imageFileList.forEach(async (file) => {
-    formData.append(`Files`, file.raw);
-    if (file.fileType === FileType.video) {
-      formData.append(`Files`, file.secondRaw);
-    }
-  });
-  const uploaderRes = await post<any>("Uploader/MultipleUpload", formData, {
+  formData.append(`ServiceType`, "0"); //
+  formData.append(`Files`, file.raw);
+  let url = "UploadImage";
+  if (file.fileType === FileType.video) {
+    // 如果是视频文件添加封面图
+    formData.append(`Files`, file.secondRaw);
+    url = "UploadVideo";
+  }
+  // 返回上传单个文件的Promise对象
+  return post<any>("Uploader/" + url, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
-  return uploaderRes;
 };
+// 上传图片或视频
 // 上传说说内容
 const postShow = async (data: ShowType, files?: MyFileInfo[]) => {
   if (files) {
     // data.fileURLList = fileURLList.map(x => "https://localhost:7070/" + x);
-    data.files = files;
+    data.files = files.sort(x => x.sort);
   }
   const CreateYouShowRes = await post<any>("YouShow/CreateYouShow", data);
   if (CreateYouShowRes.code == 200) {
@@ -320,17 +349,19 @@ onMounted(() => {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    height: calc(100vh - 151px);
+    height: calc(100vh - 100px);
     min-height: 650px;
-    width: 1100px;
-    min-width: 345px;
+    width: 80vw;
+    min-width: 855px;
     overflow-y: auto;
     .detail-core-main {
-      width: calc(50% - 10px);
+      width: calc(100% - 457px);
       min-width: 335px;
       margin-right: 20px;
       height: 100%;
       overflow-y: auto;
+      border: 1px solid var(--jinn-border-color1);
+      border-radius: var(--jinn-border-radius);
       // 滚动条外观设置
       &::-webkit-scrollbar {
         width: 4px;
@@ -348,7 +379,7 @@ onMounted(() => {
     }
     .detail-core-comment {
       height: 100%;
-      width: calc(50% - 10px);
+      width: 437px;
       min-width: 335px;
       overflow: hidden;
       border: 1px solid var(--jinn-border-color1);

@@ -1,9 +1,11 @@
 <template>
   <!-- 评论内容 -->
-  <div class="item-main" v-html="content"></div>
+  <div class="item-main" v-html="replaceCustomString(content)"></div>
 </template>
 
 <script setup lang="ts">
+import { replaceCustomString } from '@/utils/FileUtils/EmotionFile';
+
 const props = defineProps<{
   content: string; // 评论内容
 }>();

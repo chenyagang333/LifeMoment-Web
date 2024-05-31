@@ -25,6 +25,10 @@ export const GetAddressAsync = async () => { //  =>
     return (await request.get<any>(API.GetAddress, { params })).data;
 };
 export const GetAddressByYouShowAsync = async () => {
-    return await get('YouShow/GetAddress');
+    try {
+        return await get('YouShow/GetAddress');
+    } catch {
+        return "未知"
+    }
 }
 

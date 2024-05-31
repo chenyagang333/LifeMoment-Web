@@ -1,6 +1,6 @@
 <template>
   <div class="card-main">
-    <div class="content" v-html="content"></div>
+    <div class="content" v-html="replaceCustomString(content)"></div>
     <div class="main-files" v-if="files && files.length > 0">
       <!-- <div class="files" v-for="(i, index) in srcList" :key="index">
             <el-image :src="i" fit="cover" />
@@ -46,6 +46,7 @@
 import { computed, getCurrentInstance } from "vue";
 import { MyFileInfo } from "@/types/Layout1/youshow/youshow";
 import { FileType } from "@/utils/FileUtils/FileType";
+import { replaceCustomString } from "@/utils/FileUtils/EmotionFile";
 
 const app = getCurrentInstance();
 const FileIP = app?.appContext.config.globalProperties.$FileIP;
@@ -74,7 +75,7 @@ const fileNumTypeClass = computed(() =>
 
 <style lang="scss" scoped>
 .card-main {
-    padding: 5px 20px 0 80px;
+  padding: 5px 20px 0 80px;
   .content {
     line-height: 1.5;
     font-size: 15px;
@@ -158,30 +159,34 @@ const fileNumTypeClass = computed(() =>
       }
     }
   }
-  @include respond-to("phone") {
-    @include getCardStyle(299px) {
-      padding-left: 20px;
-    }
+  @include getCardStyle(409px) {
+    padding-left: 80px;
   }
-  @include respond-to("pad") {
-    @include getCardStyle(319px) {
-      padding-left: 80px;
-    }
-  }
-  @include respond-to("notebook") {
-    @include getCardStyle(329px) {
-      padding-left: 80px;
-    }
-  }
-  @include respond-to("desktop") {
-    @include getCardStyle(369px) {
-      padding-left: 80px;
-    }
-  }
-  @include respond-to("tv") {
-    @include getCardStyle(409px) {
-      padding-left: 80px;
-    }
-  }
+  // 放弃移动端适配
+  // @include respond-to("phone") {
+  //   @include getCardStyle(299px) {
+  //     padding-left: 20px;
+  //   }
+  // }
+  // @include respond-to("pad") {
+  //   @include getCardStyle(319px) {
+  //     padding-left: 80px;
+  //   }
+  // }
+  // @include respond-to("notebook") {
+  //   @include getCardStyle(329px) {
+  //     padding-left: 80px;
+  //   }
+  // }
+  // @include respond-to("desktop") {
+  //   @include getCardStyle(369px) {
+  //     padding-left: 80px;
+  //   }
+  // }
+  // @include respond-to("tv") {
+  //   @include getCardStyle(409px) {
+  //     padding-left: 80px;
+  //   }
+  // }
 }
 </style>

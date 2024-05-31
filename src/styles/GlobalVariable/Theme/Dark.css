@@ -1,7 +1,7 @@
 html[data-theme="dark"] {
   /* 基本颜色 */
   --jinn-color1: rgb(0, 0, 0);
-  --jinn-color2: rgb(255, 255, 255);
+  --jinn-color2: rgb(255 255 255 / 87%);
   --jinn-color3: rgb(130, 126, 254);
   --jinn-color4: rgb(151, 148, 255);
   --jinn-color5: #aac8e4;
