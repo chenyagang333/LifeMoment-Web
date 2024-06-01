@@ -1,48 +1,91 @@
 <template>
   <div class="JinnImage">
-    <div class="myContainer" ref="myContainer"></div>
+    <div class="myContainer">
+      <div
+        class="myContainer-img"
+        v-show="visibleFileType === FileType.image"
+        ref="myContainerImg"
+      ></div>
+      <video
+        v-show="visibleFileType === FileType.video"
+        :src="videoSrc"
+        autoplay
+        controls
+      ></video>
+      <div class="close" @click="$emit('visible-change', false)">
+        <el-icon size="30"><CloseBold /></el-icon>
+      </div>
+    </div>
     <a-image-preview-group
+      :src-list="dataMap"
       infinite
       :closable="false"
       :mask-closable="false"
-      :popupContainer="myContainer"
+      :popupContainer="myContainerImg"
+      v-model:current="currentIndex"
+      @change="changeFile"
+      default-visible
     >
+      <!-- 文件底部导航栏 -->
       <a-space align="center">
-        <a-image
-          v-for="(i, index) in srcList"
-          :key="index"
-          :src="i"
-          width="50"
-          height="50"
-          fit="cover"
-        />
+        <template v-for="(i, index) in data" :key="index">
+          <img
+            style="width: 50px; height: 50px; object-fit: cover"
+            :src="
+              FileIP +
+              (i.type == FileType.image
+                ? i.firstURL
+                : i.type == FileType.video
+                ? i.secondURL
+                : '')
+            "
+            @click="changeFile(index)"
+          />
+        </template>
       </a-space>
     </a-image-preview-group>
   </div>
 </template>
 
 <script setup lang="ts">
+import { MyFileInfo } from "@/types/Layout1/youshow/youshow";
 import { FileType } from "@/utils/FileUtils/FileType";
-import { ref } from "vue";
+import { getCurrentInstance, ref, computed, onMounted } from "vue";
 
-defineProps<{
-    data:baseType[]
+const app = getCurrentInstance();
+const FileIP = app?.appContext.config.globalProperties.$FileIP;
+
+const props = defineProps<{
+  data?: MyFileInfo[];
+  defaultCurrent: number;
+}>();
+const currentIndex = ref<number>(props.defaultCurrent);
+
+const dataMap = props.data?.map((e) => FileIP + e.firstURL);
+
+defineEmits<{
+  (e: "visible-change", state: boolean): void;
 }>();
 
-const myContainer = ref();
+const myContainerImg = ref();
 
-type baseType = {
-    fileType:FileType,
-    firstUrl:string,
-    secondUrl:string,
-}
-const srcList = [
-  "http://1.92.79.63:3030/YouShow/Images/2024/5/30/a65750894b02173b02b0ad91683ac68c0fe0798eb3d234b1072b518e6abe133f/IMG_20230808_090237.jpg",
-  "http://1.92.79.63:3030/YouShow/Images/2024/5/30/71b4c32b28f761b406d41e4e0aab7b959ed1d88f5cdc74822d294dea457863ac/IMG_20230629_225523.jpg",
-  "https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/0265a04fddbd77a19602a15d9d55d797.png~tplv-uwbnlip3yd-webp.webp",
-];
-const visible = ref(true);
-const current = ref(3);
+const visibleFileType = ref<FileType>(FileType.image);
+
+const videoSrc = ref<string>("");
+
+const changeFile = (i: number = 0) => {
+  currentIndex.value = i;
+  if (props.data && props.data.length > 0) {
+    visibleFileType.value = props.data![i].type;
+    if (props.data![i].type === FileType.video) {
+      videoSrc.value = FileIP + props.data![i]?.firstURL;
+    }
+  }
+};
+
+onMounted(() => {
+  changeFile(props.defaultCurrent);
+});
 </script>
 
 <style scoped lang="scss">
@@ -53,14 +96,33 @@ const current = ref(3);
   align-items: center;
   justify-content: space-evenly;
   flex-direction: column;
-//   background-color: black;
+  border: 1px solid var(--jinn-border-color1);
+  border-radius: var(--jinn-border-radius);
+  overflow: hidden;
   .myContainer {
     width: 100%;
     height: 85%;
     position: relative;
-    overflow: hidden;
-    line-height: 400px;
-    text-align: center;
+    background-color: black;
+    .myContainer-img {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 30px;
+      height: 30px;
+      border-radius: var(--jinn-border-radius);
+      background-color: var(--jinn-bg1);
+    }
   }
 }
 </style>

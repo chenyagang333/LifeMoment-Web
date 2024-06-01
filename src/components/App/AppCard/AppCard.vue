@@ -3,6 +3,7 @@
     @changeLikeState="(active:boolean,func:any) => changeState(active,0, func)"
     @changeStarState="(active:boolean,func:any) => changeState(active,1, func)"
     @commentHandler="() => $emit('comment-handler')"
+    @clickFile="(index:number) => $emit('clickFile',index)"
     :files="files"
     :id="id"
     :userAvatarURL="userAvatarURL"
@@ -35,6 +36,7 @@ import { get } from "@/api/AHttp/api";
 
 const emit = defineEmits<{
   (e: "comment-handler"): void;
+  (e: "clickFile",index:number): void;
 }>();
 
 const likeActive = defineModel<boolean>("likeActive", { default: false });

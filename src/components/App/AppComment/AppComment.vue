@@ -62,6 +62,7 @@ const pushHandle = async (html: string) => {
     if (isReply.value) res = await post("Reply/CreateReply", data);
     else res = await post("Comment/CreateComment", data);
     if (res.code === 200) {
+      commentCount.value++
       return {
         ok: true,
         data: res.data, // 新增数据Id
@@ -135,6 +136,7 @@ const delComment = async (
   commentType: CommentType,
   delCount: number
 ) => {
+  console.log('delCount :>> ', delCount);
   let res;
   if (commentType === CommentType.Comment) {
     res = await del("Comment/DeleteById", { id });

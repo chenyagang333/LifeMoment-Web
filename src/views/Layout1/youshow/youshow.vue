@@ -32,7 +32,7 @@
     </div>
     <div class="right">
       <div class="user-relevant radius-overflow">
-        <AppSignIn></AppSignIn>
+        <AppSignIn v-LogInEd></AppSignIn>
       </div>
     </div>
   </div>

@@ -14,29 +14,38 @@
       @before-close="beforeCloseCardDetail"
       width="auto"
     >
-      <div class="detail-core">
+      <div class="detail-core" :class="showFile ? 'detail-file-type' : ''">
         <div class="detail-core-main">
-          <!-- <AppCard
-            style="width: 100%"
-            :files="detailData?.files"
-            :id="detailData?.id"
-            :userAvatarURL="detailData?.userAvatarURL"
-            :userId="detailData?.userId"
-            :userName="detailData?.userName"
-            :createTime="detailData?.createTime"
-            :publishAddress="detailData?.publishAddress"
-            :content="detailData?.content"
-            :likeUsers="detailData?.likeUsers"
-            :viewCount="detailData?.viewCount"
-            v-model:likeActive="detailData.likeActive"
-            v-model:starActive="detailData.starActive"
-            v-model:like-count="detailData.likeCount"
-            v-model:starCount="detailData.starCount"
-            v-model:shareCount="detailData.shareCount"
-            v-model:commentCount="detailData.commentCount"
-            avatarCardPosition="bl"
-          ></AppCard> -->
-          <JinnImage></JinnImage>
+          <template v-if="visibleCardDetail">
+            <AppCard
+              v-if="!showFile"
+              style="width: 100%"
+              :files="detailData?.files"
+              :id="detailData?.id"
+              :userAvatarURL="detailData?.userAvatarURL"
+              :userId="detailData?.userId"
+              :userName="detailData?.userName"
+              :createTime="detailData?.createTime"
+              :publishAddress="detailData?.publishAddress"
+              :content="detailData?.content"
+              :likeUsers="detailData?.likeUsers"
+              :viewCount="detailData?.viewCount"
+              v-model:likeActive="detailData.likeActive"
+              v-model:starActive="detailData.starActive"
+              v-model:like-count="detailData.likeCount"
+              v-model:starCount="detailData.starCount"
+              v-model:shareCount="detailData.shareCount"
+              v-model:commentCount="detailData.commentCount"
+              avatarCardPosition="bl"
+              @clickFile="(index:number) => changeCardDetailDialog(true,undefined,index)"
+            ></AppCard>
+            <JinnImage
+              v-if="showFile"
+              :data="detailData.files"
+              :defaultCurrent="defaultCurrent"
+              @visible-change="(state:boolean) => changeCardDetailDialog(state,undefined)"
+            ></JinnImage>
+          </template>
         </div>
         <div class="detail-core-comment">
           <AppTabs
@@ -81,7 +90,8 @@
         v-model:starCount="i.starCount"
         v-model:shareCount="i.shareCount"
         v-model:commentCount="i.commentCount"
-        @commentHandler="() => openCardDetailDialog(i, index)"
+        @commentHandler="() => changeCardDetailDialog(false, i)"
+        @clickFile="(index:number) => changeCardDetailDialog(true,i,index)"
         isNewPublish
       ></AppCard>
     </div>
@@ -106,7 +116,8 @@
         v-model:starCount="i.starCount"
         v-model:shareCount="i.shareCount"
         v-model:commentCount="i.commentCount"
-        @commentHandler="() => openCardDetailDialog(i, index)"
+        @commentHandler="() => changeCardDetailDialog(false, i)"
+        @clickFile="(index:number) => changeCardDetailDialog(true,i,index)"
       ></AppCard>
     </div>
     <!-- 加载动画 -->
@@ -118,7 +129,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import PublishShow from "@/components/comment-add/PublishShow.vue";
 import { ShowType } from "@/types/Layout1/youshow/youshow";
 import { ApiResult, del, get, post } from "@/api/AHttp/api";
@@ -238,7 +249,7 @@ const uploadFile = (file: any): Promise<any> => {
 const postShow = async (data: ShowType, files?: MyFileInfo[]) => {
   if (files) {
     // data.fileURLList = fileURLList.map(x => "https://localhost:7070/" + x);
-    data.files = files.sort(x => x.sort);
+    data.files = files.sort((x) => x.sort);
   }
   const CreateYouShowRes = await post<any>("YouShow/CreateYouShow", data);
   if (CreateYouShowRes.code == 200) {
@@ -288,9 +299,11 @@ const pagingQueryAsync = afterExecutionAsync(async () => {
 
 //#endregion
 
+// #region
+
 const visibleCardDetail = ref<boolean>(false); // 查看评论弹窗控制
-const detailData = ref<any>({
-  likeUsers: null,
+const detailData = ref<ShowType>({
+  likeUsers: [],
   viewCount: 0,
   starCount: 0,
   shareCount: 0,
@@ -307,11 +320,26 @@ const detailData = ref<any>({
   createTime: "2024-05-24 14:34:07",
   id: 270,
 });
-const openCardDetailDialog = (data: any, index: number) => {
-  detailData.value = data;
-  visibleCardDetail.value = true;
-};
+
 const beforeCloseCardDetail = () => {};
+
+const showFile = ref<boolean>(true);
+const defaultCurrent = ref<number>(0);
+
+const changeCardDetailDialog = (
+  _showFile: boolean,
+  data?: ShowType,
+  _defaultCurrent: number = 0
+) => {
+  showFile.value = _showFile;
+  defaultCurrent.value = _defaultCurrent;
+  if (data) {
+    detailData.value = data;
+    visibleCardDetail.value = true;
+  }
+};
+
+// #endregion
 
 onMounted(() => {
   pagingQueryAsync();
@@ -354,14 +382,18 @@ onMounted(() => {
     width: 80vw;
     min-width: 855px;
     overflow-y: auto;
+    .detail-core-main,
+    .detail-core-comment {
+      transition: width 0.3s ease-in-out;
+      height: 100%;
+    }
     .detail-core-main {
-      width: calc(100% - 457px);
+      width: calc(50% - 10px);
       min-width: 335px;
       margin-right: 20px;
-      height: 100%;
       overflow-y: auto;
-      border: 1px solid var(--jinn-border-color1);
       border-radius: var(--jinn-border-radius);
+      position: relative;
       // 滚动条外观设置
       &::-webkit-scrollbar {
         width: 4px;
@@ -378,12 +410,19 @@ onMounted(() => {
       }
     }
     .detail-core-comment {
-      height: 100%;
-      width: 437px;
+      width: calc(50% - 10px);
       min-width: 335px;
       overflow: hidden;
       border: 1px solid var(--jinn-border-color1);
       border-radius: var(--el-border-radius-base);
+    }
+  }
+  .detail-file-type {
+    .detail-core-main {
+      width: calc(100% - 457px);
+    }
+    .detail-core-comment {
+      width: 437px;
     }
   }
 }

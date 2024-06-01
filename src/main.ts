@@ -32,8 +32,11 @@ import '@quasar/extras/material-icons/material-icons.css'
 // Import Quasar css
 import 'quasar/src/css/index.sass'
 
-const app = createApp(App);
+// 引入已登录才渲染的自定义指令
+import {LogInEd} from '@/directives/LogInEd';
 
+const app = createApp(App);
+LogInEd(app);
 /**定义变量$website，并赋值为devcursor**/
 app.config.globalProperties.$FileIP = import.meta.env.VITE_APP_FILE_IP
 

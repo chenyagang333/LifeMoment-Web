@@ -6,16 +6,18 @@
             <el-image :src="i" fit="cover" />
         </div> -->
       <template v-if="files.length === 1">
-        <img
-          class="signal-image radius-overflow"
-          v-if="files[0].type === FileType.image"
-          :src="FileIP + files[0].firstURL"
-        />
-        <div
-          class="signal-video radius-overflow"
-          v-if="files[0].type === FileType.video"
-        >
-          <video :src="FileIP + files[0].firstURL" autoplay controls />
+        <div class="signal" @click="$emit('clickFile',0)">
+          <img
+            class="signal-image radius-overflow"
+            v-if="files[0].type === FileType.image"
+            :src="FileIP + files[0].firstURL"
+          />
+          <div
+            class="signal-video radius-overflow"
+            v-if="files[0].type === FileType.video"
+          >
+            <video :src="FileIP + files[0].firstURL" autoplay controls />
+          </div>
         </div>
       </template>
       <template v-else>
@@ -24,6 +26,7 @@
             class="files radius-overflow"
             v-for="(i, index) in files"
             :key="index"
+            @click="$emit('clickFile',index)"
           >
             <img
               v-if="i.type === FileType.image"
@@ -56,15 +59,11 @@ const props = defineProps<{
   files?: MyFileInfo[];
 }>();
 
-const srcList = [
-  "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg",
-  "https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg",
-  "https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg",
-  "https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg",
-  "https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg",
-  "https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg",
-  "https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg",
-];
+defineEmits<{
+  (e: "clickFile",index:number): void;
+}>();
+
+
 
 const fileNumTypeClass = computed(() =>
   props.files?.length === 2 || props.files?.length === 4
@@ -85,27 +84,29 @@ const fileNumTypeClass = computed(() =>
   }
   .main-files {
     margin: 10px 0;
-    .signal-image {
-      max-height: 240px;
-      max-width: 100%;
-      cursor: -webkit-zoom-in;
-      cursor: zoom-in;
+    .signal {
+      .signal-image {
+        max-height: 240px;
+        max-width: 100%;
+        cursor: -webkit-zoom-in;
+        cursor: zoom-in;
 
-      &:hover {
-        filter: brightness(90%);
-        /* 悬停时降低图片亮度，实现遮罩效果 */
+        &:hover {
+          filter: brightness(90%);
+          /* 悬停时降低图片亮度，实现遮罩效果 */
+        }
       }
-    }
 
-    .signal-video {
-      height: 300px;
-      width: 100%;
-      background-color: black;
-
-      video {
+      .signal-video {
+        height: 300px;
         width: 100%;
-        height: 100%;
-        object-fit: contain;
+        background-color: black;
+
+        video {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
       }
     }
 

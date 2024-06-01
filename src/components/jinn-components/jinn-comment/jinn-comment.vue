@@ -24,7 +24,7 @@
             :commentData="c"
             @reply-handle="() => replyHandle(index, true, false, c.userName)"
             @delete-comment="
-              $emit('del', c.id, CommentType.Comment, c.replyCount!)
+              $emit('del', c.id, CommentType.Comment, c.replyCount! + 1)
             "
             @changeStatus="(isActive:boolean,func:Function) => $emit('changeStatus',c.id,isActive,CommentType.Comment ,func )"
           >
@@ -49,7 +49,7 @@
           :commentData="c"
           @reply-handle="() => replyHandle(index, false, false, c.userName)"
           @delete-comment="
-            $emit('del', c.id, CommentType.Comment, c.replyCount!)
+            $emit('del', c.id, CommentType.Comment, c.replyCount! + 1)
           "
           @changeStatus="(isActive:boolean,func:Function) => 
           $emit('changeStatus',c.id,isActive,CommentType.Comment ,func )"
@@ -342,6 +342,7 @@ defineExpose({ pushHandle });
         align-items: center;
         justify-content: center;
         height: 40px;
+        margin-bottom: 50px;
       }
     }
   }

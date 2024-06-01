@@ -7,7 +7,7 @@
           :color="headerUp ? 'white' : 'rgb(203 233 234)'"
           @click="visibleAboutWeb = true"
         >
-          MyStrength</SignBox
+          WeStrength</SignBox
         >
         <Navigate :headerUp="headerUp"></Navigate>
       </div>
@@ -16,7 +16,7 @@
     <!-- 关于网站 -->
     <a-modal v-model:visible="visibleAboutWeb">
       <template #title>
-        <span style="font-size: 16px"> MyChat </span>
+        <span style="font-size: 16px"> WeStrength </span>
       </template>
       <div class="inform-conn">
         <span>

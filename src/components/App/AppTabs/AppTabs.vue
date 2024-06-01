@@ -48,8 +48,11 @@ const drawerTab = ref("comment");
   height: 100%;
 }
 .q-tab-panels{
-    height: 100%;
-
+  height: 100%;
+  
+}
+.q-panel{
+  height: 100%;
 }
 .q-tab-panel{
     height: calc(100% - 36px) ;

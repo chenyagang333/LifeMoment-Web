@@ -14,7 +14,7 @@
         :avatarCardPosition="avatarCardPosition"
       ></card-header>
       <!-- show内容 -------------------------------------------------------->
-      <card-main :content="content" :files="files"> </card-main>
+      <card-main :content="content" :files="files" @clickFile="(index:number) => $emit('clickFile',index)"> </card-main>
       <!-- 点赞，评论等 -------------------------------------------------------->
       <div class="card-footer">
         <!-- 点赞评论等选项 -->
@@ -77,8 +77,8 @@ const emit = defineEmits<{
   (e: "changeLikeState", active: boolean, func: any): void;
   (e: "comment-handler"): void;
   (e: "changeStarState", active: boolean, func: any): void;
+  (e: "clickFile",index:number): void;
 }>();
-
 const likeActive = defineModel<boolean>("likeActive", { default: false });
 const starActive = defineModel<boolean>("starActive", { default: false });
 const likeCount = defineModel<number>("likeCount", { default: 0 });
