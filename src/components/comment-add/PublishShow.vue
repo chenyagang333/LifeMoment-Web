@@ -4,7 +4,6 @@
     <div
       class="container"
       v-click-outside="onClickOutside"
-      :style="containerStyle"
     >
       <div class="main" @click="clickInput">
         <custom-input
@@ -135,10 +134,7 @@ import { ElMessage } from "element-plus";
 import { imageType, videoType, FileType } from "@/utils/FileUtils/FileType";
 import { handleVideoFileSelect } from "@/utils/FileUtils/VideoFile";
 import { nextTick } from "vue";
-
-const props = defineProps<{
-  backgroundColor?: string;
-}>();
+import { ClickOutside as vClickOutside } from "element-plus";
 
 const emit = defineEmits<{
   (
@@ -174,10 +170,6 @@ const publishHandle = async () => {
 };
 
 //#region 文字部分
-
-const containerStyle = {
-  backgroundColor: props.backgroundColor,
-};
 
 const customInputRef = ref();
 
@@ -253,15 +245,16 @@ const handlePictureCardPreview = (file: any) => {
 <style lang="scss" scoped>
 .publish-show {
   .container {
-    border: 1px solid var(--el-border-color-light);
+    border: 1px solid var(--jinn-border-color1);
     border-radius: 4px;
+    background-color: var(--jinn-color1);
 
     .main {
       border: 1.5px solid $base-gray;
-      background-color: $base-gray;
+      background-color: var(--jinn-bg3);
 
       &:focus-within {
-        background-color: white;
+        background-color: var(--jinn-color1);
         border: 1.5px solid rgb(255, 191, 71);
         border: 1.5px solid #79bbff;
       }
@@ -283,8 +276,9 @@ const handlePictureCardPreview = (file: any) => {
       width: 100%;
       overflow: hidden;
       height: 0px;
-      transition: all 0.3s;
+      transition: height 0.3s ease;
       margin-bottom: 0;
+      color: var(--jinn-text-c1);
 
       .left {
         display: flex;
@@ -293,11 +287,10 @@ const handlePictureCardPreview = (file: any) => {
         .add-imgs {
           font-size: 20px;
           margin-left: 8px;
-
           &:hover {
             color: #e4a4ff;
             cursor: pointer;
-            transition: color 0.1s;
+            transition: color 0.2s;
           }
         }
       }
@@ -311,6 +304,8 @@ const handlePictureCardPreview = (file: any) => {
   }
 
   .el-card {
+    background-color: var(--jinn-color1);
+    border: 1px solid var(--jinn-border-color1);
     .el-upload {
       cursor: default;
     }
@@ -319,7 +314,7 @@ const handlePictureCardPreview = (file: any) => {
       .media {
         width: 100%;
         height: 500px;
-        background-color: $base-gray;
+        background-color: var(--jinn-bg3);
         display: flex;
         align-items: center;
         justify-content: center;

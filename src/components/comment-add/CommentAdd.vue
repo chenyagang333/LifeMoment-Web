@@ -8,10 +8,6 @@
         </span>
         <CloseBold class="close-svg" @click.stop="closeReplyState" />
       </div>
-      <!-- <div class="commentBox" :class="commentBoxClass" placeholder="2024在youshow.com记录生活的你必定所向披靡：请输入你的评论" contenteditable
-        ref="commentBoxRef" @blur="blurCommentBox" @focus="focusCommentBox"></div> -->
-      <!-- <custom-input :class="commentBoxClass" placeholder="2024在youshow.com记录生活的你必定所向披靡：请输入你的评论" contenteditable
-        ref="commentBoxRef" @blur="blurCommentBox" @focus="focusCommentBox"></custom-input> -->
       <div
         class="text-content"
         :style="{ minHeight: minHeight}"
@@ -29,7 +25,7 @@
     <div class="options">
       <div class="left" @mousedown="mousedownEmotion">
         <emotion
-          placement="top-end"
+          placement="top-start"
           @enter-emotion="(src: string) => 
         customInput.enterEmotion(src)"
         ></emotion>

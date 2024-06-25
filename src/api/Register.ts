@@ -3,19 +3,18 @@ import { get, post } from "@/api/AHttp/api";
 
 // 统一管理接口
 enum API {
-    SendCodeByRegister = "/Register/SendCodeByRegister",// 
-    CreateUser = "/Register/CreateUser",// 
+    SendCodeByRegister = "/Register/SendCodeByMail",// 
+    CreateUser = "/Register/CreateUserByMail",// 
 }
 // 发送验证码
-export const SendCodeByRegister = (phoneNumber: string) => { //  => 
-    const params = { phoneNumber }
+export const SendCodeByRegister = async (mail: string) => { //  => 
+    const params = { mail }
     return get<any>(API.SendCodeByRegister, params);
 };
 // 注册用户
 interface CreateUser {
     userName:string,
-    phoneNumber:string,
-    phoneNumberRegion:string,
+    mail:string,
     password:string,
     rightPassword:string,
     code:string,

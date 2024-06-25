@@ -1,6 +1,12 @@
 
 
 //#region 校验input的正则表达式
+
+// 使用简单的正则表达式校验邮箱格式
+export function validateEmail(email: string): boolean {
+    const regExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regExp.test(email);
+}
 // 校验手机号是否符合标准
 export function validatePhone(phone: string): boolean {
     // 必须是1开头，第二位数字可以是0-9任意一个，总长为11

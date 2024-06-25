@@ -2,7 +2,7 @@
   <template v-if="display">
     <div class="comment-item">
       <div class="left">
-        <item-avator :userAvatar="userAvatarURL"></item-avator>
+        <item-avator :userAvatar="FileIP + userAvatarURL"></item-avator>
       </div>
       <div class="right">
         <div class="core">
@@ -46,13 +46,16 @@
 import CommentOption from "@/components/comment-option/category1.vue";
 import CommentOption2 from "@/components/comment-option/category2.vue";
 import moreOption from "./more-option.vue";
-import { ref } from "vue";
+import { getCurrentInstance, ref } from "vue";
 import itemAvator from "./item-avator.vue";
 import itemTop from "./item-top.vue";
 import itemMain from "./item-main.vue";
 import itemFooter from "./item-footer.vue";
 import { get } from "@/api/AHttp/api";
 import { CommentItem } from "../comment-type";
+
+const app = getCurrentInstance();
+const FileIP = app?.appContext.config.globalProperties.$FileIP;
 
 const props = defineProps<{
   isReply?: boolean;

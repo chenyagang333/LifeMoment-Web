@@ -1,73 +1,146 @@
 <template>
   <div class="layout1">
-    <AppHeader ref="appHeader" :headerUp="headerUp"></AppHeader>
-    <div
-      class="HeaderBc"
-      :class="AppStore.theme === 'light' ? 'HeaderBcLight' : 'HeaderBcDark'"
-      ref="headerBc"
-    ></div>
-    <RouterView></RouterView>
+    <AppHeader id="LifeBusAppHeader" :headerUp="headerUp"></AppHeader>
+    <div class="layout-router-view">
+      <div
+        id="LifeBusAppHeaderBc"
+        class="HeaderBc"
+        :class="AppStore.theme === 'light' ? 'HeaderBcLight' : 'HeaderBcDark'"
+        :style="{ height: showTopImg ? '' : '0px' }"
+      ></div>
+      <div class="AppRouterViewContent">
+        <AppSidebarLeft
+          style="width: 140px"
+          :class="showTopImg ? 'AppSidebarLeft1' : 'AppSidebarLeft2'"
+        ></AppSidebarLeft>
+        <RouterView v-slot="{ Component }">
+          <component :is="Component" />
+          <!-- <transition name="fade">
+          </transition> -->
+        </RouterView>
+      </div>
+    </div>
     <div class="footer"></div>
     <div class="bottom"></div>
+    <!-- 返回顶部导航 -->
     <el-backtop :right="30" :bottom="60" />
+    <!-- 用户签到组件 -->
+    <AppSignInDialog></AppSignInDialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onUnmounted, onMounted } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { useUserStore } from "@/stores/user/user";
-import { storeToRefs } from "pinia";
+import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
+import AppHeader from "@/components-App/AppHeader/AppHeader.vue";
 import { useAppStore } from "@/stores/app/app";
-import AppHeader from "@/components/App/AppHeader/AppHeader.vue";
+import { storeToRefs } from "pinia";
+import { onMounted, onBeforeUnmount, ref } from "vue";
+import AppSidebarLeft from "@/components-App/AppSidebar/AppSidebarLeft.vue";
+import AppSignInDialog from "@/components-App/AppSignIn/AppSignInDialog.vue";
+const store = useAppStore(); //
+const { headerUp } = storeToRefs(store);
 
-const UserStore = useUserStore(); // 拿到管理用户信息的仓库
-const { userData } = storeToRefs(UserStore); // 响应式的结构变量
 const AppStore = useAppStore(); //
-
-//#region 路由管理
 
 const route = useRoute();
 const router = useRouter();
 
-//#endregion
-
-const headerUp = ref(true);
-
-const appHeader = ref<any>(null);
-const headerBc = ref<any>(null);
-
-const observer = new IntersectionObserver(
-  (entry: any) => {
-    ChangeHeaderStatus(entry);
-  },
-  {
-    root: appHeader.value,
-    threshold: 0,
-  }
-);
-
 const ChangeHeaderStatus = (entry: any) => {
   if (entry[0].isIntersecting) {
-    headerUp.value = true;
+    AppStore.headerUp = true;
   } else {
-    headerUp.value = false;
+    AppStore.headerUp = false;
   }
 };
+
+let observer: IntersectionObserver | null = null;
+
+const CreateIntersectionObserver = () => {
+  return new IntersectionObserver(
+    (entry: any) => {
+      ChangeHeaderStatus(entry);
+    },
+    {
+      root: null,
+      threshold: 0.5,
+    }
+  );
+};
+
+let element: HTMLElement | null;
+
+const observeElement = () => {
+  if (element) {
+    observer = CreateIntersectionObserver();
+    observer.observe(element);
+  }
+};
+
+const unobserveElement = () => {
+  if (element) {
+    observer?.unobserve(element);
+  }
+};
+
 onMounted(() => {
-  observer.observe(headerBc.value);
+  element = document.getElementById("LifeBusAppHeaderBc");
+  configShowTopImg(route.name as string);
+  observeElement();
 });
+onBeforeUnmount(() => {
+  unobserveElement();
+});
+
+//#region 路由管理 页面顶部图片展示
+const showTopImg = ref<boolean>(true);
+
+const configShowTopImg = (name: string) => {
+  if (["User", "UserSelf"].includes(name)) {
+    if (showTopImg.value) {
+      showTopImg.value = false;
+    }
+  } else {
+    if (!showTopImg.value) {
+      showTopImg.value = true;
+    }
+  }
+};
+
+onBeforeRouteUpdate((to) => {
+  configShowTopImg(to.name as string);
+});
+
+//#endregion
 </script>
 
 <style lang="scss" scoped>
+.fade-enter-active {
+  // 设置子路由过渡动画
+  // transition: all 0.3s ease-out;
+}
+
+.fade-leave-to {
+  // 设置子路由过渡动画
+  // opacity: 1;
+  // transform: translateX(0);
+}
+.fade-enter-from {
+  // 设置子路由过渡动画
+  // opacity: 0;
+  // transform: translateX(60px);
+}
+
 .layout1 {
   background-color: var(--jinn-bg3);
+  transition: all 0.3s ease-in-out;
   // background-color: #edeff6;
   margin: 0 auto;
-  width: 100%;
-  min-width: 1100px;
+  min-width: var(--jinn-min-width);
   max-width: 2560px;
-
+  // 媒介查询 // 动端适配
+  @include mobile {
+    min-width: 0;
+  }
   // 媒介查询 // 暂时不做移动端适配
   // @include respond-to("phone") {
   //   min-width: 1100px;
@@ -90,27 +163,47 @@ onMounted(() => {
   //   max-width: 2560px;
   // }
 
+  .layout-router-view {
+    .HeaderBc {
+      height: 155px;
+      width: 100%;
+      background-color: #ffffff;
+      background-repeat: no-repeat;
+      background-size: cover;
+      // background-position: center top -240px; /* 负值表示往上移动 */
+      background-position: center; /* 负值表示往上移动 */
+      overflow: hidden;
+      // transition: height 0.3s ease-in-out;
+    }
+    .AppRouterViewContent {
+      display: flex;
+      justify-content: center;
+      .AppSidebarLeft1 {
+        margin-top: 10px;
+      }
+      .AppSidebarLeft2 {
+        margin: 100px 10px 0 0;
+      }
+    }
+    .HeaderBcLight {
+      background-image: url("@/assets/home/hope.jpg");
+    }
+    .HeaderBcDark {
+      background-image: url("@/assets/home/123.jpg");
+    }
+    @media (min-height: 788px) {
+      min-height: calc(100vh - 140px);
+    }
+    @media (max-height: 787px) {
+      min-height: 683px;
+    }
+  }
 
   > .header,
   .layout1-footer {
     width: 100%;
     position: fixed;
     z-index: 1000;
-  }
-
-  .HeaderBc {
-    height: 155px;
-    width: 100%;
-    background-color: #ffffff;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center top -240px; /* 负值表示往上移动 */
-  }
-  .HeaderBcLight {
-    background-image: url("@/assets/home/hope.jpg");
-  }
-  .HeaderBcDark {
-    background-image: url("@/assets/home/123.jpg");
   }
 
   .layout1-footer {
@@ -123,6 +216,7 @@ onMounted(() => {
   }
   .bottom {
     height: 150px;
+    background-color: var(--jinn-bg6);
   }
 }
 </style>

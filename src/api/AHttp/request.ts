@@ -1,4 +1,5 @@
 import { ElMessage } from 'element-plus';
+import { useAppStore } from "@/stores/app/app";
 
 // 进行axios二次封装，使用请求与响应拦截器
 import axios from 'axios'
@@ -41,8 +42,9 @@ request.interceptors.response.use((res) => {
             message = error.response?.data;
             break;
         case 401:
-            message = '用户登录过期，请重新登录';
+            message = '用户登录过期或未登录，请重新登录。';   
             removeToken()
+            useAppStore().showLoginDialog = true;
             break;
         case 403:
             message = '无权访问';

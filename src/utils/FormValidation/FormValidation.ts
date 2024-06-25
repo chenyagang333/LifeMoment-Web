@@ -1,5 +1,5 @@
 import { ElMessage } from "element-plus";
-import { between8And16, haveLetters, havenumber, validatePhone, validateSpace } from "./RegExpHelper";
+import { between8And16, haveLetters, havenumber, validateEmail, validatePhone, validateSpace } from "./RegExpHelper";
 
 // #region 表单校验
 interface rules {
@@ -35,6 +35,13 @@ export function checkInputs(inputs: Array<RulesFormResult>): boolean {
 
 //#region 几种校验的input类型方法
 
+export const checkInputMail = (mail: string): RulesFormResult => { // 校验邮箱框
+    const rules = [
+        { rule: mail != '', msg: '邮箱不能为空' },
+        { rule: validateEmail(mail), msg: '邮箱格式有误' },
+    ];
+    return rulesForm(rules)
+};
 export const checkInputPhone = (telephone: string): RulesFormResult => { // 校验电话框
     const rules = [
         { rule: telephone != '', msg: '手机号码不能为空' },

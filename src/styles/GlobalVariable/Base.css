@@ -1,4 +1,8 @@
 :root {
   /* 文字颜色 */
   --jinn-text-color1: rgb(93, 131, 255);
+  /* 边框线弧度 */
+  --jinn-border-radius: 4px;
+  /* 宽度 */
+  --jinn-min-width:1130px;
 }

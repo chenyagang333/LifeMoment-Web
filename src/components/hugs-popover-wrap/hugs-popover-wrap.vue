@@ -18,8 +18,8 @@
     <Transition name="hugs-popover">
       <div
         class="popover"
-        v-if="display"
-        v-show="visible"
+        v-if="!keepDom && display"
+        v-show="display"
         :style="popoverStyle"
       >
         <div
@@ -43,18 +43,15 @@ const props = defineProps<{
   distance?: string; // padding-top
   trigger?: string; //
   animation?: string; //
+  keepDom?: boolean;
 }>();
 
-const display = ref(false); // v-if
-const visible = ref(false); // v-show
+const display = ref(false);
 const handleDisplay = (_display: boolean) => {
   // const handleDisplay = (_display: boolean, showType?: string) => {
   // if (props.showType !== showType) return
   //   if (_display) {
-  if (!display.value) {
-    display.value = true;
-  }
-  visible.value = _display;
+  display.value = _display;
   //   }
 };
 // 出现位置
@@ -77,9 +74,12 @@ popoverWrapStyle.paddingTop = props.distance ? props.distance + "px" : ""; // �
 </script>
 
 <style lang="scss" scoped>
-.hugs-popover-enter-active,
-.hugs-popover-leave-active {
-  transition: all 0.26s ease-in-out;
+// ,
+.hugs-popover-leave-active{
+  transition: all 0.1s ease-in-out;
+}
+.hugs-popover-enter-active {
+  transition: all 0.36s ease-in-out;
 }
 
 .hugs-popover-enter-from,

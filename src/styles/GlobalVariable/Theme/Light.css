@@ -2,19 +2,21 @@
 :root {
   /* 基本颜色 */
   --jinn-color1: white;
-  --jinn-color2: #213547;
+  --jinn-color2: #18191c;
   --jinn-color3: pink;
   --jinn-color4: rgb(255, 206, 213);
-  --jinn-color5: #8d8d8d;
+  --jinn-color5: rgb(141, 141, 141);
   /* 文字颜色 */
-  /* --jinn-text-color1: rgb(93, 131, 255); */
+  --jinn-text-c1: rgb(24, 25, 28);
+  --jinn-text-c2: rgb(22 24 35 / 60%);
   /* --jinn-text-color2: ; */
   /* 背景颜色 */
-  --jinn-bg1: rgba(245, 245, 245, 0.7);
-  --jinn-bg2: #e1e1e1;
-  --jinn-bg3: rgb(241 242 243);
+  --jinn-bg1: rgba(245, 245, 245, 0.6);
+  --jinn-bg2: rgb(241, 242, 243);
+  --jinn-bg3: rgb(241, 242, 245);
+  --jinn-bg4: rgb(255, 255, 255);
+  --jinn-bg5: rgb(237, 237, 237);
+  --jinn-bg6: rgb(249 249 250);
   /* 边框线颜色 */
   --jinn-border-color1: #e4e7ed;
-  /* 边框线弧度 */
-  --jinn-border-radius: 4px;
 }

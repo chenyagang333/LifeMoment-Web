@@ -2,18 +2,24 @@
   <el-header>
     <div class="headerImg">
       <hugs-popover-wrap distance="5" :position="avatarCardPosition ?? 'bc'">
-        <el-avatar :size="50" :src="userAvatar"></el-avatar>
+        <el-avatar
+          :size="50"
+          :src="userAvatar"
+          @click="$emit('clickUser')"
+        ></el-avatar>
         <template #popover>
           <div class="user-card radius-overflow-border">
-            <div class="user-card-header"></div>
+            <slot name="avatarCard"></slot>
           </div>
         </template>
       </hugs-popover-wrap>
     </div>
-    <div class="userName">{{ userName }}</div>
+    <div class="userName" @click="$emit('clickUser')">{{ userName }}</div>
     <div class="anputInfo">
-      <span class="showTime">{{ publishTime?.substring(0, publishTime.length - 3) }}</span>
-      <span class="showIP"> 发布于 {{ publishAddress }}</span>
+      <span class="showTime">{{ publishTime }}</span>
+      <span class="showIP" v-if="publishAddress">
+        发布于 {{ publishAddress }}</span
+      >
     </div>
   </el-header>
 </template>
@@ -27,7 +33,11 @@ const props = defineProps<{
   userName?: string;
   publishTime?: string;
   publishAddress?: string;
-  avatarCardPosition?:string;
+  avatarCardPosition?: string;
+}>();
+
+defineEmits<{
+  (e: "clickUser"): void;
 }>();
 </script>
 
@@ -40,19 +50,12 @@ const props = defineProps<{
     margin-right: 10px;
     position: relative;
 
+    .el-avatar {
+      background-image: url("@/assets/default/defaultAvatar.png");
+      background-size: cover;
+    }
     .user-card {
-      width: 350px;
-      height: 280px;
-      background-color: white;
-      .user-card-header{
-        height: 80px;
-        background-image: url("@/assets/home/hope.jpg");
-        background-repeat: no-repeat;
-        background-size: cover;
-        // background-position: center top;
-        background-position: center top -10px;
-        /* 负值表示往上移动 */
-      }
+      background-color: var(--jinn-bg4);
     }
   }
 
@@ -62,6 +65,11 @@ const props = defineProps<{
     $height: 26px;
     height: $height;
     line-height: $height;
+    color: var(--jinn-text-c1);
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   .anputInfo {
@@ -69,7 +77,7 @@ const props = defineProps<{
     height: $height;
     line-height: $height;
     font-size: 13px;
-    color: #646464;
+    color: var(--jinn-text-c2);
   }
 }
 </style>

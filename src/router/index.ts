@@ -17,12 +17,19 @@ let router = createRouter({
   history: createWebHistory(),
   routes: constantRoute,
   // 滚动行为
-  scrollBehavior() {
-    return {
-      left: 0,
-      top: 0,
-    };
-  },
+  // scrollBehavior() {
+  //   return {
+  //     left: 0,
+  //     top: 0,
+  //   };
+  // },
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  }
 });
 
 router.beforeEach((to, from, next) => {
@@ -30,7 +37,7 @@ router.beforeEach((to, from, next) => {
     if (!userData.value) {
       UserStore.getUserData();
     }
-  }else{
+  } else {
     userData.value = null;
   }
   // choosePush(to, next);
@@ -38,7 +45,7 @@ router.beforeEach((to, from, next) => {
 });
 
 // router.afterEach((to, from) => {
-  // configLanguage(to);
+// configLanguage(to);
 // });
 
 

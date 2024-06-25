@@ -1,11 +1,14 @@
 .radius-overflow {
-  border-radius: 4px;
+  border-radius: var(--jinn-border-radius);
   overflow: hidden;
 }
 .radius-overflow-border {
-  border-radius: 4px;
+  border-radius: var(--jinn-border-radius);
   overflow: hidden;
-  border: 1px solid var(--el-border-color-light);
+  border: 1px solid var(--jinn-border-color1);
+}
+.el-avatar {
+  border: 1.5px solid var(--jinn-border-color1);
 }
 
 

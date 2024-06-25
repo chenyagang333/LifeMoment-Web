@@ -1,0 +1,12 @@
+const app = getCurrentInstance();
+const FileIP: string = app?.appContext.config.globalProperties.$FileIP;
+
+import { useAppStore } from "@/stores/app/app";
+import { useUserStore } from "@/stores/user/user";
+import { storeToRefs } from "pinia";
+const store = useAppStore(); //
+const { headerUp } = storeToRefs(store);
+
+const AppStore = useAppStore(); //
+const UserStore = useUserStore(); // 拿到管理用户信息的仓库
+const { userData } = storeToRefs(UserStore); // 响应式的结构变量

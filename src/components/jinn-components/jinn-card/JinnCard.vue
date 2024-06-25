@@ -1,6 +1,6 @@
 <template>
   <template v-if="showDisplay">
-    <div class="JinnCard" :class="ShowClass" ref="showRef">
+    <div class="JinnCard">
       <!-- 更多 -------------------------------------------------------->
       <slot></slot>
       <!-- 顶部 -------------------------------------------------------->
@@ -12,9 +12,19 @@
         :publishTime="createTime"
         :publishAddress="publishAddress"
         :avatarCardPosition="avatarCardPosition"
-      ></card-header>
+        @clickUser="$emit('clickUser')"
+      >
+        <template #avatarCard>
+          <slot name="avatarCard"></slot>
+        </template>
+      </card-header>
       <!-- show内容 -------------------------------------------------------->
-      <card-main :content="content" :files="files" @clickFile="(index:number) => $emit('clickFile',index)"> </card-main>
+      <card-main
+        :content="content"
+        :files="files"
+        @clickFile="(index:number) => $emit('clickFile',index)"
+      >
+      </card-main>
       <!-- 点赞，评论等 -------------------------------------------------------->
       <div class="card-footer">
         <!-- 点赞评论等选项 -->
@@ -60,25 +70,18 @@
 <script setup lang="ts">
 import { ref, computed, nextTick } from "vue";
 import cardHeader from "./card-header.vue";
-import cardOption from "./more-option.vue";
 import cardMain from "./card-main.vue";
-import cardFooter from "./card-footer.vue";
-import myComment from "./card-extend/my-comment.vue";
-import cardRight from "./card-extend/card-right/card-right.vue";
-import { ShowType } from "@/types/Layout1/youshow/youshow";
-import hugsPopoverWrap from "@/components/hugs-popover-wrap/hugs-popover-wrap.vue";
-import { ElMessage } from "element-plus";
 import commentOption from "@/components/comment-option/category1.vue";
 import commentOption2 from "@/components/comment-option/category2.vue";
-
-const showRef = ref();
 
 const emit = defineEmits<{
   (e: "changeLikeState", active: boolean, func: any): void;
   (e: "comment-handler"): void;
   (e: "changeStarState", active: boolean, func: any): void;
-  (e: "clickFile",index:number): void;
+  (e: "clickFile", index: number): void;
+  (e: "clickUser"): void;
 }>();
+
 const likeActive = defineModel<boolean>("likeActive", { default: false });
 const starActive = defineModel<boolean>("starActive", { default: false });
 const likeCount = defineModel<number>("likeCount", { default: 0 });
@@ -100,23 +103,8 @@ const props = defineProps<{
   starActive: boolean;
   viewCount: number;
 
-
-  avatarCardPosition?:string;
+  avatarCardPosition?: string;
 }>();
-
-//#region 抽屉模块
-
-// const InitDrawer = async () => {
-//   openShow.value = true;
-//   // showRef.value.scrollIntoView({ behavior: 'smooth', block: 'start' });
-//   const offset =
-//     showRef.value.getBoundingClientRect().top + window.scrollY - 60;
-//   // 调用 scrollTo() 方法使其滚动到指定位置
-//   await nextTick();
-//   window.scrollTo({ top: offset, behavior: "smooth" });
-// };
-
-//#endregion
 
 //#region 右上角更多模块
 
@@ -126,11 +114,9 @@ const removingAnimations = () => {
   showDisplay.value = false;
 };
 
-const openShow = ref(false);
-const ShowClass = computed(() => (openShow.value ? "show-display" : ""));
+// const openShow = ref(false);
+// const ShowClass = computed(() => (openShow.value ? "show-display" : ""));
 //#endregion
-
-const haveFile = computed(() => files && files.length > 0);
 </script>
 
 <style lang="scss" scoped>
@@ -138,74 +124,19 @@ const haveFile = computed(() => files && files.length > 0);
   font-size: 15px;
 }
 
-
 .JinnCard {
-  background-color: rgb(255, 255, 255);
+  background-color: var(--jinn-color1);
+  transition: all 0.3s ease-in-out;
+  border: 1px solid var(--jinn-border-color1);
   // max-width: 700px;
-  min-width: 335px;
+  // min-width: 335px;
+  width: 100%;
   margin: 0 auto;
   margin-bottom: 10px;
-  border: 1px solid var(--el-border-color-light);
   border-radius: 4px;
   position: relative;
-  transition: height 0.3s, border 0.04s, margin-bottom 0.3s;
-  @include respond-to("phone") {
-    width: 100%;
-  }
-  @include respond-to("pad") {
-    width: 100%;
-  }
-  @include respond-to("notebook") {
-    width: 650px;
-  }
-  @include respond-to("desktop") {
-    width: 650px;
-  }
-  @include respond-to("tv") {
-    width: 650px;
-  }
+  // transition: height 0.3s, border 0.04s, margin-bottom 0.3s;
 
-  // 头部
-  .el-header {
-    padding-top: 10px;
-
-    .headerImg {
-      float: left;
-      margin-right: 10px;
-      position: relative;
-
-      .user-card {
-        width: 350px;
-        height: 280px;
-        background-color: white;
-        .user-card-header {
-          height: 80px;
-          background-image: url("@/assets/home/hope.jpg");
-          background-repeat: no-repeat;
-          background-size: cover;
-          // background-position: center top;
-          background-position: center top -10px;
-          /* 负值表示往上移动 */
-        }
-      }
-    }
-
-    .userName {
-      font-size: 16px;
-      font-weight: 500;
-      $height: 26px;
-      height: $height;
-      line-height: $height;
-    }
-
-    .anputInfo {
-      $height: 26px;
-      height: $height;
-      line-height: $height;
-      font-size: 13px;
-      color: #646464;
-    }
-  }
   // 底部
   .card-footer {
     padding: 20px;
@@ -216,7 +147,7 @@ const haveFile = computed(() => files && files.length > 0);
       align-items: center;
       justify-content: space-between;
       height: 40px;
-      border-bottom: 1px solid var(--el-border-color-light);
+      border-bottom: 1px solid var(--jinn-border-color1);
       margin-bottom: 10px;
       .views {
         font-size: 14px;

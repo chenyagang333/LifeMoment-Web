@@ -28,7 +28,6 @@ export function afterExecutionAsync(func: () => Promise<void>) {
     let isExecuting = false;
     return async function () {
         if (!isExecuting) {
-            console.log('789 :>> ', isExecuting);
             isExecuting = true;
             await func();
             isExecuting = false;

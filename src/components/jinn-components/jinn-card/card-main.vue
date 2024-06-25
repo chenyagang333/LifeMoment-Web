@@ -6,7 +6,7 @@
             <el-image :src="i" fit="cover" />
         </div> -->
       <template v-if="files.length === 1">
-        <div class="signal" @click="$emit('clickFile',0)">
+        <div class="signal" @click="$emit('clickFile', 0)">
           <img
             class="signal-image radius-overflow"
             v-if="files[0].type === FileType.image"
@@ -26,7 +26,7 @@
             class="files radius-overflow"
             v-for="(i, index) in files"
             :key="index"
-            @click="$emit('clickFile',index)"
+            @click="$emit('clickFile', index)"
           >
             <img
               v-if="i.type === FileType.image"
@@ -60,10 +60,8 @@ const props = defineProps<{
 }>();
 
 defineEmits<{
-  (e: "clickFile",index:number): void;
+  (e: "clickFile", index: number): void;
 }>();
-
-
 
 const fileNumTypeClass = computed(() =>
   props.files?.length === 2 || props.files?.length === 4
@@ -79,7 +77,7 @@ const fileNumTypeClass = computed(() =>
     line-height: 1.5;
     font-size: 15px;
     width: 100%;
-    color: #000000;
+    color: var(--jinn-color2);
     word-break: break-all;
   }
   .main-files {
@@ -160,32 +158,37 @@ const fileNumTypeClass = computed(() =>
       }
     }
   }
-  @include getCardStyle(409px) {
-    padding-left: 80px;
+  // @include getCardStyle(400px) {
+  //   padding-left: 80px;
+  // }
+  // 移动端适配
+  @include respond-to("phone") {
+    @include getCardStyle(339px) {
+      padding-left: 20px;
+    }
   }
-  // 放弃移动端适配
-  // @include respond-to("phone") {
-  //   @include getCardStyle(299px) {
-  //     padding-left: 20px;
-  //   }
-  // }
-  // @include respond-to("pad") {
-  //   @include getCardStyle(319px) {
-  //     padding-left: 80px;
-  //   }
-  // }
+  @include respond-to("pad") {
+    @include getCardStyle(369px) {
+      padding-left: 80px;
+    }
+  }
+  @include pc {
+    @include getCardStyle(409px) {
+      padding-left: 80px;
+    }
+  }
   // @include respond-to("notebook") {
-  //   @include getCardStyle(329px) {
+  //   @include getCardStyle(400px) {
   //     padding-left: 80px;
   //   }
   // }
   // @include respond-to("desktop") {
-  //   @include getCardStyle(369px) {
+  //   @include getCardStyle(400px) {
   //     padding-left: 80px;
   //   }
   // }
   // @include respond-to("tv") {
-  //   @include getCardStyle(409px) {
+  //   @include getCardStyle(400px) {
   //     padding-left: 80px;
   //   }
   // }

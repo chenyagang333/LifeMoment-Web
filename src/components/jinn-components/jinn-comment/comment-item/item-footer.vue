@@ -1,7 +1,10 @@
 <template>
   <div class="item-footer">
     <!-- 该评论-位置信息和发布时间 -->
-    <div class="anputInfo">{{ publishTime.substring(0,publishTime.length - 3) }} · {{ publishAddress }}</div>
+    <div class="anputInfo">
+      {{ publishTime.substring(0,publishTime.length - 3) }}
+      <span v-if="publishAddress"> · {{ publishAddress }}</span>
+      </div>
     <!-- 该评论-点赞评论按钮 -->
     <div class="options">
       <slot></slot>

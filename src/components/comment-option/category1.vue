@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { ref ,nextTick} from "vue";
+import { ref, nextTick } from "vue";
 
 const emit = defineEmits<{
   (e: "change-status", active: boolean, func: any): void;
@@ -77,7 +77,7 @@ const toggleCount = () => {
   margin-right: 20px;
   cursor: pointer;
 
-  color: #5c5c5c;
+  color: var(--jinn-text-c1);
   .bi {
     font-size: 20px;
   }

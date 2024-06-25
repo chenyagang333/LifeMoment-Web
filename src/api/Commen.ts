@@ -22,13 +22,18 @@ export const GetAddressAsync = async () => { //  =>
         key: "b9fe1600bd434cee8375f822b3e0da15",
         ip: userData.value?.ip
     }
-    return (await request.get<any>(API.GetAddress, { params })).data;
-};
-export const GetAddressByYouShowAsync = async () => {
     try {
-        return await get('YouShow/GetAddress');
+        const res = (await request.get<any>(API.GetAddress, { params })).data
+        return res ?? "未知";
     } catch {
         return "未知"
     }
+};
+export const GetAddressByYouShowAsync = async () => {
+    const res = await get('YouShow/GetAddress');
+    if (res.code === 200) {
+        return res.data;
+    }
+    return "";
 }
 

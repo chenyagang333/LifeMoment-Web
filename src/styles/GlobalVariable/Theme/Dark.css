@@ -6,12 +6,15 @@ html[data-theme="dark"] {
   --jinn-color4: rgb(151, 148, 255);
   --jinn-color5: #aac8e4;
   /* 文字颜色 */
-  /* --jinn-text-color1: rgb(93, 131, 255); */
-  /* --jinn-text-color2: ; */
+  --jinn-text-c1: rgb(255 255 255 / 87%);
+  --jinn-text-c2: rgb(255 255 255 / 67%);
   /* 背景颜色 */
   --jinn-bg1: rgba(10, 10, 10, 0.7);
-  --jinn-bg2: #2f2f2f;
-  --jinn-bg3: #1a1a1a;
+  --jinn-bg2: rgb(47, 47, 47);
+  --jinn-bg3: rgb(22, 25, 35);
+  --jinn-bg4: black;
+  --jinn-bg5: rgb(46, 46, 46);
+  --jinn-bg6: rgb(37 38 50);
   /* 边框线颜色 */
   --jinn-border-color1: rgb(84 84 84 / 48%);
 }

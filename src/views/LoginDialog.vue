@@ -11,7 +11,8 @@
         <q-tabs v-model="activeName" dense align="justify">
           <q-tab class="text-blue" name="passwordLogin" label="密码登录">
           </q-tab>
-          <q-tab class="text-orange" name="smsLogin" label="短信登陆" />
+          <q-tab class="text-orange" name="mailLogin" label="邮箱登陆" />
+          <!-- <q-tab class="text-orange" name="smsLogin" label="短信登陆" /> -->
         </q-tabs>
         <q-tab-panels v-model="activeName" animated>
           <q-tab-panel name="passwordLogin">
@@ -52,7 +53,49 @@
               </div>
             </div>
           </q-tab-panel>
-          <q-tab-panel name="smsLogin">
+          <q-tab-panel name="mailLogin">
+            <div class="text-h6">
+              <div class="right-main right-main-smsLogin">
+                <el-input
+                  v-model="email"
+                  size="large"
+                  clearable
+                  placeholder="请输入邮箱"
+                >
+                  <template #prefix>
+                    <span class="text">邮箱号</span>
+                  </template>
+                  <template #append
+                    ><CountDown
+                      style="margin: 0 -20px; padding: 0 20px"
+                      :time="2"
+                      @send-code="(func:any) => sendCodeByMail(func)"
+                    ></CountDown
+                  ></template> </el-input
+                ><br />
+                <el-input
+                  v-model="code"
+                  size="large"
+                  placeholder="请输入验证码"
+                >
+                  <template #prefix>
+                    <span class="text">验证码</span>
+                  </template> </el-input
+                ><br />
+                <el-button
+                  color="#ff9800 "
+                  size="large"
+                  type="primary"
+                  plain
+                  :loading="loginLoading"
+                  @click="LoginByEmail"
+                >
+                  登录/注册
+                </el-button>
+              </div>
+            </div>
+          </q-tab-panel>
+          <!-- <q-tab-panel name="smsLogin">
             <div class="text-h6">
               <div class="right-main right-main-smsLogin">
                 <el-input
@@ -66,8 +109,9 @@
                   </template>
                   <template #append
                     ><CountDown
+              style="margin: 0 -20px; padding: 0 20px"
                       :time="2"
-                      @send-code="(func:any) => sendCode(func)"
+                      @send-code="(func:any) => sendCodeByPhoneNumber(func)"
                     ></CountDown
                   ></template> </el-input
                 ><br />
@@ -92,7 +136,7 @@
                 </el-button>
               </div>
             </div>
-          </q-tab-panel>
+          </q-tab-panel> -->
         </q-tab-panels>
       </div>
     </div>
@@ -114,14 +158,21 @@ import { useRoute, useRouter } from "vue-router";
 import { useUserStore } from "@/stores/user/user";
 import { setToken } from "@/utils/token.ts";
 import CountDown from "@/components/CountDown.vue";
-import { Login, LoginByPhoneSMS, SendCodeBySMSLogin } from "@/api/LoginDialog";
+import {
+  Login,
+  LoginByMail,
+  LoginByPhoneSMS,
+  SendCodeByLogin,
+} from "@/api/LoginDialog";
 import {
   checkInputs,
   checkInputPhone,
   checkInputPassword,
   checkInputCode,
+  checkInputMail,
 } from "@/utils/FormValidation/FormValidation";
 import { ElMessage, ElNotification } from "element-plus";
+import { validateEmail } from "@/utils/FormValidation/RegExpHelper";
 
 const emit = defineEmits<{
   (e: "CloseDialog"): void;
@@ -175,6 +226,7 @@ const userLogin = async () => {
 
 //#region 短信登陆
 
+const email = ref("");
 const phoneNumber = ref("");
 const code = ref("");
 
@@ -195,13 +247,40 @@ const userLoginBySMS = async () => {
     loginLoading.value = false;
   }
 };
+const LoginByEmail = async () => {
+  if (!loginLoading.value) {
+    const callback = checkInputs([
+      checkInputMail(email.value),
+      checkInputCode(code.value),
+    ]);
+    if (!callback) return;
+    loginLoading.value = true;
+    const res = await LoginByMail(email.value, code.value);
+    if (res.code == 200) {
+      await LoginSuccessFunc(res.data);
+    } else {
+      ElMessage.error(res.message);
+    }
+    loginLoading.value = false;
+  }
+};
 
-const sendCode = async (func: any) => {
+const sendCodeByPhoneNumber = async (func: any) => {
   const callback = checkInputs([checkInputPhone(phoneNumber.value)]);
   if (!callback) return;
-  const res = await SendCodeBySMSLogin(phoneNumber.value);
+  const res = await SendCodeByLogin(phoneNumber.value);
   if (res.code == 200) {
     func();
+  }
+};
+const sendCodeByMail = async (func: any) => {
+  const callback = checkInputs([checkInputMail(email.value)]);
+  if (!callback) return;
+  func();
+  const res = await SendCodeByLogin(email.value);
+  if (res.code !== 200) {
+    func();
+    ElMessage.error(res.message);
   }
 };
 
@@ -215,6 +294,7 @@ const LoginSuccessFunc = async (token: string) => {
     title: "登陆成功！",
     message: "欢迎回来。",
     type: "success",
+    position: 'top-left',
   });
 };
 
@@ -228,12 +308,11 @@ const userRegister = () => {};
   align-items: center;
   justify-content: space-between;
   .left {
-    width: 26%;
+    width: 32%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-right: 10px;
     .el-avatar {
       border: 2px solid #919191;
     }
@@ -244,7 +323,7 @@ const userRegister = () => {};
   }
   .right {
     text-align: center;
-    width: 70%;
+    width: 66%;
     margin-right: 10px;
     border: 1px solid var(--el-border-color);
     .lable {

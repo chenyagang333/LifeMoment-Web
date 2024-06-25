@@ -4,7 +4,7 @@
     <a-spin
       tip="&nbsp;&nbsp;加载中"
       dot
-      :loading="commentContentInit"
+      :loading="!commentContentInitEnd"
       style="width: 100%"
     >
       <!-- 评论内容区域 -->
@@ -68,10 +68,13 @@
           </div>
         </comment-item>
         <!-- 加载动画 -->
-        <template v-if="!commentContentInit">
-          <span class="comment-end" v-if="commentLoadEnd"
-            >暂时没有更多评论</span
-          >
+        <template v-if="commentContentInitEnd">
+          <template v-if="commentLoadEnd">
+            <AppEmpty
+              v-if="newComments.length == 0 && comments.length == 0"
+            ></AppEmpty>
+            <span class="comment-end" v-else>暂时没有更多评论</span>
+          </template>
           <a-spin v-else dot />
         </template>
       </div>
@@ -81,21 +84,17 @@
 
 <script setup lang="ts">
 import { nextTick, onMounted, computed, ref, reactive } from "vue";
-import CommentAdd from "@/components/comment-add/CommentAdd.vue";
 import commentItem from "./comment-item/comment-item.vue";
 import itemReply from "./comment-item/item-reply.vue";
-import myMessage from "@/components/message/my-message.vue";
 import { useUserStore } from "@/stores/user/user";
 import { storeToRefs } from "pinia";
-import { get, del, post } from "@/api/AHttp/api";
-import { ElMessage, ClickOutside as vClickOutside } from "element-plus";
-import { afterExecutionAsync } from "@/utils/utils";
+import { ElMessage } from "element-plus";
 import GetNowData from "@/utils/Time/NowDate";
 import { GetAddressByYouShowAsync } from "@/api/Commen";
-import { ApiResult } from "@/api/AHttp/api";
 import type { CommentItem, CallBack } from "./comment-type.ts";
 import { CommentType } from "./comment-type.ts";
 import { FuncResult } from "@/components/jinn-types/ResultGenerics/ResultGenerics";
+import AppEmpty from "@/components-App/AppEmpty/AppEmpty.vue";
 
 const UserStore = useUserStore(); // 拿到管理用户信息的仓库
 const { userData } = storeToRefs(UserStore); // 响应式的结构变量
@@ -133,36 +132,43 @@ const emit = defineEmits<{
 
 //#region 评论数据初始化
 
-const commentContentInit = ref(true);
-onMounted(async () => {
-  await pagingQueryComment();
-  commentContentInit.value = false; // 初始化加载动画
+const commentContentInitEnd = ref(false);
+onMounted(() => {
+  pagingQueryComment();
 });
 
 //#endregion
 
 //#region 加载评论
-
+const loadDataIng = ref<boolean>(false);
 const commentLoadEnd = ref(false);
 const comments = ref<Array<CommentItem>>([]);
 let commentPageIndex = 1;
-const pagingQueryComment = afterExecutionAsync(async () => {
-  const pageSize = 10;
-  // 触发其定义事件，调用外部查询方法，查询成功，调用匿名函数，查询的数据作为参数
-  emit("loadComment", pageSize, commentPageIndex, (data: CommentItem[]) => {
-    if (data?.length > 0) {
-      commentPageIndex++;
-      const commentIds = comments.value.map((x) => x.id);
-      const newCommentIds = newComments.value.map((x) => x.id);
-      const ids = [...commentIds, ...newCommentIds];
-      const filterData = data.filter((x: any) => !ids.includes(x.id));
-      comments.value.push(...filterData);
-    }
-    if (data?.length < pageSize) {
-      commentLoadEnd.value = true;
-    }
-  });
-});
+const pagingQueryComment = () => {
+  if (!loadDataIng.value) {
+    // 防止多次加载相同数据
+    loadDataIng.value = true;
+    const pageSize = 10;
+    // 触发其定义事件，调用外部查询方法，查询成功，调用匿名函数，查询的数据作为参数
+    emit("loadComment", pageSize, commentPageIndex, (data: CommentItem[]) => {
+      if (data?.length > 0) {
+        commentPageIndex++;
+        const commentIds = comments.value.map((x) => x.id);
+        const newCommentIds = newComments.value.map((x) => x.id);
+        const ids = [...commentIds, ...newCommentIds];
+        const filterData = data.filter((x: any) => !ids.includes(x.id));
+        comments.value.push(...filterData);
+      }
+      if (data?.length < pageSize) {
+        commentLoadEnd.value = true;
+      }
+      loadDataIng.value = false;
+      if (!commentContentInitEnd.value) {
+        commentContentInitEnd.value = true; // 结束初始化加载动画
+      }
+    });
+  }
+};
 
 //#endregion
 
@@ -172,8 +178,8 @@ const builderParams = async (content: string): Promise<CommentItem> => {
   const resAddress = await GetAddressByYouShowAsync();
   return {
     id: 0,
-    userId: userData.value?.userId!,
-    userAvatarURL: userData.value?.avatarImageURL!,
+    userId: userData.value?.id!,
+    userAvatarURL: userData.value?.userAvatar!,
     userName: userData.value?.userName!,
     createTime: GetNowData(),
     publishAddress: resAddress,

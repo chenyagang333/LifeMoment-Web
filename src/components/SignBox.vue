@@ -1,6 +1,6 @@
 <template>
   <div class="sign">
-    <div class="btn" :style="{color:color}">
+    <div class="btn" :style="{ color: color }">
       <img v-if="logoSrc" class="logo-img" :src="logoSrc" alt="MyChat" />
       <slot></slot>
     </div>
@@ -8,10 +8,9 @@
 </template>
 
 <script setup lang="ts">
-
 defineProps<{
   logoSrc?: string;
-  color?:string;
+  color?: string;
 }>();
 </script>
 
@@ -21,7 +20,7 @@ defineProps<{
   $sign-color: rgb(255, 191, 71);
   font-size: 30px;
   line-height: $content-height;
-  color: var(--jinn-text-color1);
+  color: white;
   cursor: pointer;
   transition: color 0.3s, background-color 1s ease-out;
   padding: 0 15px;
@@ -79,7 +78,6 @@ defineProps<{
     > img {
       width: 40px;
       height: 40px;
-      margin-right: 10px;
     }
   }
 }

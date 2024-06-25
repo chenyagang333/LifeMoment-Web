@@ -2,6 +2,8 @@
 // import elAvatarCover from "./el-avatar-cover/index.vue";
 // 引入element-plus提供全部图标组件
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
+
+
 // 全局对象
 const allGloablComponent: any = {  };
 
