@@ -35,7 +35,7 @@ export default {
   emailLogin:"youshow注册",//
   account:"账号",
   password:"密码",
-  accountTip:"支持HUGS账号/用户名/手机号/邮箱登录", // 
+  accountTip:"支持账号/用户名/手机号/邮箱登录", // 
   passwordTip:"请输入密码",
   register:"注册",
   emailNum:"邮箱号",

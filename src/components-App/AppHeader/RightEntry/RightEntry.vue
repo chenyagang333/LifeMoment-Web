@@ -113,6 +113,7 @@
     width="850"
     :show-close="false"
     top="30vh"
+    destroy-on-close
   >
     <template #header>
       <div></div>
@@ -213,9 +214,9 @@ const goUserPage = () => {};
   }
   .card {
     // 统一样式
-    border: 1px solid var(--jinn-border-color1);
+    border: 1px solid var(--el-border-color);
     border-radius: 4px;
-    background-color: var(--jinn-color1);
+    background-color: var(--el-bg-color-overlay);
   }
   // 未登录选项
   .login {
@@ -230,7 +231,7 @@ const goUserPage = () => {};
       width: 366px;
       padding: 15px 26px;
       user-select: none;
-      color: var(--jinn-color2);
+      color: var(--el-text-color-primary);
       .lable {
         font-size: 15px;
       }
@@ -290,11 +291,11 @@ const goUserPage = () => {};
     .no-user {
       width: 306px;
       padding: 15px 26px;
-      color: --jinn-color2;
+      color: --el-text-color-primary;
       user-select: none;
       font-size: 15px;
       .lab {
-        color: var(--jinn-color2);
+        color: var(--el-text-color-primary);
         text-align: center;
       }
       .btn {
@@ -322,7 +323,7 @@ const goUserPage = () => {};
         height: 35px;
         line-height: 35px;
         font-size: 15px;
-        color: var(--jinn-color2);
+        color: var(--el-text-color-primary);
         cursor: pointer;
         transition: all 0.2s;
         &:hover {
@@ -334,7 +335,7 @@ const goUserPage = () => {};
   .language {
     .card {
       .option {
-        color: var(--jinn-color2);
+        color: var(--el-text-color-primary);
         text-align: center;
         height: 35px;
         line-height: 35px;
@@ -367,10 +368,10 @@ const goUserPage = () => {};
 }
 .RightEntryDown {
   > div {
-    color: var(--jinn-color2);
+    color: var(--el-text-color-primary);
   }
   .login-text {
-    border: 1.5px solid var(--jinn-color2);
+    border: 1.5px solid var(--el-text-color-primary);
   }
 }
 

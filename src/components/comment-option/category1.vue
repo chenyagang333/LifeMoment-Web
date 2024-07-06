@@ -77,7 +77,7 @@ const toggleCount = () => {
   margin-right: 20px;
   cursor: pointer;
 
-  color: var(--jinn-text-c1);
+  color: var(--el-text-color-primary);
   .bi {
     font-size: 20px;
   }

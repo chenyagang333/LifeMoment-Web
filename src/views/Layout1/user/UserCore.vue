@@ -34,7 +34,7 @@
               </div>
               <JinnDescription
                 class="description"
-                color="var(--jinn-text-c1)"
+                color="var(--el-text-color-primary)"
                 :content="userData?.description"
               ></JinnDescription>
             </div>
@@ -247,7 +247,7 @@ const handleOkSetData = (relative: string) => {
           justify-content: space-between;
           width: 80%;
           .el-avatar {
-            border: 1px solid var(--jinn-color1);
+            border: 1px solid var(--el-bg-color-overlay);
           }
           .data {
             display: flex;
@@ -256,7 +256,7 @@ const handleOkSetData = (relative: string) => {
             width: calc(100% - 132px);
             .userName {
               font-size: 20px;
-              color: var(--jinn-text-c1);
+              color: var(--el-text-color-primary);
             }
             .userQ {
               display: flex;
@@ -266,22 +266,22 @@ const handleOkSetData = (relative: string) => {
                 display: flex;
                 align-items: center;
                 font-size: 14px;
-                color: var(--jinn-text-c2);
+                color: var(--el-text-color-regular);
                 .value {
                   font-size: 15px;
-                  color: var(--jinn-text-c1);
+                  color: var(--el-text-color-primary);
                   padding-left: 6px;
                 }
               }
             }
             .account {
               font-size: 12px;
-              color: var(--jinn-text-c2);
+              color: var(--el-text-color-regular);
             }
             .description {
               font-size: 13px;
               width: 86%;
-              color: var(--jinn-text-c1);
+              color: var(--el-text-color-primary);
             }
           }
         }

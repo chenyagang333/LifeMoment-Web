@@ -70,7 +70,7 @@ onMounted(() => {
       padding: 3px 0;
       .top {
         font-size: 15px;
-        color: var(--jinn-text-c1);
+        color: var(--el-text-color-primary);
 
         > span {
           cursor: pointer;
@@ -81,7 +81,7 @@ onMounted(() => {
       }
       .bottom {
         font-size: 13px;
-        color: var(--jinn-text-c1);
+        color: var(--el-text-color-primary);
       }
     }
     .BriefIntroduction {
@@ -91,7 +91,7 @@ onMounted(() => {
       display: flex;
       align-items: center;
       font-size: 12px;
-      color: var(--jinn-text-c2);
+      color: var(--el-text-color-regular);
     }
   }
 }

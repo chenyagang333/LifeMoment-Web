@@ -48,7 +48,7 @@ if (keyExists) {
   cursor: pointer;
   margin-right: 20px;
 
-  color: var(--jinn-text-c1);
+  color: var(--el-text-color-primary);
   .bi {
     font-size: 20px;
   }

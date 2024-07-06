@@ -64,12 +64,12 @@ onMounted(() => {
     padding: 10px;
     position: sticky;
     top: 74px;
-    background-color: var(--jinn-color1);
+    background-color: var(--el-bg-color-overlay);
     transition: all 0.3s ease-in-out;
-    border-radius: var(--jinn-border-radius);
-    border: 1px solid var(--jinn-border-color1);
+    border-radius: var(--el-border-radius-base);
+    border: 1px solid var(--el-border-color);
     > h2 {
-      color: var(--jinn-text-c1);
+      color: var(--el-text-color-primary);
       font-family: PingFang SC, DFPKingGothicGB-Medium, sans-serif;
       font-weight: 500;
       line-height: 26px;
@@ -78,7 +78,7 @@ onMounted(() => {
     }
     .JinnButton {
       font-size: 16px;
-      color: var(--jinn-text-c2);
+      color: var(--el-text-color-regular);
       gap: 10px;
     }
   }

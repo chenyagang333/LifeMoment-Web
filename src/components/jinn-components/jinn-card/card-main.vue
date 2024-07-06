@@ -77,7 +77,7 @@ const fileNumTypeClass = computed(() =>
     line-height: 1.5;
     font-size: 15px;
     width: 100%;
-    color: var(--jinn-color2);
+    color: var(--el-text-color-primary);
     word-break: break-all;
   }
   .main-files {

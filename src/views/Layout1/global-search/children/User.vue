@@ -97,8 +97,8 @@ onUnmounted(() => {
   flex-wrap: wrap;
   gap: 10px;
   .el-card {
-    background-color: var(--jinn-color1);
-    border: 1px solid var(--jinn-border-color1);
+    background-color: var(--el-bg-color-overlay);
+    border: 1px solid var(--el-border-color);
     height: 156px;
     // 媒介查询
     @include respond-to("phone") {

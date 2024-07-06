@@ -3,7 +3,7 @@
     <div
       class="content ellipsis"
       ref="BriefIntroductionContent"
-      :style="{ color: color ?? 'var(--jinn-text-c2)' }"
+      :style="{ color: color ?? 'var(--el-text-color-regular)' }"
     >
       {{ content }}
     </div>
@@ -14,10 +14,10 @@
           style="
             width: 230px;
             background-color: var(--jinn-bg3);
-            color: var(--jinn-text-c1);
+            color: var(--el-text-color-primary);
             padding: 10px;
             font-size: 13px;
-            border-radius: var(--jinn-border-radius);
+            border-radius: var(--el-border-radius-base);
             border: 1px solid var(--jinn-color3);
           "
         >
@@ -58,7 +58,7 @@ const showMoreContent = computed<boolean>(() => {
   align-items: center;
   font-size: 12px;
   > .content {
-    color: var(--jinn-text-c2);
+    color: var(--el-text-color-regular);
     width: calc(100% - 26px);
   }
   .ellipsis {

@@ -1,33 +1,41 @@
 <template>
   <div class="AppTabs">
-    <q-tabs v-model="drawerTab" class="bg-grey-1" dense align="justify">
-      <q-tab class="text-orange" name="TA" label="TA的作品" />
-      <q-tab class="text-cyan" name="comment" label="评论" />
-      <!-- <q-tab class="text-red" name="movies" label="Movies" /> -->
-    </q-tabs>
-    <q-tab-panels keep-alive v-model="drawerTab" animated>
-      <!-- 他的作品 -->
-      <q-tab-panel name="TA">
-        <div class="text-h6">Mails</div>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-        <slot name="TA"></slot>
-      </q-tab-panel>
-      <!-- ----------------------------评论区----------------------------- -->
-      <q-tab-panel name="comment">
-        <!-- <JinnComment
-          :showId="showId"
-        ></JinnComment> -->
-        <AppComment
-          :showId="showId"
-          v-model:comment-count="commentCount"
-        ></AppComment>
-      </q-tab-panel>
-    </q-tab-panels>
+    <el-tabs
+      stretch
+      v-model="drawerTab"
+      :style="{ '--el-color-primary': computedTabColor }"
+      style="height: 36px;"
+    >
+      <el-tab-pane label="TA的作品" name="TA">
+        <template #label>
+          <span style="color: #ff9800;">TA的作品</span>
+        </template>
+      </el-tab-pane>
+      <el-tab-pane
+      label="评论"
+      name="comment"
+      >
+      <template #label>
+        <span style="color: #00bcd4;">评论</span>
+      </template>
+      </el-tab-pane>
+    </el-tabs>
+    <div class="base-tab-pane" v-show="drawerTab == 'TA'">
+      <div class="text-h6">Mails</div>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+      <slot name="TA"></slot>
+    </div>
+    <div class="base-tab-pane" v-show="drawerTab == 'comment'">
+      <AppComment
+        :showId="showId"
+        v-model:comment-count="commentCount"
+      ></AppComment>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import JinnComment from "@/components/jinn-components/jinn-comment/jinn-comment.vue";
 import AppComment from "@/components-App/AppComment/AppComment.vue";
 
@@ -41,20 +49,18 @@ const commentCount = defineModel<number>("commentCount", {
 });
 
 const drawerTab = ref("comment");
+
+const computedTabColor = computed(() => {
+  return drawerTab.value == "comment" ? "#00bcd4" : "#ff9800";
+});
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .AppTabs {
   height: 100%;
-}
-.q-tab-panels{
-  height: 100%;
-  
-}
-.q-panel{
-  height: 100%;
-}
-.q-tab-panel{
-    height: calc(100% - 36px) ;
+  .base-tab-pane {
+    padding: 16px;
+    height: calc(100% - 36px);
+  }
 }
 </style>

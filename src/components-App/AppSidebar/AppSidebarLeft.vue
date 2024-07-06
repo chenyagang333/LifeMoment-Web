@@ -7,7 +7,7 @@
         :key="index"
         @click="navClickHandle(index, i)"
         :style="{
-          backgroundColor: navIndex === index ? 'var(--jinn-bg5)' : '',
+          backgroundColor: navIndex === index ? 'var(--el-bg-color-page)' : '',
         }"
       >
         <i
@@ -112,9 +112,9 @@ const updateNavIndex = (path: string) => {
     top: 75px;
   }
   .hot-show {
-    border: 1px solid var(--jinn-border-color1);
+    border: 1px solid var(--el-border-color);
     overflow: hidden;
-    background-color: var(--jinn-color1);
+    background-color: var(--el-bg-color-overlay);
     padding: 10px;
     > div {
       margin-bottom: 10px;

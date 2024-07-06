@@ -33,7 +33,7 @@
 }
 .textImgArea {
   border-radius: 5px;
-  border: 1px solid var(--jinn-border-color1);
+  border: 1px solid var(--el-border-color);
   overflow: hidden;
   transition: border 0.3s;
   .text-content{
@@ -53,7 +53,7 @@
   align-items: center;
   justify-content: space-between;
   background-color: #fcfcfc;
-  border-bottom: 1px solid var(--jinn-border-color1);
+  border-bottom: 1px solid var(--el-border-color);
   transition: border 0.3s;
   .user-name {
     height: 30px;

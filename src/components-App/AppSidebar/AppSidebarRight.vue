@@ -29,7 +29,7 @@ const login = useLoginState();
   }
   .user-relevant {
     height: 600px;
-    border: 1px solid var(--jinn-border-color1);
+    border: 1px solid var(--el-border-color);
   }
 }
 </style>

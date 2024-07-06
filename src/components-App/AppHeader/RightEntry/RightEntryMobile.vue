@@ -109,7 +109,7 @@ const showLauguageOpt = ref<boolean>(false);
     flex-direction: column;
     margin-top: 10px;
     .app-config-item {
-      border-bottom: 1px solid var(--jinn-border-color1);
+      border-bottom: 1px solid var(--el-border-color);
       .el-button {
         cursor: pointer;
         width: 100%;

@@ -2,7 +2,10 @@
   <template v-if="display">
     <div class="comment-item">
       <div class="left">
-        <item-avator :userAvatar="FileIP + userAvatarURL"></item-avator>
+        <item-avatar
+          :userAvatar="FileIP + userAvatarURL"
+          :size="avatarSize"
+        ></item-avatar>
       </div>
       <div class="right">
         <div class="core">
@@ -47,7 +50,7 @@ import CommentOption from "@/components/comment-option/category1.vue";
 import CommentOption2 from "@/components/comment-option/category2.vue";
 import moreOption from "./more-option.vue";
 import { getCurrentInstance, ref } from "vue";
-import itemAvator from "./item-avator.vue";
+import itemAvatar from "./item-avatar.vue";
 import itemTop from "./item-top.vue";
 import itemMain from "./item-main.vue";
 import itemFooter from "./item-footer.vue";
@@ -57,10 +60,16 @@ import { CommentItem } from "../comment-type";
 const app = getCurrentInstance();
 const FileIP = app?.appContext.config.globalProperties.$FileIP;
 
-const props = defineProps<{
-  isReply?: boolean;
-  commentData: CommentItem;
-}>();
+const props = withDefaults(
+  defineProps<{
+    isReply?: boolean;
+    commentData: CommentItem;
+    avatarSize?: number;
+  }>(),
+  {
+    avatarSize: 40,
+  }
+);
 
 const {
   id,
@@ -78,13 +87,13 @@ const {
   // loadedReplyCount,
 } = props.commentData;
 
-const _likeCount = ref<number>(likeCount)
-const _likeActive = ref<boolean>(likeActive)
+const _likeCount = ref<number>(likeCount);
+const _likeActive = ref<boolean>(likeActive);
 const emit = defineEmits<{
   // 点击回复按钮回调
   (e: "reply-handle"): void;
   (e: "delete-comment"): void;
-  (e: "changeStatus",isActive: boolean, func: Function): void;
+  (e: "changeStatus", isActive: boolean, func: Function): void;
 }>();
 
 const display = ref(true);
@@ -96,8 +105,7 @@ const deleteComment = () => {
 //#region 改变爱心状态
 
 const changeStatus = async (isActive: boolean, func: Function) => {
-  emit('changeStatus',isActive,func);
-
+  emit("changeStatus", isActive, func);
 };
 
 //#endregion
@@ -107,7 +115,7 @@ const changeStatus = async (isActive: boolean, func: Function) => {
 .comment-item {
   padding: 5px 0;
   display: flex;
-  justify-content: space-between;
+  // justify-content: space-between;
   &:hover {
     > .right {
       > .core {
@@ -120,6 +128,7 @@ const changeStatus = async (isActive: boolean, func: Function) => {
   > .right {
     width: calc(100% - 45px);
     font-size: 14px;
+    margin-left: 5px;
     // $height: 19px;
     > .core {
       > .more-option {

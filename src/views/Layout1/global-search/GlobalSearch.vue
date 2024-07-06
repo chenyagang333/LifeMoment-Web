@@ -26,14 +26,19 @@ import User from "./children/User.vue";
 import RelevantSearchList from "./children/RelevantSearchList.vue";
 
 const router = useRouter();
+const route = useRoute();
 
 const showSearchData = ref<boolean>(true);
 
 const tabsKey = ref<string>("LifeBus");
 
+let oldKeyword = "";
 // 搜索框参数刷新后重新搜索
 onBeforeRouteUpdate((to) => {
-  reloadData();
+  if (to.query.keyword != oldKeyword) { // 关键词更新才刷新数据
+    reloadData();
+  }
+  oldKeyword = to.query.keyword as string;
 });
 
 const reloadData = async () => {

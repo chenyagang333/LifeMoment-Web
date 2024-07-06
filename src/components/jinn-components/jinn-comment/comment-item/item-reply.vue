@@ -23,6 +23,7 @@
           @delete-comment="deleteComment(i.id)"
           @changeStatus="(isActive:boolean,func:Function) => $emit('changeStatus',i.id,isActive,func )"
           isReply
+          :avatarSize="20"
         ></comment-item>
       </div>
       <!-- 按钮 -->

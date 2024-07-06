@@ -125,9 +125,9 @@ const removingAnimations = () => {
 }
 
 .JinnCard {
-  background-color: var(--jinn-color1);
+  background-color: var(--el-bg-color-overlay);
   transition: all 0.3s ease-in-out;
-  border: 1px solid var(--jinn-border-color1);
+  border: 1px solid var(--el-border-color);
   // max-width: 700px;
   // min-width: 335px;
   width: 100%;
@@ -147,7 +147,7 @@ const removingAnimations = () => {
       align-items: center;
       justify-content: space-between;
       height: 40px;
-      border-bottom: 1px solid var(--jinn-border-color1);
+      border-bottom: 1px solid var(--el-border-color);
       margin-bottom: 10px;
       .views {
         font-size: 14px;

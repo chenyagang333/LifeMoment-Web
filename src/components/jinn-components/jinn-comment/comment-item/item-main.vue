@@ -13,7 +13,7 @@ const props = defineProps<{
 
 <style lang="scss" scoped>
   .item-main {
-    color: #000000;
+    color: var(--el-text-color-primary);
     font-size: 14.5px;
     width: calc(100% - 40px);
     word-break: break-all;

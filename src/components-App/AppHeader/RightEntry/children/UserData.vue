@@ -93,7 +93,7 @@ const logout = () => {
   width: 256px;
   padding: 15px;
 
-  background-color: var(--jinn-color1);
+  background-color: var(--el-bg-color-overlay);
   .header {
     display: flex;
     align-items: center;
@@ -109,7 +109,7 @@ const logout = () => {
       font-family: PingFang SC, DFPKingGothicGB-Regular, sans-serif;
       .top {
         font-size: 15px;
-        color: var(--jinn-text-c1);
+        color: var(--el-text-color-primary);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -122,7 +122,7 @@ const logout = () => {
       }
       .bottom {
         font-size: 13px;
-        color: var(--jinn-text-c1);
+        color: var(--el-text-color-primary);
       }
     }
   }
@@ -130,20 +130,20 @@ const logout = () => {
     display: flex;
     flex-direction: column;
     padding-top: 10px;
-    border-bottom: 1px solid var(--jinn-border-color1);
+    border-bottom: 1px solid var(--el-border-color);
     > div {
       width: 100%;
       height: 39px;
       background-color: var(--jinn-bg3);
       margin-bottom: 10px;
-      border-radius: var(--jinn-border-radius);
+      border-radius: var(--el-border-radius-base);
       cursor: pointer;
-      color: var(--jinn-text-c1);
+      color: var(--el-text-color-primary);
       margin-bottom: 10px;
 
       font-family: PingFang SC, DFPKingGothicGB-Regular, sans-serif;
       &:hover {
-        background-color: var(--jinn-bg5);
+        background-color: var(--el-bg-color-page);
       }
       .left,
       .right {
@@ -174,11 +174,11 @@ const logout = () => {
   }
   > .bottom {
     margin-top: 10px;
-    color: var(--jinn-text-c2);
+    color: var(--el-text-color-regular);
     .left {
       cursor: pointer;
       &:hover {
-        color: var(--jinn-text-c1);
+        color: var(--el-text-color-primary);
       }
     }
   }

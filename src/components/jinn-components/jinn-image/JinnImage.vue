@@ -96,8 +96,8 @@ onMounted(() => {
   align-items: center;
   justify-content: space-evenly;
   flex-direction: column;
-  border: 1px solid var(--jinn-border-color1);
-  border-radius: var(--jinn-border-radius);
+  border: 1px solid var(--el-border-color);
+  border-radius: var(--el-border-radius-base);
   overflow: hidden;
   .myContainer {
     width: 100%;
@@ -120,7 +120,7 @@ onMounted(() => {
       right: 20px;
       width: 30px;
       height: 30px;
-      border-radius: var(--jinn-border-radius);
+      border-radius: var(--el-border-radius-base);
       background-color: var(--jinn-bg1);
     }
   }

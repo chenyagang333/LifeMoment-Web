@@ -1,11 +1,18 @@
 <template>
   <div class="AppCardShow">
     <!-- 评论信息弹窗 -->
-    <a-modal
+    <!-- <a-modal
       v-model:visible="visibleCardDetail"
       :footer="false"
       hide-title
       width="auto"
+    >
+    </a-modal> -->
+    <el-dialog
+      v-model="visibleCardDetail"
+      align-center
+      width="calc(100% - 155px)"
+      :show-close="false"
     >
       <div class="detail-core" :class="showFile ? 'detail-file-type' : ''">
         <div class="detail-core-main">
@@ -48,7 +55,7 @@
           ></AppTabs>
         </div>
       </div>
-    </a-modal>
+    </el-dialog>
     <div
       class="AppCardShow-Core"
       v-infinite-scroll="loadData"
@@ -98,7 +105,7 @@
             <el-skeleton
               style="
                 --el-skeleton-circle-size: 55px;
-                background-color: var(--jinn-color1);
+                background-color: var(--el-bg-color-overlay);
               "
               animated
             >
@@ -235,9 +242,10 @@ const changeCardDetailDialog = (
 </script>
 
 <style scoped lang="scss">
-.arco-modal {
+.el-dialog {
   max-width: 1280px;
   .detail-core {
+    margin-top: -30px;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -273,14 +281,14 @@ const changeCardDetailDialog = (
       min-width: 335px;
       // margin-right: 20px;
       overflow-y: auto;
-      border-radius: var(--jinn-border-radius);
+      border-radius: var(--el-border-radius-base);
       position: relative;
       // 滚动条外观设置
       &::-webkit-scrollbar {
         width: 4px;
       }
       &::-webkit-scrollbar-track {
-        background: var(--jinn-border-color1);
+        background: var(--el-border-color);
       }
       &::-webkit-scrollbar-thumb {
         background: $base-orange;
@@ -293,7 +301,7 @@ const changeCardDetailDialog = (
     .detail-core-comment {
       min-width: 335px;
       overflow: hidden;
-      border: 1px solid var(--jinn-border-color1);
+      border: 1px solid var(--el-border-color);
       border-radius: var(--el-border-radius-base);
       height: 100%;
     }
@@ -347,10 +355,10 @@ const changeCardDetailDialog = (
   .AppCardShow-Core {
     .el-card {
       width: 100%;
-      background-color: var(--jinn-color1);
-      border: 1px solid var(--jinn-border-color1);
+      background-color: var(--el-bg-color-overlay);
+      border: 1px solid var(--el-border-color);
     }
-    --el-mask-color: var(--jinn-color1);
+    --el-mask-color: var(--el-bg-color-overlay);
   }
 }
 </style>

@@ -10,7 +10,7 @@
           :logoSrc="chat"
           :color="headerUp ? 'white' : 'rgb(203 233 234)'"
           @click="visibleAboutWeb = true"
-          ><div class="WebName">&nbsp;LifeBus</div>
+          ><div class="WebName">&nbsp;LifeMoment</div>
         </SignBox>
         <!-- <Navigate :headerUp="headerUp"></Navigate> -->
       </div>
@@ -143,7 +143,7 @@ const visibleAboutWeb = ref(false);
   }
 }
 .AppHeaderDown {
-  border-bottom: 1px solid var(--jinn-border-color1);
+  border-bottom: 1px solid var(--el-border-color);
   &::after {
     backdrop-filter: saturate(180%) blur(20px);
     background-color: var(--jinn-bg1);

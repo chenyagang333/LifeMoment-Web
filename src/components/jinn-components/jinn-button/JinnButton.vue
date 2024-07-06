@@ -24,8 +24,8 @@ if (type) {
   width: 100%;
   min-height: 39px;
   cursor: pointer;
-  color: var(--jinn-text-c1);
-  border-radius: var(--jinn-border-radius);
+  color: var(--el-text-color-primary);
+  border-radius: var(--el-border-radius-base);
   font-family: PingFang SC, DFPKingGothicGB-Regular, sans-serif;
   transition: all 0.1s ease-in-out;
   display: flex;
@@ -36,13 +36,13 @@ if (type) {
 .default {
   background-color: var(--jinn-bg3);
   &:hover {
-    background-color: var(--jinn-bg5);
+    background-color: var(--el-bg-color-page);
   }
 }
 
 .lucency {
   &:hover {
-    background-color: var(--jinn-bg5);
+    background-color: var(--el-bg-color-page);
   }
 }
 </style>

@@ -164,7 +164,7 @@ const changeStatus = async (
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .AppComment {
   position: relative;
   height: 100%;

@@ -3,7 +3,14 @@
 // 引入element-plus提供全部图标组件
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 
-
+// <q-tabs v-model="activeName" dense align="justify">
+// <q-tab class="text-blue" name="passwordLogin" label="密码登录">
+// </q-tab>
+// <q-tab class="text-orange" name="mailLogin" label="邮箱登陆" />
+// <!-- <q-tab class="text-orange" name="smsLogin" label="短信登陆" /> -->
+// </q-tabs>
+// <q-tab-panels v-model="activeName" animated>
+// <q-tab-panel name="passwordLogin">
 // 全局对象
 const allGloablComponent: any = {  };
 

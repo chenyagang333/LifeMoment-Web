@@ -28,8 +28,8 @@ export default function useEventListenerPopstate(_visible: boolean = false) {
     } else {
       if (notPopstateBack.value) {
         router.back();
-        notPopstateBack.value = true; // 刷新状态
       }
+      notPopstateBack.value = true; // 刷新状态
     }
   });
 

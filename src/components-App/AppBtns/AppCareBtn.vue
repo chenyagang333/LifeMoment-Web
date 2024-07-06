@@ -70,7 +70,7 @@ onMounted(() => {
   width: 100px;
   height: 32px;
   border: none;
-  border-radius: var(--jinn-border-radius);
+  border-radius: var(--el-border-radius-base);
   position: relative;
   transition: all 0.3s ease-in-out;
   &::after {
@@ -101,7 +101,7 @@ onMounted(() => {
 }
 ._01 {
   &::after {
-    // color: var(--jinn-text-c2);
+    // color: var(--el-text-color-regular);
     content: "回关";
   }
 }
@@ -115,7 +115,7 @@ onMounted(() => {
     }
   }
   &::after {
-    color: var(--jinn-text-c2);
+    color: var(--el-text-color-regular);
   }
 }
 ._10 {

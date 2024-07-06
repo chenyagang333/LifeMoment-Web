@@ -14,12 +14,14 @@
         </template>
       </hugs-popover-wrap>
     </div>
-    <div class="userName" @click="$emit('clickUser')">{{ userName }}</div>
-    <div class="anputInfo">
-      <span class="showTime">{{ publishTime }}</span>
-      <span class="showIP" v-if="publishAddress">
-        发布于 {{ publishAddress }}</span
-      >
+    <div>
+      <div class="userName" @click="$emit('clickUser')">{{ userName }}</div>
+      <div class="anputInfo">
+        <span class="showTime">{{ publishTime }}</span>
+        <span class="showIP" v-if="publishAddress">
+          发布于 {{ publishAddress }}</span
+        >
+      </div>
     </div>
   </el-header>
 </template>
@@ -44,9 +46,9 @@ defineEmits<{
 <style lang="scss" scoped>
 .el-header {
   padding-top: 10px;
-
+  display: flex;
+  align-items: center;
   .headerImg {
-    float: left;
     margin-right: 10px;
     position: relative;
 
@@ -65,7 +67,7 @@ defineEmits<{
     $height: 26px;
     height: $height;
     line-height: $height;
-    color: var(--jinn-text-c1);
+    color: var(--el-text-color-primary);
     cursor: pointer;
     &:hover {
       text-decoration: underline;
@@ -77,7 +79,7 @@ defineEmits<{
     height: $height;
     line-height: $height;
     font-size: 13px;
-    color: var(--jinn-text-c2);
+    color: var(--el-text-color-regular);
   }
 }
 </style>

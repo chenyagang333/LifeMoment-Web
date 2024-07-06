@@ -91,7 +91,7 @@ onMounted(() => {
     align-items: center;
     justify-content: center;
     .now-time {
-      color: var(--jinn-color2);
+      color: var(--el-text-color-primary);
     }
     .text {
       cursor: pointer;
@@ -105,8 +105,8 @@ onMounted(() => {
     flex-direction: column;
     justify-content: center;
     padding-left: 10px;
-    background-color: var(--jinn-color1);
-    color: var(--jinn-color2);
+    background-color: var(--el-bg-color-overlay);
+    color: var(--el-text-color-primary);
     .label {
       font-size: 14px;
     }

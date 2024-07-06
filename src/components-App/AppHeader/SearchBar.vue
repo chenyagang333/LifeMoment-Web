@@ -10,7 +10,7 @@
           placeholder="搜你想搜"
         />
         <div class="search-icon" @click="goSearch">
-          <el-icon size="21" color="var(--jinn-color2)"><Search /></el-icon>
+          <el-icon size="21" color="var(--el-text-color-primary)"><Search /></el-icon>
         </div>
       </div>
       <div class="search-b-box" v-show="searchBottomBox">
@@ -149,14 +149,14 @@ onMounted(() => {
     left: 0;
     background-color: var(--jinn-bg2);
     width: 100%;
-    border-radius: var(--jinn-border-radius);
+    border-radius: var(--el-border-radius-base);
     transition: all 0.2s ease-in-out;
-    border: 1px solid var(--jinn-border-color1);
+    border: 1px solid var(--el-border-color);
     &:hover {
       background-color: var(--jinn-bg4);
       .search-row {
         .search-input {
-          border: 1px solid var(--jinn-border-color1);
+          border: 1px solid var(--el-border-color);
         }
       }
     }
@@ -167,14 +167,14 @@ onMounted(() => {
       align-items: center;
       justify-content: space-between;
       .search-input {
-        border-radius: var(--jinn-border-radius);
+        border-radius: var(--el-border-radius-base);
         height: 100%;
         width: calc(100% - 45px);
         border: 1px solid rgb(255, 255, 255, 0);
         background-color: rgb(255, 255, 255, 0);
         padding-left: 7px;
         font-size: 15px;
-        color: var(--jinn-color2);
+        color: var(--el-text-color-primary);
         &:focus {
           background-color: var(--jinn-bg3);
         }
@@ -186,7 +186,7 @@ onMounted(() => {
         align-items: center;
         justify-content: center;
         transition: all 0.2s ease-in-out;
-        border-radius: var(--jinn-border-radius);
+        border-radius: var(--el-border-radius-base);
         margin-right: 5px;
         &:hover {
           background-color: var(--jinn-bg2);
@@ -207,7 +207,7 @@ onMounted(() => {
           justify-content: space-between;
           .title {
             font-size: 16px;
-            color: var(--jinn-text-c1);
+            color: var(--el-text-color-primary);
           }
         }
       }
