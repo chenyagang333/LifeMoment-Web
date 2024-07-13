@@ -16,6 +16,16 @@
         <el-icon size="30"><CloseBold /></el-icon>
       </div>
     </div>
+    <el-image
+      style="width: 100px; height: 100px"
+      :src="'url'"
+      :zoom-rate="1.2"
+      :max-scale="7"
+      :min-scale="0.2"
+      :preview-src-list="dataMap"
+      :initial-index="currentIndex"
+      fit="cover"
+    />
     <a-image-preview-group
       :src-list="dataMap"
       infinite

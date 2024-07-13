@@ -123,7 +123,7 @@ onMounted(() => {});
   border: none;
   font-size: 15px;
   transition: border 0.3s;
-  color: var(--el-text-color-primary);
+  color: var(--jinn-text-color1);
   font-weight: 500;
   &:empty::before {
     content: attr(placeholder);

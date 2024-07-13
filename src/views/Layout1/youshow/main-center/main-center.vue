@@ -14,7 +14,7 @@
       ></publish-show>
     </template>
     <!-- 新增说说展示 -->
-    <AppCardShow ref="AppCardShowOfNewAdd" newAdd></AppCardShow>
+    <AppCardShow v-if="showNewShows" ref="AppCardShowOfNewAdd" newAdd></AppCardShow>
     <!-- 说说展示 -->
     <AppCardShow @load-data="loadDataHandle"></AppCardShow>
   </div>
@@ -28,7 +28,7 @@ import { ApiResult, del, get, post } from "@/api/AHttp/api";
 import myMessage from "@/components/message/my-message.vue";
 import { GetAddressAsync, GetAddressByYouShowAsync } from "@/api/Commen";
 import GetNowData from "@/utils/Time/NowDate";
-import AppCardShow from "@/components-App/AppCard/AppCardShow.vue";
+import AppCardShow from "@/components-App/AppCardShow/AppCardShow.vue";
 import AppHeaderChannel from "@/components-App/AppHeaderChannel/AppHeaderChannel.vue";
 import { useUserStore } from "@/stores/user/user";
 import { storeToRefs } from "pinia";
@@ -41,13 +41,16 @@ const { userData } = storeToRefs(UserStore);
 
 const AppCardShowOfNewAdd = ref();
 
-const newShows = ref<ShowType[]>([]);
+const showNewShows = ref<boolean>(false);
 const SuccessInPublication = ref<boolean>(false);
 const publishHandle = async (
   content: string,
   imageFileList: any[],
   submit: () => Promise<void>
 ) => {
+  if (!showNewShows.value) { // 添加数据前打开该组件
+    showNewShows.value = true;
+  }
   const data: ShowType = await getPublishShowData(content);
   console.log("imageFileList :>> ", imageFileList);
   if (imageFileList.length > 0) {

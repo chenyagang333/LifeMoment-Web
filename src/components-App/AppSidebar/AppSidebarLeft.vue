@@ -5,9 +5,9 @@
         type="lucency"
         v-for="(i, index) in navData"
         :key="index"
-        @click="navClickHandle(index, i)"
+        @click="navClickHandle(i)"
         :style="{
-          backgroundColor: navIndex === index ? 'var(--el-bg-color-page)' : '',
+          backgroundColor: navIndex === index ? 'var(--jinn-bg5)' : '',
         }"
       >
         <i
@@ -67,9 +67,13 @@ const navData = [
     path: `/userself`,
   },
 ];
+// 根据path字段查询索引值
+const findIndexByRoutePath = (path: string) => {
+  return navData.findIndex((x) => x.path == path);
+};
 
-const navIndex = ref<number>(-1);
-const navClickHandle = (index: number, i: any) => {
+const navIndex = ref<number>(findIndexByRoutePath(route.path));
+const navClickHandle = (i: any) => {
   if (["关注", "朋友", "我的"].includes(i.text)) {
     if (!userData.value?.id) {
       ElMessage.info("请先登录");
@@ -81,22 +85,15 @@ const navClickHandle = (index: number, i: any) => {
   } else {
     router.push(i.path);
   }
-  navIndex.value = index;
 };
 
-onMounted(() => {
-  updateNavIndex(route.path);
+onMounted(() => {});
+
+onBeforeRouteUpdate((to) => {
+  navIndex.value = findIndexByRoutePath(to.path);
+  // updateNavIndex(to.path);
+  // configShowTopImg(to.name as string);
 });
-
-const updateNavIndex = (path: string) => {
-  const index = navData.findIndex((x) => x.path == path);
-  navIndex.value = index;
-};
-
-// onBeforeRouteUpdate((to) => {
-//   updateNavIndex(to.path);
-//   // configShowTopImg(to.name as string);
-// });
 </script>
 
 <style scoped lang="scss">
@@ -114,7 +111,7 @@ const updateNavIndex = (path: string) => {
   .hot-show {
     border: 1px solid var(--el-border-color);
     overflow: hidden;
-    background-color: var(--el-bg-color-overlay);
+    background-color: var(--jinn-color1);
     padding: 10px;
     > div {
       margin-bottom: 10px;

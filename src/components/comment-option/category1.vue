@@ -1,37 +1,43 @@
 <template>
   <div class="option" :class="optionClass" @click="changeCount">
-    <i class="bi" :class="optionbiClass" :style="iconStype"></i>
-    <span class="count" :style="countStype">{{ count }}</span>
+    <i class="bi" :class="optionBiClass" :style="iconStyle"></i>
+    <span class="count" :style="countStyle">{{ count }}</span>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { ref, nextTick } from "vue";
+import { ref } from "vue";
 
 const emit = defineEmits<{
-  (e: "change-status", active: boolean, func: any): void;
+  (e: "change-status", active: boolean): void;
 }>();
 
-const count = defineModel<number>("count", { default: 0 });
-const active = defineModel<boolean>("active", { default: false });
+const props = withDefaults(
+  defineProps<{
+    type: string; // 按钮类型
+    size?: number; // 按钮大小
+    bottom?: string; // 图标向下偏移量
+    count?: number; // 图标向下偏移量
+    active?: boolean; // 图标向下偏移量
+  }>(),
+  {
+    count: 0,
+    active: false,
+  }
+);
 
-const props = defineProps<{
-  type: string; // 按钮类型
-  size?: number; // 按钮大小
-  bottom?: string; // 图标向下偏移量
-}>();
-const iconStype = computed(() => {
+const iconStyle = computed(() => {
   // 计算icon大小
   return { fontSize: props.size + "px", marginBottom: "-" + props.bottom };
 });
-const countStype = computed(() => {
+const countStyle = computed(() => {
   // 计算count大小
   return { fontSize: props.size ? props.size - 2 + "px" : "" };
 });
 const optionClass = ref<any>(); // 绑定icon的图形颜色样式
-const optionbiClass = computed(() => {
-  return active.value ? activeOptions[props.type] : optionsbi[props.type];
+const optionBiClass = computed(() => {
+  return props.active ? activeOptions[props.type] : optionsbi[props.type];
 }); // 绑定icon的图形颜色样式
 const options = {
   heart: "color-heart",
@@ -52,21 +58,8 @@ if (keyExists) {
   throw Error("输入的属性type值有误");
 }
 
-const changeCount = async () => {
-  //
-  toggleCount();
-  await nextTick();
-  emit("change-status", active.value, toggleCount);
-};
-const toggleCount = () => {
-  // 切换选中状态
-  if (active.value) {
-    active.value = false;
-    count.value -= 1;
-  } else {
-    active.value = true;
-    count.value += 1;
-  }
+const changeCount = () => {
+  emit("change-status", !props.active);
 };
 </script>
 
@@ -74,10 +67,9 @@ const toggleCount = () => {
 .option {
   display: flex;
   align-items: center;
-  margin-right: 20px;
   cursor: pointer;
 
-  color: var(--el-text-color-primary);
+  color: var(--jinn-text-color1);
   .bi {
     font-size: 20px;
   }

@@ -1,6 +1,6 @@
 <template>
   <div class="option" :class="optionClass">
-    <i class="bi" :class="optionbiClass" :style="{ fontSize: size + 'px' }"></i>
+    <i class="bi" :class="optionBiClass" :style="{ fontSize: size + 'px' }"></i>
     <span class="count" :style="{ fontSize: size ? size - 2 + 'px' : '' }">{{
       text ?? count ?? 0
     }}</span>
@@ -10,21 +10,22 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-const props = defineProps<{
-  type: string;
-  size?: number;
-  text?: string;
-}>();
-const emit = defineEmits<{
-  // (e: "clickHandle"): void;
-}>();
+const props = withDefaults(
+  defineProps<{
+    type: string;
+    size?: number;
+    text?: string;
+    count?: number;
+  }>(),
+  {
+    count: 0,
+  }
+);
 
-const count = defineModel<number>("count");
-
-const optionbiClass = ref<any>({});
+const optionBiClass = ref<any>({});
 const optionClass = ref<any>({});
 
-const optionsbi = {
+const optionsBi = {
   chat: "bi-chat-dots",
   share: "bi-box-arrow-up-right",
 } as any;
@@ -32,9 +33,9 @@ const options = {
   chat: "chat-color",
   share: "share-color",
 } as any;
-const keyExists = optionsbi.hasOwnProperty(props.type);
+const keyExists = optionsBi.hasOwnProperty(props.type);
 if (keyExists) {
-  optionbiClass.value = optionsbi[props.type];
+  optionBiClass.value = optionsBi[props.type];
   optionClass.value = options[props.type];
 } else {
   throw Error("输入的属性type值有误");
@@ -46,9 +47,8 @@ if (keyExists) {
   display: flex;
   align-items: center;
   cursor: pointer;
-  margin-right: 20px;
 
-  color: var(--el-text-color-primary);
+  color: var(--jinn-text-color1);
   .bi {
     font-size: 20px;
   }

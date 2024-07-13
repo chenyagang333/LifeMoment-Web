@@ -1,7 +1,7 @@
 <template>
-  <div class="SearchLifeBus">
+  <div class="SearchLifeMoment">
     <div class="SearchWeStrength-header">
-      <a-tabs
+      <!-- <a-tabs
         v-model:active-key="radioValue"
         @change="changeTabs"
         type="card-gutter"
@@ -13,7 +13,15 @@
         <a-tab-pane key="NewPublish" title="最新发布"> </a-tab-pane>
         <a-tab-pane key="MostStars" title="最多收藏"> </a-tab-pane>
         <a-tab-pane key="MostViews" title="最多浏览"> </a-tab-pane>
-      </a-tabs>
+      </a-tabs> -->
+      <el-tabs type="border-card" v-model="radioValue" @tab-change="changeTabs">
+        <el-tab-pane label="综合排序" name="default"></el-tab-pane>
+        <el-tab-pane label="最多喜欢" name="MostLikes"></el-tab-pane>
+        <el-tab-pane label="最多评论" name="MostComments"></el-tab-pane>
+        <el-tab-pane label="最新发布" name="NewPublish"></el-tab-pane>
+        <el-tab-pane label="最多收藏" name="MostStars"></el-tab-pane>
+        <el-tab-pane label="最多浏览" name="MostViews"></el-tab-pane>
+      </el-tabs>
     </div>
     <div class="SearchWeStrength-Core">
       <AppCardShow
@@ -26,7 +34,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import AppCardShow from "@/components-App/AppCard/AppCardShow.vue";
+import AppCardShow from "@/components-App/AppCardShow/AppCardShow.vue";
 import { ShowType } from "@/types/Layout1/youshow/youshow";
 import { get } from "@/api/AHttp/api";
 import { useRoute, useRouter } from "vue-router";
@@ -69,7 +77,7 @@ const reloadData = async () => {
 </script>
 
 <style scoped lang="scss">
-.SearchLifeBus {
+.SearchLifeMoment {
   div {
     overflow: visible;
   }
@@ -84,4 +92,8 @@ const reloadData = async () => {
     // position: relative;
   }
 }
+:deep(.el-tabs__content) {
+  display: none;
+}
+
 </style>

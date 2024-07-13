@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import { getCurrentInstance, nextTick, ref } from "vue";
 import { useAppStore } from "@/stores/app/app";
-import JinnCardUser from "@/components/jinn-components/jinn-card/JinnCardUser/JinnCardUser.vue";
+import JinnCardUser from "@/components/jinn-components/JinnCardUser/JinnCardUser.vue";
 import { useUserStore } from "@/stores/user/user";
 import { storeToRefs } from "pinia";
 import { goUserPage } from "@/views/Layout1/user/user";
@@ -64,7 +64,7 @@ const appStore = useAppStore();
 
 const router = useRouter();
 
-const { visible: drawer } = useEventListenerPopstate();
+const { visible: drawer } = useEventListenerPopstate('RightEntryMobile');
 
 const goUserPageHandler = () => {
   drawer.value = false;

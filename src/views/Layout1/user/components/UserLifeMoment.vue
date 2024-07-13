@@ -1,5 +1,5 @@
 <template>
-  <div class="UserLifeBus">
+  <div class="UserLifeMoment">
     <AppCardShow
       ref="appCardShow"
       @load-data="loadDataHandle"
@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import AppCardShow from "@/components-App/AppCard/AppCardShow.vue";
+import AppCardShow from "@/components-App/AppCardShow/AppCardShow.vue";
 import { get } from "@/api/AHttp/api";
 import { ref } from "vue";
 import { ShowType } from "@/types/Layout1/youshow/youshow";

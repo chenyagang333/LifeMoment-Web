@@ -1,11 +1,11 @@
 <template>
   <!-- 签到弹窗------------------------------------------------------------------- -->
-  <a-modal
-    width="366px"
-    :footer="false"
-    hide-title
-    v-model:visible="appStore.signInVisible"
-    unmount-on-close
+  <el-dialog
+    v-model="appStore.signInVisible"
+    align-center
+    width="366"
+    :show-close="false"
+    :fullscreen="appStore.isMobile"
   >
     <JinnSignIn
       :title="`@${userStore?.userData?.userName}，签到成功!`"
@@ -15,13 +15,14 @@
       :SignInNum="2564898"
       :rollingOver="rollingOver"
       @SignIn="SignInHandle"
-      style="width: 100%"
+      style="width: 100%; margin-top: -40px; margin-bottom: -10px"
+      :style="{ height: appStore.isMobile ? 'calc(100vh - 40px)' : '560px' }"
     >
       <template #friend>
         <JinnSignInFriend :data="friendData" :num="33"></JinnSignInFriend>
       </template>
     </JinnSignIn>
-  </a-modal>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
@@ -91,7 +92,7 @@ onMounted(() => {
     align-items: center;
     justify-content: center;
     .now-time {
-      color: var(--el-text-color-primary);
+      color: var(--jinn-text-color1);
     }
     .text {
       cursor: pointer;
@@ -105,8 +106,8 @@ onMounted(() => {
     flex-direction: column;
     justify-content: center;
     padding-left: 10px;
-    background-color: var(--el-bg-color-overlay);
-    color: var(--el-text-color-primary);
+    background-color: var(--jinn-color1);
+    color: var(--jinn-text-color1);
     .label {
       font-size: 14px;
     }

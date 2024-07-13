@@ -24,7 +24,7 @@ if (type) {
   width: 100%;
   min-height: 39px;
   cursor: pointer;
-  color: var(--el-text-color-primary);
+  color: var(--jinn-text-color1);
   border-radius: var(--el-border-radius-base);
   font-family: PingFang SC, DFPKingGothicGB-Regular, sans-serif;
   transition: all 0.1s ease-in-out;
@@ -36,13 +36,13 @@ if (type) {
 .default {
   background-color: var(--jinn-bg3);
   &:hover {
-    background-color: var(--el-bg-color-page);
+    background-color: var(--jinn-bg5);
   }
 }
 
 .lucency {
   &:hover {
-    background-color: var(--el-bg-color-page);
+    background-color: var(--jinn-bg5);
   }
 }
 </style>

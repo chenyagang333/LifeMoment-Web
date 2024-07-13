@@ -93,7 +93,7 @@ const logout = () => {
   width: 256px;
   padding: 15px;
 
-  background-color: var(--el-bg-color-overlay);
+  background-color: var(--jinn-color1);
   .header {
     display: flex;
     align-items: center;
@@ -109,7 +109,7 @@ const logout = () => {
       font-family: PingFang SC, DFPKingGothicGB-Regular, sans-serif;
       .top {
         font-size: 15px;
-        color: var(--el-text-color-primary);
+        color: var(--jinn-text-color1);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -122,7 +122,7 @@ const logout = () => {
       }
       .bottom {
         font-size: 13px;
-        color: var(--el-text-color-primary);
+        color: var(--jinn-text-color1);
       }
     }
   }
@@ -138,12 +138,12 @@ const logout = () => {
       margin-bottom: 10px;
       border-radius: var(--el-border-radius-base);
       cursor: pointer;
-      color: var(--el-text-color-primary);
+      color: var(--jinn-text-color1);
       margin-bottom: 10px;
 
       font-family: PingFang SC, DFPKingGothicGB-Regular, sans-serif;
       &:hover {
-        background-color: var(--el-bg-color-page);
+        background-color: var(--jinn-bg5);
       }
       .left,
       .right {
@@ -174,11 +174,11 @@ const logout = () => {
   }
   > .bottom {
     margin-top: 10px;
-    color: var(--el-text-color-regular);
+    color: var(--jinn-text-color2);
     .left {
       cursor: pointer;
       &:hover {
-        color: var(--el-text-color-primary);
+        color: var(--jinn-text-color1);
       }
     }
   }

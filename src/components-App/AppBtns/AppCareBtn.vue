@@ -101,7 +101,7 @@ onMounted(() => {
 }
 ._01 {
   &::after {
-    // color: var(--el-text-color-regular);
+    // color: var(--jinn-text-color2);
     content: "回关";
   }
 }
@@ -115,7 +115,7 @@ onMounted(() => {
     }
   }
   &::after {
-    color: var(--el-text-color-regular);
+    color: var(--jinn-text-color2);
   }
 }
 ._10 {

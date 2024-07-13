@@ -64,12 +64,12 @@ onMounted(() => {
     padding: 10px;
     position: sticky;
     top: 74px;
-    background-color: var(--el-bg-color-overlay);
+    background-color: var(--jinn-color1);
     transition: all 0.3s ease-in-out;
     border-radius: var(--el-border-radius-base);
     border: 1px solid var(--el-border-color);
     > h2 {
-      color: var(--el-text-color-primary);
+      color: var(--jinn-text-color1);
       font-family: PingFang SC, DFPKingGothicGB-Medium, sans-serif;
       font-weight: 500;
       line-height: 26px;
@@ -78,7 +78,7 @@ onMounted(() => {
     }
     .JinnButton {
       font-size: 16px;
-      color: var(--el-text-color-regular);
+      color: var(--jinn-text-color2);
       gap: 10px;
     }
   }

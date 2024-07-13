@@ -21,7 +21,7 @@
           :comment-data="i"
           @reply-handle="$emit('reply-handle', i.userName)"
           @delete-comment="deleteComment(i.id)"
-          @changeStatus="(isActive:boolean,func:Function) => $emit('changeStatus',i.id,isActive,func )"
+          @changeStatus="(isActive:boolean) => changeStatus(i,isActive )"
           isReply
           :avatarSize="20"
         ></comment-item>
@@ -29,9 +29,7 @@
       <!-- 按钮 -->
       <template v-if="computedReplyOpened">
         <div>
-          <div class="load-spins">
-            <a-spin dot v-show="replyLoading" />
-          </div>
+          <div class="load-spins" v-if="replyLoading" v-loading="true"></div>
           <div v-show="!replyLoading">
             <span class="mx-1 reply-header" type="info"> —— &nbsp; </span>
             <!-- 加载更多回复按钮 -->
@@ -82,8 +80,8 @@ const replyList = ref<CommentItem[]>([]);
 const emit = defineEmits<{
   // 点击回复按钮回调
   (e: "reply-handle", userName: string): void;
-  (e: "delete-comment",id:number): void;
-  (e: "changeStatus", id:number,isActive: boolean, func: Function): void;
+  (e: "delete-comment", id: number): void;
+  (e: "changeStatus", id: number, isActive: boolean, reset: Function): void;
   (
     e: "loadReply",
     pageSize: number,
@@ -113,13 +111,13 @@ const pushReply = (reply: CommentItem) => {
 };
 defineExpose({ openReplys, pushReply });
 
-const deleteComment = (id:number) => {
+const deleteComment = (id: number) => {
   delNumber.value++;
   replyCount.value--;
   if (addNumber.value == delNumber.value) {
     replyList.value = [];
   }
-  emit("delete-comment",id);
+  emit("delete-comment", id);
 };
 
 const computedReplyOpened = computed(() =>
@@ -159,15 +157,27 @@ const loadReplys = async () => {
     replyLoading.value = false; // 评论加载完成
   });
 };
+
+// 更新点赞状态
+const changeStatus = (data: CommentItem, isActive: boolean) => {
+  const updateStatus = () => {
+    data.likeActive = isActive;
+    data.likeCount += isActive ? 1 : -1;
+  };
+  const resetStatus = () => {
+    data.likeActive = !isActive;
+    data.likeCount += !isActive ? 1 : -1;
+  };
+  updateStatus(); // 更新状态
+  emit("changeStatus", data.id, isActive, () => resetStatus());
+};
 </script>
 
 <style lang="scss" scoped>
 .item-reply {
   .load-spins {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 50px;
+    width: 100%;
+    height: 45px;
   }
   .reply-header {
     cursor: default;

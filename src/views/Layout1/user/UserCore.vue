@@ -27,29 +27,29 @@
               </div>
               <div class="account">
                 <div class="lable">
-                  LifeBus账号：<span class="value">{{
+                  LifeMoment账号：<span class="value">{{
                     userData?.userAccount
                   }}</span>
                 </div>
               </div>
               <JinnDescription
                 class="description"
-                color="var(--el-text-color-primary)"
+                color="var(--jinn-text-color1)"
                 :content="userData?.description"
               ></JinnDescription>
             </div>
           </div>
           <div class="options">
             <template v-if="userId == myUserData.userData?.id">
-              <el-button @click="visible = true">编辑资料</el-button>
+              <el-button @click="visibleEdit = true">编辑资料</el-button>
               <!-- 编辑用户资料 -->
-              <a-modal
-                title-align="start"
-                v-model:visible="visible"
-                @ok="handleOk"
-                @cancel="handleCancel"
+              <el-dialog
+                v-model="visibleEdit"
+                align-center
+                title="编辑资料"
+                width="500"
+                :fullscreen="appStore.isMobile"
               >
-                <template #title> 编辑资料 </template>
                 <div
                   style="
                     display: flex;
@@ -87,43 +87,59 @@
                     </el-form-item>
                   </el-form>
                 </div>
-              </a-modal>
+                <template #footer>
+                  <div class="dialog-footer">
+                    <el-button @click="visibleEdit = false">取消</el-button>
+                    <el-button type="primary" @click="handleOk">
+                      修改
+                    </el-button>
+                  </div>
+                </template>
+              </el-dialog>
+              <!-- <a-modal
+                title-align="start"
+                v-model:visibleEdit="visibleEdit"
+                @ok="handleOk"
+                @cancel="handleCancel"
+              >
+                <template #title> 编辑资料 </template>
+              </a-modal> -->
             </template>
           </div>
         </div>
         <div class="Down">
-          <a-tabs v-model:active-key="tabsKey" @change="changeTabs">
-            <a-tab-pane key="production">
-              <template #title>
+          <el-tabs v-model="tabsKey" class="demo-tabs" @tab-change="changeTabs">
+            <el-tab-pane label="作品" name="production">
+              <template #label>
                 <div class="tabs-title">
                   <i class="bi bi-file-earmark-richtext"></i>
                   <span> 作品 {{ userData?.contentCount }}</span>
                 </div>
               </template>
-            </a-tab-pane>
-            <a-tab-pane key="like">
-              <template #title>
+            </el-tab-pane>
+            <el-tab-pane label="喜欢" name="like">
+              <template #label>
                 <div class="tabs-title">
                   <i class="bi bi-heart-fill"></i>
                   <span> 喜欢 {{ userData?.likeCount }}</span>
                 </div>
               </template>
-            </a-tab-pane>
-            <a-tab-pane key="star">
-              <template #title>
+            </el-tab-pane>
+            <el-tab-pane label="收藏" name="star">
+              <template #label>
                 <div class="tabs-title">
                   <i class="bi bi-star-fill"></i>
                   <span> 收藏 {{ userData?.starCount }}</span>
                 </div>
               </template>
-            </a-tab-pane>
-          </a-tabs>
+            </el-tab-pane>
+          </el-tabs>
           <div class="custom-tab-pane">
-            <UserLifeBus
+            <UserLifeMoment
               :userId="userId"
               :type="tabsKey"
-              v-if="showUserLifeBus"
-            ></UserLifeBus>
+              v-if="showUserLifeMoment"
+            ></UserLifeMoment>
           </div>
         </div>
       </div>
@@ -134,16 +150,19 @@
 <script setup lang="ts">
 import JinnDescription from "@/components/jinn-components/jinn-text/jinn-description/JinnDescription.vue";
 import { ref, getCurrentInstance, onMounted, nextTick, reactive } from "vue";
-import UserLifeBus from "./children/UserLifeBus.vue";
+import UserLifeMoment from "./components/UserLifeMoment.vue";
 import { ApiResult, get, post } from "@/api/AHttp/api";
 import { UserData } from "@/stores/user/user";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
 import { useUserStore } from "@/stores/user/user";
 import UploadImg from "@/components/Upload/img.vue";
 import { ElMessage } from "element-plus";
+import useEventListenerPopstate from "@/hooks/useEventListenerPopstate";
+import { useAppStore } from "@/stores/app/app";
 
 const route = useRoute();
 const router = useRouter();
+const appStore = useAppStore();
 
 const props = defineProps<{
   userId: number;
@@ -172,16 +191,16 @@ onMounted(() => {
   getUserDataByUserId(props.userId);
 });
 
-const showUserLifeBus = ref<boolean>(true);
+const showUserLifeMoment = ref<boolean>(true);
 
 const changeTabs = async () => {
-  showUserLifeBus.value = false;
+  showUserLifeMoment.value = false;
   await nextTick();
-  showUserLifeBus.value = true;
+  showUserLifeMoment.value = true;
 };
 
 // 编辑用户资料
-const visible = ref<boolean>(false);
+const { visible: visibleEdit } = useEventListenerPopstate();
 const userAvatar = ref<string>("");
 const handleOk = async () => {
   const relative = userAvatar.value.replace(FileIP, "");
@@ -192,9 +211,11 @@ const handleOk = async () => {
   if (res.code == 200) {
     ElMessage.success("编辑成功！");
     handleOkSetData(relative);
+    visibleEdit.value = false;
+  } else {
+    ElMessage.error("编辑失败");
   }
 };
-const handleCancel = () => {};
 
 const formLabelAlign = reactive({
   userName: "",
@@ -247,7 +268,7 @@ const handleOkSetData = (relative: string) => {
           justify-content: space-between;
           width: 80%;
           .el-avatar {
-            border: 1px solid var(--el-bg-color-overlay);
+            border: 1px solid var(--jinn-color1);
           }
           .data {
             display: flex;
@@ -256,7 +277,7 @@ const handleOkSetData = (relative: string) => {
             width: calc(100% - 132px);
             .userName {
               font-size: 20px;
-              color: var(--el-text-color-primary);
+              color: var(--jinn-text-color1);
             }
             .userQ {
               display: flex;
@@ -266,22 +287,22 @@ const handleOkSetData = (relative: string) => {
                 display: flex;
                 align-items: center;
                 font-size: 14px;
-                color: var(--el-text-color-regular);
+                color: var(--jinn-text-color2);
                 .value {
                   font-size: 15px;
-                  color: var(--el-text-color-primary);
+                  color: var(--jinn-text-color1);
                   padding-left: 6px;
                 }
               }
             }
             .account {
               font-size: 12px;
-              color: var(--el-text-color-regular);
+              color: var(--jinn-text-color2);
             }
             .description {
               font-size: 13px;
               width: 86%;
-              color: var(--el-text-color-primary);
+              color: var(--jinn-text-color1);
             }
           }
         }

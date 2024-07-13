@@ -13,7 +13,7 @@ const props = defineProps<{
 
 <style lang="scss" scoped>
   .item-main {
-    color: var(--el-text-color-primary);
+    color: var(--jinn-text-color1);
     font-size: 14.5px;
     width: calc(100% - 40px);
     word-break: break-all;

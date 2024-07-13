@@ -1,5 +1,5 @@
 <template>
-  <el-header>
+  <div class="card-header">
     <div class="headerImg">
       <hugs-popover-wrap distance="5" :position="avatarCardPosition ?? 'bc'">
         <el-avatar
@@ -23,20 +23,13 @@
         >
       </div>
     </div>
-  </el-header>
+  </div>
 </template>
 
 <script setup lang="ts">
 import hugsPopoverWrap from "@/components/hugs-popover-wrap/hugs-popover-wrap.vue";
-
-const props = defineProps<{
-  userAvatar?: string;
-  userId?: number;
-  userName?: string;
-  publishTime?: string;
-  publishAddress?: string;
-  avatarCardPosition?: string;
-}>();
+import { JinnProductionCardHeaderType } from "./card-header";
+const props = defineProps<JinnProductionCardHeaderType>();
 
 defineEmits<{
   (e: "clickUser"): void;
@@ -44,7 +37,8 @@ defineEmits<{
 </script>
 
 <style lang="scss" scoped>
-.el-header {
+.card-header {
+  padding: 0 20px;
   padding-top: 10px;
   display: flex;
   align-items: center;
@@ -67,7 +61,7 @@ defineEmits<{
     $height: 26px;
     height: $height;
     line-height: $height;
-    color: var(--el-text-color-primary);
+    color: var(--jinn-text-color1);
     cursor: pointer;
     &:hover {
       text-decoration: underline;
@@ -79,7 +73,7 @@ defineEmits<{
     height: $height;
     line-height: $height;
     font-size: 13px;
-    color: var(--el-text-color-regular);
+    color: var(--jinn-text-color2);
   }
 }
 </style>

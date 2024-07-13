@@ -1,15 +1,21 @@
 <template>
   <div class="global-search">
     <div class="global-search-header">
-      <a-tabs type="line" size="large" v-model:active-key="tabsKey">
-        <a-tab-pane key="LifeBus" title="WeStrength - 动态"> </a-tab-pane>
-        <a-tab-pane key="User" title="WeStrength - 用户"> </a-tab-pane>
-      </a-tabs>
+      <el-tabs v-model="tabsKey" class="demo-tabs">
+        <el-tab-pane
+          label="&nbsp;&nbsp;&nbsp;LifeMoment - 动态&nbsp;&nbsp;&nbsp;"
+          name="LifeMoment"
+        ></el-tab-pane>
+        <el-tab-pane
+          label="&nbsp;&nbsp;&nbsp;LifeMoment - 用户&nbsp;&nbsp;&nbsp;"
+          name="User"
+        ></el-tab-pane>
+      </el-tabs>
     </div>
     <div class="global-search-pane">
       <template v-if="showSearchData">
         <div class="search-data">
-          <LifeBus v-if="tabsKey === 'LifeBus'"></LifeBus>
+          <LifeMoment v-if="tabsKey === 'LifeMoment'"></LifeMoment>
           <User v-if="tabsKey === 'User'"></User>
         </div>
         <RelevantSearchList></RelevantSearchList>
@@ -21,7 +27,7 @@
 <script setup lang="ts">
 import { nextTick, ref } from "vue";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
-import LifeBus from "./children/LifeBus.vue";
+import LifeMoment from "./children/LifeMoment.vue";
 import User from "./children/User.vue";
 import RelevantSearchList from "./children/RelevantSearchList.vue";
 
@@ -30,12 +36,13 @@ const route = useRoute();
 
 const showSearchData = ref<boolean>(true);
 
-const tabsKey = ref<string>("LifeBus");
+const tabsKey = ref<string>("LifeMoment");
 
 let oldKeyword = "";
 // 搜索框参数刷新后重新搜索
 onBeforeRouteUpdate((to) => {
-  if (to.query.keyword != oldKeyword) { // 关键词更新才刷新数据
+  if (to.query.keyword != oldKeyword) {
+    // 关键词更新才刷新数据
     reloadData();
   }
   oldKeyword = to.query.keyword as string;

@@ -1,9 +1,9 @@
 <template>
   <div class="layout1">
-    <AppHeader id="LifeBusAppHeader" :headerUp="headerUp"></AppHeader>
+    <AppHeader :headerUp="headerUp"></AppHeader>
     <div class="layout-router-view">
       <div
-        id="LifeBusAppHeaderBc"
+        id="LifeMomentAppHeaderBc"
         class="HeaderBc"
         :class="AppStore.theme === 'light' ? 'HeaderBcLight' : 'HeaderBcDark'"
         :style="{ height: showTopImg ? '' : '0px' }"
@@ -16,14 +16,27 @@
         <RouterView v-slot="{ Component }">
           <component :is="Component" />
           <!-- <transition name="fade">
-          </transition> -->
+            </transition> -->
         </RouterView>
       </div>
     </div>
     <div class="footer"></div>
     <div class="bottom"></div>
     <!-- 返回顶部导航 -->
-    <el-backtop :right="30" :bottom="60" />
+    <el-backtop :bottom="100">
+      <div
+        style="
+          height: 100%;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #1989fa;
+        "
+      >
+        <el-icon><Top /></el-icon>
+      </div>
+    </el-backtop>
     <!-- 用户签到组件 -->
     <AppSignInDialog></AppSignInDialog>
   </div>
@@ -37,14 +50,18 @@ import { storeToRefs } from "pinia";
 import { onMounted, onBeforeUnmount, ref } from "vue";
 import AppSidebarLeft from "@/components-App/AppSidebar/AppSidebarLeft.vue";
 import AppSignInDialog from "@/components-App/AppSignIn/AppSignInDialog.vue";
+import { useDebounceFn } from "@vueuse/core";
+import ddddasdas from "./ddd.vue";
 const store = useAppStore(); //
-const { headerUp } = storeToRefs(store);
-
 const AppStore = useAppStore(); //
+const { headerUp } = storeToRefs(store);
 
 const route = useRoute();
 const router = useRouter();
 
+//#region 页面顶部图片展示
+
+// 切换顶部导航栏样式
 const ChangeHeaderStatus = (entry: any) => {
   if (entry[0].isIntersecting) {
     AppStore.headerUp = true;
@@ -55,6 +72,7 @@ const ChangeHeaderStatus = (entry: any) => {
 
 let observer: IntersectionObserver | null = null;
 
+// 创建监听器
 const CreateIntersectionObserver = () => {
   return new IntersectionObserver(
     (entry: any) => {
@@ -69,13 +87,14 @@ const CreateIntersectionObserver = () => {
 
 let element: HTMLElement | null;
 
+// 监听DOM
 const observeElement = () => {
   if (element) {
     observer = CreateIntersectionObserver();
     observer.observe(element);
   }
 };
-
+// 移除监听
 const unobserveElement = () => {
   if (element) {
     observer?.unobserve(element);
@@ -83,7 +102,7 @@ const unobserveElement = () => {
 };
 
 onMounted(() => {
-  element = document.getElementById("LifeBusAppHeaderBc");
+  element = document.getElementById("LifeMomentAppHeaderBc");
   configShowTopImg(route.name as string);
   observeElement();
 });
@@ -91,9 +110,9 @@ onBeforeUnmount(() => {
   unobserveElement();
 });
 
-//#region 路由管理 页面顶部图片展示
 const showTopImg = ref<boolean>(true);
 
+// 配置站点顶部背景
 const configShowTopImg = (name: string) => {
   if (["User", "UserSelf"].includes(name)) {
     if (showTopImg.value) {
@@ -111,6 +130,24 @@ onBeforeRouteUpdate((to) => {
 });
 
 //#endregion
+
+//#region 监听窗口宽度
+
+// 监听窗口大小变化，折叠侧边栏
+const screenWidth = ref(0);
+const listeningWindow = useDebounceFn(() => {
+  screenWidth.value = document.body.clientWidth;
+  // 在这里规定 宽度小于 769 视为移动端设备 // 和媒介查询宽度设置一致
+  if (!AppStore.isMobile && screenWidth.value < 769) AppStore.isMobile = true;
+  if (AppStore.isMobile && screenWidth.value > 768) AppStore.isMobile = false;
+}, 100);
+listeningWindow();
+window.addEventListener("resize", listeningWindow, false);
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", listeningWindow);
+});
+
+//#endregion 监听窗口宽度
 </script>
 
 <style lang="scss" scoped>
@@ -137,6 +174,7 @@ onBeforeRouteUpdate((to) => {
   margin: 0 auto;
   min-width: var(--jinn-min-width);
   max-width: 2560px;
+  position: relative;
   // 媒介查询 // 动端适配
   @include mobile {
     min-width: 0;
@@ -174,6 +212,7 @@ onBeforeRouteUpdate((to) => {
       background-position: center; /* 负值表示往上移动 */
       overflow: hidden;
       // transition: height 0.3s ease-in-out;
+      position: relative;
     }
     .AppRouterViewContent {
       display: flex;

@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { ApiResult, get } from "@/api/AHttp/api";
 import AppCareBtn from "@/components-App/AppBtns/AppCareBtn.vue";
-import JinnCardUser from "@/components/jinn-components/jinn-card/JinnCardUser/JinnCardUser.vue";
+import JinnCardUser from "@/components/jinn-components/JinnCardUser/JinnCardUser.vue";
 import { UserData } from "@/stores/user/user";
 import AppCardUserTemplate from "./AppCardUserTemplate.vue";
 import { onMounted, ref, getCurrentInstance, onBeforeMount } from "vue";

@@ -247,14 +247,14 @@ const handlePictureCardPreview = (file: any) => {
   .container {
     border: 1px solid var(--el-border-color);
     border-radius: 4px;
-    background-color: var(--el-bg-color-overlay);
+    background-color: var(--jinn-color1);
 
     .main {
       border: 1.5px solid $base-gray;
       background-color: var(--jinn-bg3);
 
       &:focus-within {
-        background-color: var(--el-bg-color-overlay);
+        background-color: var(--jinn-color1);
         border: 1.5px solid rgb(255, 191, 71);
         border: 1.5px solid #79bbff;
       }
@@ -278,7 +278,7 @@ const handlePictureCardPreview = (file: any) => {
       height: 0px;
       transition: height 0.3s ease;
       margin-bottom: 0;
-      color: var(--el-text-color-primary);
+      color: var(--jinn-text-color1);
 
       .left {
         display: flex;
@@ -304,7 +304,7 @@ const handlePictureCardPreview = (file: any) => {
   }
 
   .el-card {
-    background-color: var(--el-bg-color-overlay);
+    background-color: var(--jinn-color1);
     border: 1px solid var(--el-border-color);
     .el-upload {
       cursor: default;

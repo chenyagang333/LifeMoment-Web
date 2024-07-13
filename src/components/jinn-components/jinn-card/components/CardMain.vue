@@ -1,12 +1,19 @@
 <template>
   <div class="card-main">
-    <div class="content" v-html="replaceCustomString(content)"></div>
+    <JinnImageViewer
+      ref="JinnImageViewerRef"
+      v-if="showImgView"
+      :src-list="urlList"
+      :currentIndex="currentIndex"
+      @close="showImgView = false"
+    ></JinnImageViewer>
+    <div class="content" v-html="baseContent"></div>
     <div class="main-files" v-if="files && files.length > 0">
       <!-- <div class="files" v-for="(i, index) in srcList" :key="index">
             <el-image :src="i" fit="cover" />
         </div> -->
       <template v-if="files.length === 1">
-        <div class="signal" @click="$emit('clickFile', 0)">
+        <div class="signal" @click="clickFile(0)">
           <img
             class="signal-image radius-overflow"
             v-if="files[0].type === FileType.image"
@@ -26,7 +33,7 @@
             class="files radius-overflow"
             v-for="(i, index) in files"
             :key="index"
-            @click="$emit('clickFile', index)"
+            @click="clickFile(index)"
           >
             <img
               v-if="i.type === FileType.image"
@@ -46,10 +53,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, getCurrentInstance } from "vue";
+import { computed, getCurrentInstance, ref } from "vue";
 import { MyFileInfo } from "@/types/Layout1/youshow/youshow";
 import { FileType } from "@/utils/FileUtils/FileType";
 import { replaceCustomString } from "@/utils/FileUtils/EmotionFile";
+import JinnImageViewer from "@/components/jinn-components/jinn-image-viewer/JinnImageViewer.vue";
 
 const app = getCurrentInstance();
 const FileIP = app?.appContext.config.globalProperties.$FileIP;
@@ -58,10 +66,27 @@ const props = defineProps<{
   content: string;
   files?: MyFileInfo[];
 }>();
+// 映射文件地址
+const urlList: string[] = props.files?.map((m) => FileIP + m.firstURL) ?? [];
+// 转换文章内容的表情部分
+const baseContent = replaceCustomString(props.content);
 
-defineEmits<{
+const emit = defineEmits<{
   (e: "clickFile", index: number): void;
 }>();
+// 是否渲染预览图实例
+const showImgView = ref<boolean>(false);
+// 首次渲染显示的文件
+const currentIndex = ref<number>(0);
+// 预览图组件实例
+const JinnImageViewerRef = ref();
+
+const clickFile = (index: number) => {
+  emit("clickFile", index);
+  showImgView.value = true;
+  // JinnImageViewerRef.value.open();
+  currentIndex.value = index;
+};
 
 const fileNumTypeClass = computed(() =>
   props.files?.length === 2 || props.files?.length === 4
@@ -71,13 +96,17 @@ const fileNumTypeClass = computed(() =>
 </script>
 
 <style lang="scss" scoped>
+:deep(.el-dialog__body) {
+  padding: 0;
+}
 .card-main {
   padding: 5px 20px 0 80px;
+
   .content {
     line-height: 1.5;
     font-size: 15px;
     width: 100%;
-    color: var(--el-text-color-primary);
+    color: var(--jinn-text-color1);
     word-break: break-all;
   }
   .main-files {

@@ -82,7 +82,7 @@
     </hugs-popover-wrap>
     <!-- 语言切换 -->
     <hugs-popover-wrap distance="15" class="language" animation="dance">
-      <div style="height: 28.5px; line-height: 28.5px; width: 28px">
+      <div style="height: 28.5px; line-height: 28.5px; width: 32px">
         <i class="bi bi-translate"></i>
         <i class="bi bi-chevron-down"></i>
         <!-- <img class=bi-chevron-down src="@/assets/svgs/chevron-down.svg" /> -->
@@ -216,7 +216,7 @@ const goUserPage = () => {};
     // 统一样式
     border: 1px solid var(--el-border-color);
     border-radius: 4px;
-    background-color: var(--el-bg-color-overlay);
+    background-color: var(--jinn-color1);
   }
   // 未登录选项
   .login {
@@ -231,7 +231,7 @@ const goUserPage = () => {};
       width: 366px;
       padding: 15px 26px;
       user-select: none;
-      color: var(--el-text-color-primary);
+      color: var(--jinn-text-color1);
       .lable {
         font-size: 15px;
       }
@@ -291,11 +291,11 @@ const goUserPage = () => {};
     .no-user {
       width: 306px;
       padding: 15px 26px;
-      color: --el-text-color-primary;
+      color: --jinn-text-color1;
       user-select: none;
       font-size: 15px;
       .lab {
-        color: var(--el-text-color-primary);
+        color: var(--jinn-text-color1);
         text-align: center;
       }
       .btn {
@@ -323,7 +323,7 @@ const goUserPage = () => {};
         height: 35px;
         line-height: 35px;
         font-size: 15px;
-        color: var(--el-text-color-primary);
+        color: var(--jinn-text-color1);
         cursor: pointer;
         transition: all 0.2s;
         &:hover {
@@ -335,7 +335,7 @@ const goUserPage = () => {};
   .language {
     .card {
       .option {
-        color: var(--el-text-color-primary);
+        color: var(--jinn-text-color1);
         text-align: center;
         height: 35px;
         line-height: 35px;
@@ -368,10 +368,10 @@ const goUserPage = () => {};
 }
 .RightEntryDown {
   > div {
-    color: var(--el-text-color-primary);
+    color: var(--jinn-text-color1);
   }
   .login-text {
-    border: 1.5px solid var(--el-text-color-primary);
+    border: 1.5px solid var(--jinn-text-color1);
   }
 }
 

@@ -19,7 +19,7 @@ import gloalComponent from "@/components"; // 引入自定义插件对象：注�
 
 import i18n from "@/language/index"; // 国际化
 
-import ArcoVue from '@arco-design/web-vue';  // arco-design UI框架
+// import ArcoVue from '@arco-design/web-vue';  // arco-design UI框架
 // import '@arco-design/web-vue/dist/arco.css';
 
 // import Antd from 'ant-design-vue';
@@ -27,6 +27,8 @@ import ArcoVue from '@arco-design/web-vue';  // arco-design UI框架
 
 
 import pinia from '@/stores' // pinia仓库
+
+import lazyPlugin from 'vue3-lazy'
 
 // Import icon libraries
 // import '@quasar/extras/material-icons/material-icons.css'
@@ -49,9 +51,15 @@ app.use(ElementPlus); // ElementPlus UI
 // app.use(Antd);
 app.use(gloalComponent); // 全局组件
 app.use(i18n); // 国际化
-app.use(ArcoVue); // ArcoVue UI
+// app.use(ArcoVue); // ArcoVue UI
 app.use(router); // 路由
 // app.use(Quasar, {
 //     plugins: {}, // import Quasar plugins and add here
 // })
+
+
+lazyPlugin.install(app, {
+    loading: 'loading.gif', // png/git/jpg/等格式都可以和你存放的图片格式一样就行
+    error: 'error.gif'
+  })
 app.mount("#app");

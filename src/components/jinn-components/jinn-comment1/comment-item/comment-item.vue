@@ -28,11 +28,11 @@
               @click="$emit('reply-handle')"
             ></comment-option2>
             <comment-option
-              v-model:count="_likeCount"
-              v-model:active="_likeActive"
+              :count="likeCount"
+              :active="likeActive"
               bottom="3px"
               :isActive="likeActive!"
-              @change-status="(isActive:boolean, func: any) =>changeStatus(isActive,func)"
+              @change-status="(isActive:boolean) =>changeStatus(isActive)"
               type="heart"
               :size="15"
             ></comment-option>
@@ -87,13 +87,11 @@ const {
   // loadedReplyCount,
 } = props.commentData;
 
-const _likeCount = ref<number>(likeCount);
-const _likeActive = ref<boolean>(likeActive);
 const emit = defineEmits<{
   // 点击回复按钮回调
   (e: "reply-handle"): void;
   (e: "delete-comment"): void;
-  (e: "changeStatus", isActive: boolean, func: Function): void;
+  (e: "changeStatus", isActive: boolean): void;
 }>();
 
 const display = ref(true);
@@ -104,8 +102,8 @@ const deleteComment = () => {
 
 //#region 改变爱心状态
 
-const changeStatus = async (isActive: boolean, func: Function) => {
-  emit("changeStatus", isActive, func);
+const changeStatus = async (isActive: boolean) => {
+  emit("changeStatus", isActive);
 };
 
 //#endregion

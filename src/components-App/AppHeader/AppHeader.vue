@@ -1,6 +1,5 @@
 <template>
   <div
-    id="LifeBusAppHeader"
     class="appHeader"
     :class="headerUp ? 'AppHeaderUp' : 'AppHeaderDown'"
   >
@@ -21,10 +20,13 @@
       </div>
     </div>
     <!-- 关于网站 -->
-    <a-modal v-model:visible="visibleAboutWeb">
-      <template #title>
-        <span style="font-size: 16px"> LifeBus </span>
-      </template>
+    <el-dialog
+      v-model="visibleAboutWeb"
+      align-center
+      title="LifeMoment"
+      width="500"
+      :fullscreen="appStore.isMobile"
+    >
       <div class="inform-conn">
         <span>
           如果你站在童年的位置展望未来，你会说你前途未卜，你会说你前途无量，但是你要站在终点看你生命的轨迹，你看到的只有一条路，你就只能看到一条命运之路。
@@ -35,7 +37,7 @@
         </span>
       </div>
       <template #footer> —— 史铁生 </template>
-    </a-modal>
+    </el-dialog>
   </div>
 </template>
 
@@ -54,12 +56,15 @@ import Navigate from "./Navigate.vue";
 import RightEntry from "./RightEntry/RightEntry.vue";
 import RightEntryMobile from "./RightEntry/RightEntryMobile.vue";
 import SearchBar from "./SearchBar.vue";
+import useEventListenerPopstate from "@/hooks/useEventListenerPopstate";
+import { useAppStore } from "@/stores/app/app";
 
 defineProps<{
   headerUp: boolean;
 }>();
 
 const UserStore = useUserStore(); // 拿到管理用户信息的仓库
+const appStore = useAppStore(); // 拿到管理用户信息的仓库
 const { userData } = storeToRefs(UserStore); // 响应式的结构变量
 
 //#region 路由管理
@@ -74,7 +79,8 @@ const lang = "Layout1."; // 基本参数管理
 
 //#endregion
 
-const visibleAboutWeb = ref(false);
+const { visible: visibleAboutWeb } =
+  useEventListenerPopstate("visibleAboutWeb");
 </script>
 
 <style lang="scss" scoped>
@@ -85,7 +91,9 @@ const visibleAboutWeb = ref(false);
   }
   transition: background 0.1s ease-in-out;
   position: sticky;
+  // position: absolute;
   top: 0;
+  // left: 0;
   height: 64px;
   margin-bottom: -64px;
   z-index: 2;
@@ -149,7 +157,10 @@ const visibleAboutWeb = ref(false);
     background-color: var(--jinn-bg1);
   }
 }
-.arco-modal {
+:deep(.el-dialog__body) {
+  padding: 0;
+}
+.el-dialog {
   .inform-conn {
     // height: 500px;
     font-size: 14.5px;
@@ -158,6 +169,9 @@ const visibleAboutWeb = ref(false);
       display: block;
       text-indent: 2em;
     }
+    border-top: 1px solid var(--el-border-color);
+    border-bottom: 1px solid var(--el-border-color);
+    padding: 20px;
   }
 }
 </style>

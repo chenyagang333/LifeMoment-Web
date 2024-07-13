@@ -6,7 +6,7 @@ const theme = ref<Theme>(localStorage.getItem(LOCAL_THEME_KEY) as Theme || 'ligh
 
 watchEffect(() => {
     localStorage.setItem(LOCAL_THEME_KEY, theme.value);
-    // document.documentElement.dataset.theme = theme.value;
+    document.documentElement.dataset.theme = theme.value;
     document.documentElement.setAttribute('class',theme.value);
 })
 

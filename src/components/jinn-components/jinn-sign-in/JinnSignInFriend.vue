@@ -26,7 +26,6 @@ defineProps<{
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding-top: 10px;
   .text {
     margin-bottom: 10px;
     font-size: 14px;

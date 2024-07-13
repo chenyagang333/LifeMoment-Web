@@ -1,27 +1,27 @@
 <template>
-  <JinnCard
-    @changeLikeState="(active:boolean,func:any) => changeState(active,0, func)"
-    @changeStarState="(active:boolean,func:any) => changeState(active,1, func)"
-    @commentHandler="() => $emit('comment-handler')"
-    @clickFile="(index:number) => $emit('clickFile',index)"
-    :files="files"
-    :id="id"
-    :userAvatarURL="FileIP + userAvatarURL"
+  <ProductionCard
+    :userAvatar="_userAvatar"
     :userId="userId"
     :userName="userName"
-    :createTime="createTime?.substring(0, createTime.length - 3)"
+    :publishTime="_publishTime"
     :publishAddress="publishAddress"
-    :content="content"
+    :content="_content"
+    :urls="_urls"
     :likeUsers="likeUsers"
     :viewCount="viewCount"
-    v-model:likeActive="likeActive"
-    v-model:starActive="starActive"
-    v-model:likeCount="likeCount"
-    v-model:starCount="starCount"
-    v-model:shareCount="shareCount"
-    v-model:commentCount="commentCount"
+    :likeActive="likeActive"
+    :starActive="starActive"
+    :likeCount="likeCount"
+    :starCount="starCount"
+    :shareCount="shareCount"
+    :commentCount="commentCount"
     :avatarCardPosition="avatarCardPosition"
-    @clickUser="goUserPage(router, userId)"
+    @changeLikeState="(active:boolean) => $emit('changeLikeState',active)"
+    @changeStarState="(active:boolean) => $emit('changeStarState',active)"
+    @commentHandler="() => $emit('comment-handler')"
+    @shareHandler="() => $emit('share-handler')"
+    @clickFile="(index:number) => $emit('clickFile',index)"
+    @clickUser="() => $emit('clickUser')"
   >
     <template #avatarCard>
       <div class="user-card">
@@ -29,43 +29,33 @@
         <AppCardUser style="padding: 13px" :userId="userId"></AppCardUser>
       </div>
     </template>
-  </JinnCard>
+  </ProductionCard>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, nextTick } from "vue";
-import { ShowType } from "@/types/Layout1/youshow/youshow";
-import { ElMessage } from "element-plus";
+import { MyFileInfo } from "@/types/Layout1/youshow/youshow";
 import AppCardUser from "@/components-App/AppCard/AppCardUser.vue";
-
-import JinnCard from "@/components/jinn-components/jinn-card/JinnCard.vue";
-import { get } from "@/api/AHttp/api";
-
+import ProductionCard from "@/components/jinn-components/jinn-production-card/jinn-production-card.vue";
 import { getCurrentInstance } from "vue";
 import { useRouter } from "vue-router";
-import { goUserPage } from "@/views/Layout1/user/user";
+import { replaceCustomString } from "@/utils/FileUtils/EmotionFile";
+
 const app = getCurrentInstance();
 const FileIP: string = app?.appContext.config.globalProperties.$FileIP;
-
-const emit = defineEmits<{
-  (e: "comment-handler"): void;
-  (e: "clickFile", index: number): void;
-}>();
-
 const router = useRouter();
 
-const likeActive = defineModel<boolean>("likeActive", { default: false });
-const starActive = defineModel<boolean>("starActive", { default: false });
-const likeCount = defineModel<number>("likeCount", { default: 0 });
-const commentCount = defineModel<number>("commentCount", { default: 0 });
-const starCount = defineModel<number>("starCount", { default: 0 });
-const shareCount = defineModel<number>("shareCount", { default: 0 });
+const emit = defineEmits<{
+  (e: "clickUser"): void;
+  (e: "clickFile", index: number): void;
+  (e: "share-handler"): void;
+  (e: "comment-handler"): void;
+  (e: "changeLikeState", active: boolean): void;
+  (e: "changeStarState", active: boolean): void;
+}>();
 
 const props = defineProps<{
-  isNewPublish?: boolean;
-
   content: string;
-  files?: any;
+  files?: MyFileInfo[];
   id: number;
   userAvatarURL: string;
   userName: string; //
@@ -75,28 +65,24 @@ const props = defineProps<{
   createTime: string;
   likeActive: boolean;
   starActive: boolean;
+  likeCount: number;
+  commentCount: number;
+  starCount: number;
+  shareCount: number;
   viewCount: number;
 
   avatarCardPosition?: string;
 }>();
 
-// typei 0代表点赞，1代表收藏
-const changeState = async (active: boolean, typei: number, fun: any) => {
-  let url = "YouShow/"; // 完整的URL为 YouShow/LikeShow ,取消点赞为 YouShow/CancelLikeShow
-  if (!active) url += "Cancel";
-  const types = ["LikeShow", "StarShow"];
-  url += types[typei];
-  try {
-    const res = await get(url, { youshowId: props.id });
-    if (res.code == 200) {
-    } else {
-      fun();
-      ElMessage(res.message);
-    }
-  } catch {
-    fun();
-  }
-};
+// 对服务端数据进行处理
+const _userAvatar = FileIP + props.userAvatarURL;
+const _publishTime = props.createTime?.substring(
+  0,
+  props.createTime.length - 3
+);
+// 转换文章内容的表情部分
+const _content = replaceCustomString(props.content);
+const _urls = props.files?.map((x) => FileIP + x.firstURL);
 </script>
 
 <style scoped lang="scss">

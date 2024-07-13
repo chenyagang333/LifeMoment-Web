@@ -83,7 +83,7 @@ onMounted(() => {
 }
 .headerDown {
   .nav {
-    color: var(--el-text-color-primary);
+    color: var(--jinn-text-color1);
   }
 }
 </style>

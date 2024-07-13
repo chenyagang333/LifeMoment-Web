@@ -1,9 +1,13 @@
 <template>
   <div class="JinnSignIn">
-    <span class="title">
+    <span class="title" style="height: 20px">
       <i class="bi bi-calendar2-check-fill"> 签到</i>
     </span>
-    <JinnRolling :rollingOver="rollingOver" style="width: 100%; height: 460px">
+    <JinnRolling
+      :rollingOver="rollingOver"
+      style="width: 100%"
+      :style="{ height: $slots.friend ? 'calc(100% - 110px)' : 'calc(100% - 90px)' }"
+    >
       <template #front>
         <img class="beautiful-img" :src="img1" />
         <div class="front-top">
@@ -32,7 +36,9 @@
         </div>
       </template>
     </JinnRolling>
-    <slot name="friend" v-if="$slots.friend"></slot>
+    <div style="height: 80px; margin-top: 10px">
+      <slot name="friend" v-if="$slots.friend"></slot>
+    </div>
   </div>
 </template>
 
@@ -59,9 +65,9 @@ const emit = defineEmits<{
 }>();
 
 const SignIn = () => {
-  rollingOver.value = true
-  emit('SignIn')
-}
+  rollingOver.value = true;
+  emit("SignIn");
+};
 
 const newDate = new Date();
 const date = GetDate(newDate);

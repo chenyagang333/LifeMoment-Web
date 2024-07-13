@@ -1,23 +1,22 @@
 html[data-theme="dark"] {
   /* 基本颜色 */
-  --el-bg-color-overlay: rgb(0, 0, 0);
-  --el-text-color-primary: rgb(255 255 255 / 87%);
+  --jinn-color1: rgb(0, 0, 0);
+  --jinn-text-color1: rgb(255 255 255 / 87%);
   --jinn-color3: rgb(130, 126, 254);
   --jinn-color4: rgb(151, 148, 255);
   --jinn-color5: #aac8e4;
   /* 文字颜色 */
-  --el-text-color-primary: rgb(255 255 255 / 87%);
-  --el-text-color-regular: rgb(255 255 255 / 67%);
+  --jinn-text-color1: rgb(255 255 255 / 87%);
+  --jinn-text-color2: rgb(255 255 255 / 67%);
   /* 背景颜色 */
   --jinn-bg1: rgba(10, 10, 10, 0.7);
   --jinn-bg2: rgb(47, 47, 47);
   --jinn-bg3: rgb(22, 25, 35);
   --jinn-bg4: black;
-  --el-bg-color-page: rgb(46, 46, 46);
+  --jinn-bg5: rgb(46, 46, 46);
   --jinn-bg6: rgb(37 38 50);
+  --jinn-bg7: white;
   /* 边框线颜色 */
   /* --el-border-color: rgb(84 84 84 / 48%); */
 }
-html[class="dark"] {
-  --jinn-bg1: rgba(10, 10, 10, 0.7);
-}
+

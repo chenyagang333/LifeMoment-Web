@@ -10,7 +10,7 @@
           placeholder="搜你想搜"
         />
         <div class="search-icon" @click="goSearch">
-          <el-icon size="21" color="var(--el-text-color-primary)"><Search /></el-icon>
+          <el-icon size="21" color="var(--jinn-text-color1)"><Search /></el-icon>
         </div>
       </div>
       <div class="search-b-box" v-show="searchBottomBox">
@@ -98,14 +98,14 @@ const goSearch = () => {
 const searchHistory = ref<string[]>([]);
 
 const getSearchHistory = () => {
-  const _searchHistory = localStorage.getItem("LifeBusSearchHistory"); // 获取搜索历史
+  const _searchHistory = localStorage.getItem("LifeMomentSearchHistory"); // 获取搜索历史
   if (_searchHistory) {
     searchHistory.value = JSON.parse(_searchHistory);
   }
 };
 const setSearchHistory = () => {
   const str = JSON.stringify(searchHistory.value);
-  localStorage.setItem("LifeBusSearchHistory", str); // 存储搜索历史
+  localStorage.setItem("LifeMomentSearchHistory", str); // 存储搜索历史
 };
 
 const updateSort = (keyword: string) => {
@@ -174,7 +174,7 @@ onMounted(() => {
         background-color: rgb(255, 255, 255, 0);
         padding-left: 7px;
         font-size: 15px;
-        color: var(--el-text-color-primary);
+        color: var(--jinn-text-color1);
         &:focus {
           background-color: var(--jinn-bg3);
         }
@@ -207,7 +207,7 @@ onMounted(() => {
           justify-content: space-between;
           .title {
             font-size: 16px;
-            color: var(--el-text-color-primary);
+            color: var(--jinn-text-color1);
           }
         }
       }

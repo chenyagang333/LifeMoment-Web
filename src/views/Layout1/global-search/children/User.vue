@@ -97,7 +97,7 @@ onUnmounted(() => {
   flex-wrap: wrap;
   gap: 10px;
   .el-card {
-    background-color: var(--el-bg-color-overlay);
+    background-color: var(--jinn-color1);
     border: 1px solid var(--el-border-color);
     height: 156px;
     // 媒介查询

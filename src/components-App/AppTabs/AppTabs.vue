@@ -27,7 +27,7 @@
     </div>
     <div class="base-tab-pane" v-show="drawerTab == 'comment'">
       <AppComment
-        :showId="showId"
+        :byId="showId"
         v-model:comment-count="commentCount"
       ></AppComment>
     </div>
