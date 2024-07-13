@@ -1,13 +1,22 @@
+<!-- <template v-if="isVideo">
+  <div class="jinn-content-file">
+    <i class="bi bi-play-fill"></i>
+    <video :src="src" />
+  </div>
+</template>
+<template v-else>
+  <el-image class="jinn-content-file" :src="src" fit="cover" lazy> </el-image>
+</template> -->
 <template>
-  <template v-if="isVideo">
-    <div class="jinn-content-file">
+  <div class="jinn-content-file">
+    <template v-if="isVideo">
       <i class="bi bi-play-fill"></i>
       <video :src="src" />
-    </div>
-  </template>
-  <template v-else>
-    <el-image class="jinn-content-file" :src="src" fit="cover" lazy> </el-image>
-  </template>
+    </template>
+    <template v-else>
+      <img v-lazy="src" />
+    </template>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -51,6 +60,7 @@ const isVideo = getFileTypeByFileName(props.src) === FileType.video; // 是视�
     // img {
     border-radius: var(--el-border-radius-base);
     border: 0.1px solid var(--el-border-color);
+    background-color: var(--el-fill-color-light);
     height: 100%;
     position: absolute;
     top: 0;

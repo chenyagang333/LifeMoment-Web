@@ -1,5 +1,5 @@
 <template>
-  <div class="jinn-jinn-production-card"
+  <div class="jinn-production-card"
   >
     <!-- 头部 -->
     <CardHeader
@@ -55,7 +55,7 @@ defineEmits<{
 </script>
 
 <style scoped>
-.jinn-jinn-production-card {
+.jinn-production-card {
   background-color: var(--jinn-color1);
   transition: all 0.3s ease-in-out;
   border: 1px solid var(--el-border-color);

@@ -30,10 +30,12 @@
 
 <script setup lang="ts">
 import { ref, computed, nextTick } from "vue";
-import cardHeader from "./components/card-header.vue";
+import cardHeader from "./components/CardHeader.vue";
 import cardMain from "./components/card-main.vue";
 import commentOption from "@/components/comment-option/category1.vue";
 import commentOption2 from "@/components/comment-option/category2.vue";
+import JinnContent from "@/components/jinn-components/jinn-content/jinn-content.vue";
+import JinnContentFiles from "@/components/jinn-components/jinn-content/jinn-content-files/jinn-content-files.vue";
 
 const emit = defineEmits<{
   (e: "changeLikeState", active: boolean, func: any): void;

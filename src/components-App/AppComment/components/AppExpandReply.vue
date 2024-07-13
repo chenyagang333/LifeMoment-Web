@@ -1,11 +1,7 @@
 <!-- 有评论则展示 -->
 <template>
   <div class="AppExpandReply">
-    <div></div>
     <!-- 评论回复区域 -->
-    <!-- <template v-if="replyOpen">
-      <slot></slot>
-    </template> -->
     <div v-show="replyOpen">
       <slot></slot>
     </div>
@@ -16,12 +12,17 @@
       <span class="reply-header">
         <span class="reply-header-span" @click="handler()">
           <!-- 展开回复按钮 -->
-          <template v-if="!replyOpen"> 展开{{ replyCount }}条回复 </template>
+          <template v-if="!replyOpen">
+            展开{{ replyCount }}条回复
+            <el-icon>
+              <ArrowDown /> </el-icon
+          ></template>
           <!-- 加载更多回复按钮 -->
-          <template v-if="replyOpen && showLoadMoreBtn"> 展开更多 </template>
-          <el-icon>
-            <ArrowDown />
-          </el-icon>
+          <template v-if="replyOpen && showLoadMoreBtn">
+            展开更多
+            <el-icon>
+              <ArrowDown /> </el-icon
+          ></template>
         </span>
       </span>
       <!-- 收起回复按钮 -->

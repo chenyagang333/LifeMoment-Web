@@ -20,8 +20,10 @@ export interface CommentItem {
     replyCount?: number;
     replyList?: CommentItem[];
     // config column
-    replyOpen?: boolean;
-    replyLoadIndex?: number;
+    replyOpen?: boolean; // 打开回复
+    replyLoadIndex?: number; // 回复加载索引
+    sendIng?: boolean; // 发送评论中
+    sendError?: boolean; // 发送失败，默认为空（发送成功）
 }
 
 export type CallBack = (data: CommentItem[]) => void

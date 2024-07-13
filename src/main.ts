@@ -57,9 +57,9 @@ app.use(router); // 路由
 //     plugins: {}, // import Quasar plugins and add here
 // })
 
-
+import imageLoadError from '@/assets/default/imageLoadError.png';
 lazyPlugin.install(app, {
-    loading: 'loading.gif', // png/git/jpg/等格式都可以和你存放的图片格式一样就行
-    error: 'error.gif'
+    // loading: 'loading.gif', // png/git/jpg/等格式都可以和你存放的图片格式一样就行
+    error: imageLoadError
   })
 app.mount("#app");

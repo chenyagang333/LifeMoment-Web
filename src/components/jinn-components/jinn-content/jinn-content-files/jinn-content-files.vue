@@ -60,7 +60,7 @@ updateFileClass();
 .TheThirdType {
   display: grid;
   gap: 4px;
-  > .file {
+  > .jinn-content-file {
     padding-top: 100%;
     width: 100%;
     :deep(img) {
