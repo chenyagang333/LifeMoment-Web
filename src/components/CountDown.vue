@@ -1,5 +1,6 @@
 <template>
   <div class="count-down" @click="startCountdown">
+    <!-- dd -->
     <template v-if="sendIng">{{ "重新发送" + count + "s" }}</template>
     <template v-else>{{ "发送验证码" }}</template>
   </div>
